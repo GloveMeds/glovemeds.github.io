@@ -4,31 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#1B3686" />
-  <title>GloveMeds™ – Safety Fits like a Glove</title>
+  <title>GloveMeds</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background: #f1f5f9; color: #1e293b; }
     .hidden { display: none !important; }
     #loginScreen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: linear-gradient(180deg, #1B3686 0%, #12255E 100%); }
     .card-login { background: #fff; width: 100%; max-width: 400px; border-radius: 24px; padding: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); }
-    .logo-badge { display: inline-block; background: #1B3686; color: #fff; font-weight: 800; font-size: 24px; padding: 8px 20px; border-radius: 14px; }
-    .tagline { color: #1B3686; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 8px; }
+    .logo-badge { display: inline-block; background: #1B3686; color: #fff; font-weight: 800; font-size: 26px; padding: 10px 24px; border-radius: 14px; letter-spacing: -0.02em; }
     .field-label { display: block; font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin: 16px 0 6px; }
     .input-box { width: 100%; padding: 12px 14px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 16px; outline: none; }
     .input-box:focus { border-color: #1B3686; }
     .btn-primary { width: 100%; background: #1B3686; color: #fff; border: none; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 18px; }
     .btn-primary:disabled { opacity: 0.6; }
     .err-box { background: #fef2f2; color: #dc2626; font-size: 12px; font-weight: 600; padding: 10px; border-radius: 8px; margin-top: 12px; }
-    #appScreen { max-width: 480px; margin: 0 auto; min-height: 100vh; background: #f8fafc; padding-bottom: 80px; box-shadow: 0 0 20px rgba(0,0,0,0.08); }
+    #appScreen { max-width: 480px; margin: 0 auto; min-height: 100vh; background: #f8fafc; padding-bottom: 84px; box-shadow: 0 0 20px rgba(0,0,0,0.08); }
     header { background: #1B3686; color: #fff; padding: 14px 16px; position: sticky; top: 0; z-index: 20; display: flex; justify-content: space-between; align-items: center; }
-    .badge-pill { background: rgba(255,255,255,0.2); font-size: 10px; padding: 2px 8px; border-radius: 99px; font-weight: 600; margin-left: 6px; }
+    .badge-pill { background: rgba(255,255,255,0.2); font-size: 10px; padding: 2px 8px; border-radius: 99px; font-weight: 700; margin-left: 6px; text-transform: uppercase; }
     .btn-header { background: rgba(255,255,255,0.18); color: #fff; border: none; padding: 7px 11px; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; }
     .container { padding: 16px; }
     .alert-card { background: #EEF3FF; border-left: 4px solid #1B3686; padding: 12px; border-radius: 12px; margin-bottom: 10px; }
     .item-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 14px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
     .prod-row { display: flex; gap: 12px; }
-    .prod-img { width: 76px; height: 76px; border-radius: 12px; object-fit: cover; background: #EEF3FF; flex-shrink: 0; }
-    .prod-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 10px; border-top: 1px solid #f1f5f9; }
+    .prod-img { width: 72px; height: 72px; border-radius: 12px; object-fit: cover; background: #EEF3FF; flex-shrink: 0; }
+    .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 10px; background: #f8fafc; padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; }
+    .size-cell { text-align: center; }
+    .size-cell label { display: block; font-size: 10px; font-weight: 800; color: #1B3686; margin-bottom: 3px; }
+    .size-input { width: 100%; text-align: center; padding: 6px 2px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; font-weight: 700; background: #fff; }
+    .prod-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f1f5f9; }
     .btn-sm { background: #1B3686; color: #fff; border: none; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; }
     .btn-tint { background: #EEF3FF; color: #1B3686; }
     .new-tag { background: #dcfce7; color: #166534; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 99px; }
@@ -44,26 +47,24 @@
   <div id="loginScreen">
     <div class="card-login">
       <div style="text-align:center; margin-bottom:20px;">
-        <div class="logo-badge">GloveMeds<sup style="font-size:11px;">TM</sup></div>
-        <div class="tagline">Safety Fits like a Glove</div>
-        <p style="color:#64748b; font-size:13px; margin-top:10px;">B2B Customer Ordering & Document Portal</p>
+        <div class="logo-badge">GloveMeds</div>
+        <p style="color:#64748b; font-size:13px; margin-top:10px;">Retailer & Distributor Ordering Portal</p>
       </div>
       <form onsubmit="handleLogin(event)">
         <label class="field-label">Registered Mobile Number</label>
-        <input id="loginMobile" type="tel" required placeholder="e.g. 9876543210" class="input-box" />
+        <input id="loginMobile" type="tel" required placeholder="e.g. 9969353858" class="input-box" />
         <label class="field-label">Customer PIN</label>
         <input id="loginPin" type="password" inputmode="numeric" required placeholder="••••" class="input-box" />
         <div id="loginError" class="err-box hidden"></div>
-        <button id="loginBtn" type="submit" class="btn-primary">Access My Portal</button>
+        <button id="loginBtn" type="submit" class="btn-primary">Access Portal</button>
       </form>
-      <p style="text-align:center; font-size:11px; color:#94a3b8; margin-top:16px;">100% Private Account • Invoices, LR Dockets & Direct Ordering</p>
     </div>
   </div>
 
   <div id="appScreen" class="hidden">
     <header>
       <div>
-        <div><strong style="font-size:17px;">GloveMeds™</strong><span id="userStateBadge" class="badge-pill"></span></div>
+        <div><strong style="font-size:18px;">GloveMeds</strong><span id="userStateBadge" class="badge-pill"></span></div>
         <div id="userCompanyHeader" style="font-size:12px; color:#dbeafe; margin-top:2px;"></div>
       </div>
       <div style="display:flex; gap:6px;">
@@ -86,7 +87,7 @@
       </section>
 
       <section id="tabCart" class="hidden">
-        <strong style="font-size:15px; display:block; margin-bottom:12px;">Your Carton Order</strong>
+        <strong style="font-size:15px; display:block; margin-bottom:12px;">Order Summary</strong>
         <div id="cartItems"></div>
         <div id="cartSummary" class="item-card hidden">
           <div style="display:flex; justify-content:space-between; font-weight:800; font-size:15px;">
@@ -98,13 +99,13 @@
       </section>
 
       <section id="tabInvoices" class="hidden">
-        <strong style="font-size:15px; display:block;">My Invoices & Transport Dockets</strong>
+        <strong style="font-size:15px; display:block;">Invoices & Transport Dockets</strong>
         <p style="font-size:12px; color:#64748b; margin-bottom:12px;">Private vault — visible only to your account</p>
         <div id="invoiceList"></div>
       </section>
 
       <section id="tabOrders" class="hidden">
-        <strong style="font-size:15px; display:block; margin-bottom:12px;">My Order History</strong>
+        <strong style="font-size:15px; display:block; margin-bottom:12px;">Order History</strong>
         <div id="orderList"></div>
       </section>
     </div>
@@ -119,8 +120,8 @@
 
   <div id="qrModal" class="modal-bg hidden">
     <div class="modal-card">
-      <strong style="color:#1B3686; font-size:17px;">GloveMeds™ 1-Time Scan</strong>
-      <p style="font-size:12px; color:#475569; margin:10px 0;">Scan once, then tap <b>Add to Home Screen</b> in your browser to order anytime without WhatsApp.</p>
+      <strong style="color:#1B3686; font-size:17px;">GloveMeds 1-Time Scan</strong>
+      <p style="font-size:12px; color:#475569; margin:10px 0;">Scan once, then tap <b>Add to Home Screen</b> in your browser to bookmark and order anytime.</p>
       <img id="qrImg" style="width:180px; height:180px; margin:10px auto; display:block;" />
       <button onclick="document.getElementById('qrModal').classList.add('hidden')" class="btn-primary" style="background:#334155;">Close</button>
     </div>
@@ -129,12 +130,36 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbwtRh59ujz0PniVOaFR8pe1jVl3bCcQ0YCGdF4jlnuCGwSn7fODFofAtdNCgerqMnrb/exec";
     let APP_DATA = { user: null, products: [], orders: [], invoices: [], alerts: [] };
-    let CART = {};
+    let CART = [];
 
-    async function callApi(params) {
-      const url = API_URL + "?" + new URLSearchParams(params).toString();
-      const res = await fetch(url);
-      return await res.json();
+    function callApiJsonp(params) {
+      return new Promise((resolve, reject) => {
+        const cbName = 'gm_cb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+        const script = document.createElement('script');
+        const timeout = setTimeout(() => {
+          cleanup();
+          reject(new Error('Request timed out. Check internet or Apps Script deployment.'));
+        }, 15000);
+
+        function cleanup() {
+          clearTimeout(timeout);
+          delete window[cbName];
+          if (script.parentNode) script.parentNode.removeChild(script);
+        }
+
+        window[cbName] = (data) => {
+          cleanup();
+          resolve(data);
+        };
+
+        params.callback = cbName;
+        script.src = API_URL + '?' + new URLSearchParams(params).toString();
+        script.onerror = () => {
+          cleanup();
+          reject(new Error('Could not reach Google Sheet server.'));
+        };
+        document.body.appendChild(script);
+      });
     }
 
     async function handleLogin(e) {
@@ -148,9 +173,9 @@
       err.classList.add('hidden');
 
       try {
-        const res = await callApi({ action: 'login', mobile, pin });
+        const res = await callApiJsonp({ action: 'login', mobile, pin });
         btn.disabled = false;
-        btn.textContent = 'Access My Portal';
+        btn.textContent = 'Access Portal';
         if (!res || !res.success) {
           err.textContent = (res && res.message) ? res.message : 'Invalid Mobile Number or PIN';
           err.classList.remove('hidden');
@@ -160,12 +185,12 @@
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('appScreen').classList.remove('hidden');
         document.getElementById('userCompanyHeader').textContent = res.user.Company_Name;
-        document.getElementById('userStateBadge').textContent = res.user.State + ' • ' + res.user.Category;
+        document.getElementById('userStateBadge').textContent = res.user.Category + ' • ' + res.user.State;
         renderAll();
       } catch (error) {
         btn.disabled = false;
-        btn.textContent = 'Access My Portal';
-        err.textContent = 'Connection error: ' + error.message;
+        btn.textContent = 'Access Portal';
+        err.textContent = error.message;
         err.classList.remove('hidden');
       }
     }
@@ -209,82 +234,130 @@
               <p style="font-size:12px; color:#64748b; margin-top:4px;">${p.Specs || ''}</p>
             </div>
           </div>
+
+          <div class="size-grid">
+            <div class="size-cell"><label>SIZE S</label><input id="qty_${p.Product_ID}_S" type="number" min="0" placeholder="0" class="size-input" /></div>
+            <div class="size-cell"><label>SIZE M</label><input id="qty_${p.Product_ID}_M" type="number" min="0" placeholder="0" class="size-input" /></div>
+            <div class="size-cell"><label>SIZE L</label><input id="qty_${p.Product_ID}_L" type="number" min="0" placeholder="0" class="size-input" /></div>
+            <div class="size-cell"><label>SIZE XL</label><input id="qty_${p.Product_ID}_XL" type="number" min="0" placeholder="0" class="size-input" /></div>
+          </div>
+
           <div class="prod-footer">
-            <div><strong style="color:#1B3686; font-size:16px;">₹${p.Carton_Price}</strong> <span style="font-size:11px; color:#94a3b8;">/ carton</span></div>
+            <div><strong style="color:#1B3686; font-size:16px;">₹${p.Carton_Price}</strong> <span style="font-size:11px; color:#94a3b8;">/ unit</span></div>
             <div style="display:flex; gap:6px;">
               ${p.Video_URL ? `<a href="${p.Video_URL}" target="_blank" class="btn-sm btn-tint">Video</a>` : ''}
-              <button onclick="addToCart('${p.Product_ID}')" class="btn-sm">+ Add Carton</button>
+              <button onclick="addProductSizes('${p.Product_ID}')" class="btn-sm">+ Add to Order</button>
             </div>
           </div>
         </div>
       `).join('');
     }
 
-    function addToCart(pid) { CART[pid] = (CART[pid] || 0) + 1; renderCart(); }
-    function updateQty(pid, d) { CART[pid] = (CART[pid] || 0) + d; if (CART[pid] <= 0) delete CART[pid]; renderCart(); }
+    function addProductSizes(pid) {
+      const prod = APP_DATA.products.find(p => String(p.Product_ID) === String(pid));
+      if (!prod) return;
+      const sizes = ['S', 'M', 'L', 'XL'];
+      let addedAny = false;
+
+      sizes.forEach(sz => {
+        const input = document.getElementById(`qty_${pid}_${sz}`);
+        const qty = parseInt(input.value, 10) || 0;
+        if (qty > 0) {
+          addedAny = true;
+          const existing = CART.find(item => item.pid === pid && item.size === sz);
+          if (existing) {
+            existing.qty += qty;
+          } else {
+            CART.push({ pid, name: prod.Name, size: sz, qty, price: Number(prod.Carton_Price) });
+          }
+          input.value = '';
+        }
+      });
+
+      if (!addedAny) {
+        alert('Please enter quantity for at least one size (S, M, L, or XL).');
+        return;
+      }
+      renderCart();
+      alert('Added to Cart!');
+    }
+
+    function removeCartItem(index) {
+      CART.splice(index, 1);
+      renderCart();
+    }
 
     function renderCart() {
-      const ids = Object.keys(CART);
-      document.getElementById('cartBadge').textContent = ids.reduce((s, id) => s + CART[id], 0);
+      const totalQty = CART.reduce((sum, item) => sum + item.qty, 0);
+      document.getElementById('cartBadge').textContent = totalQty;
       const box = document.getElementById('cartItems');
       const summary = document.getElementById('cartSummary');
-      if (!ids.length) {
-        box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">Your cart is empty.</p>';
+
+      if (!CART.length) {
+        box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">Your cart is empty. Enter size quantities in Catalogue.</p>';
         summary.classList.add('hidden');
         return;
       }
+
       let total = 0;
-      box.innerHTML = ids.map(id => {
-        const prod = APP_DATA.products.find(p => String(p.Product_ID) === String(id));
-        if (!prod) return '';
-        const lineTotal = Number(prod.Carton_Price) * CART[id];
+      box.innerHTML = CART.map((item, idx) => {
+        const lineTotal = item.price * item.qty;
         total += lineTotal;
         return `
           <div class="item-card" style="display:flex; justify-content:space-between; align-items:center;">
             <div>
-              <strong style="font-size:13px;">${prod.Name}</strong>
-              <div style="font-size:12px; color:#64748b;">₹${prod.Carton_Price} × ${CART[id]} = <b>₹${lineTotal}</b></div>
+              <strong style="font-size:13px;">${item.name} [Size: ${item.size}]</strong>
+              <div style="font-size:12px; color:#64748b;">₹${item.price} × ${item.qty} = <b>₹${lineTotal}</b></div>
             </div>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <button onclick="updateQty('${id}', -1)" class="btn-sm btn-tint">-</button>
-              <strong>${CART[id]}</strong>
-              <button onclick="updateQty('${id}', 1)" class="btn-sm">+</button>
-            </div>
+            <button onclick="removeCartItem(${idx})" class="btn-sm btn-tint" style="color:#dc2626;">Remove</button>
           </div>
         `;
       }).join('');
+
       document.getElementById('cartTotal').textContent = '₹' + total;
       summary.classList.remove('hidden');
     }
 
     async function submitOrder() {
-      const ids = Object.keys(CART);
-      if (!ids.length) return;
+      if (!CART.length) return;
       let total = 0;
-      const lines = ids.map(id => {
-        const prod = APP_DATA.products.find(p => String(p.Product_ID) === String(id));
-        total += Number(prod.Carton_Price) * CART[id];
-        return `${prod.Name} (${CART[id]} ctn)`;
+      const lines = CART.map(item => {
+        total += item.price * item.qty;
+        return `${item.name} [${item.size}: ${item.qty}]`;
       });
+
       const btn = document.getElementById('placeOrderBtn');
       btn.disabled = true;
       btn.textContent = 'Sending Order...';
 
-      const res = await callApi({
-        action: 'order',
-        customerId: APP_DATA.user.Customer_ID,
-        companyName: APP_DATA.user.Company_Name,
-        itemsSummary: lines.join(', '),
-        totalAmount: total
-      });
-      btn.disabled = false;
-      btn.textContent = 'Confirm & Send Order';
-      alert('Order Confirmed! ID: ' + res.orderId);
-      APP_DATA.orders.unshift({ Order_ID: res.orderId, Date: new Date().toLocaleDateString('en-IN'), Items_Summary: lines.join(', '), Total_Amount: total, Status: 'Pending Dispatch' });
-      CART = {};
-      renderCart();
-      renderOrders();
-      switchTab('Orders');
+      try {
+        const res = await callApiJsonp({
+          action: 'order',
+          customerId: APP_DATA.user.Customer_ID,
+          companyName: APP_DATA.user.Company_Name,
+          customerType: APP_DATA.user.Category,
+          itemsSummary: lines.join(', '),
+          totalAmount: total
+        });
+        btn.disabled = false;
+        btn.textContent = 'Confirm & Send Order';
+        alert('Order Confirmed! ID: ' + res.orderId);
+        APP_DATA.orders.unshift({
+          Order_ID: res.orderId,
+          Date: new Date().toLocaleDateString('en-IN'),
+          Items_Summary: lines.join(', '),
+          Total_Amount: total,
+          Status: 'Pending Dispatch'
+        });
+        CART = [];
+        renderCart();
+        renderOrders();
+        switchTab('Orders');
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Confirm & Send Order';
+        alert('Order failed: ' + err.message);
+      }
     }
 
     function renderInvoices() {
@@ -343,7 +416,7 @@
 
     function logout() {
       APP_DATA = { user: null, products: [], orders: [], invoices: [], alerts: [] };
-      CART = {};
+      CART = [];
       document.getElementById('appScreen').classList.add('hidden');
       document.getElementById('loginScreen').classList.remove('hidden');
     }
