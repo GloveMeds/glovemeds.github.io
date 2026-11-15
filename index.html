@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="GloveMeds" />
   <title>GloveMeds</title>
-  <link rel="manifest" href="data:application/manifest+json,{"name":"GloveMeds","short_name":"GloveMeds","start_url":".","display":"standalone","background_color":"%231B3686","theme_color":"%231B3686"}" />
+  <link rel="manifest" href="data:application/manifest+json,{&quot;name&quot;:&quot;GloveMeds&quot;,&quot;short_name&quot;:&quot;GloveMeds&quot;,&quot;start_url&quot;:&quot;.&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%231B3686&quot;,&quot;theme_color&quot;:&quot;%231B3686&quot;}" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background: #f1f5f9; color: #1e293b; }
@@ -32,7 +32,9 @@
     .pay-due-card { background: #fffbeb; border-left: 4px solid #d97706; padding: 12px; border-radius: 12px; margin-bottom: 10px; }
     .item-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 14px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
     .prod-row { display: flex; gap: 12px; }
-    .prod-img { width: 72px; height: 72px; border-radius: 12px; object-fit: cover; background: #EEF3FF; flex-shrink: 0; }
+    .prod-img { width: 76px; height: 76px; border-radius: 12px; object-fit: cover; background: #EEF3FF; flex-shrink: 0; cursor: zoom-in; border: 1px solid #e2e8f0; }
+    .thumb-strip { display: flex; gap: 6px; margin-top: 6px; }
+    .thumb-mini { width: 38px; height: 38px; border-radius: 8px; object-fit: cover; border: 1px solid #cbd5e1; cursor: zoom-in; }
     .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 10px; background: #f8fafc; padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; }
     .size-cell { text-align: center; }
     .size-cell label { display: block; font-size: 10px; font-weight: 800; color: #1B3686; margin-bottom: 3px; }
@@ -47,8 +49,8 @@
     nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 560px; margin: 0 auto; background: #fff; border-top: 1px solid #e2e8f0; display: grid; grid-template-columns: repeat(5, 1fr); padding: 10px 0; text-align: center; z-index: 20; }
     nav button { background: none; border: none; font-size: 11px; font-weight: 600; color: #64748b; cursor: pointer; padding: 2px; }
     nav button.active { color: #1B3686; font-weight: 800; }
-    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50; }
-    .modal-card { background: #fff; border-radius: 20px; padding: 22px; max-width: 360px; width: 100%; }
+    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50; overflow-y: auto; }
+    .modal-card { background: #fff; border-radius: 20px; padding: 20px; max-width: 400px; width: 100%; max-height: 90vh; overflow-y: auto; }
     .sub-tabs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 14px; }
     .sub-tab-btn { padding: 8px 2px; border-radius: 10px; border: 1px solid #cbd5e1; background: #fff; font-size: 10px; font-weight: 700; color: #475569; cursor: pointer; }
     .sub-tab-btn.active { background: #1B3686; color: #fff; border-color: #1B3686; }
@@ -98,6 +100,7 @@
         <select id="regCategory" class="input-box">
           <option value="Retailer">Retailer</option>
           <option value="Distributor">Distributor</option>
+          <option value="Stockist">Stockist</option>
           <option value="Trader">Trader</option>
           <option value="Wholesaler">Wholesaler</option>
           <option value="Dealer">Dealer</option>
@@ -118,7 +121,7 @@
         <label class="field-label">Transport Name</label>
         <input id="regTransport" type="text" placeholder="e.g. VRL Logistics" class="input-box" />
         <div id="regError" class="err-box hidden"></div>
-        <button id="regBtn" type="button" onclick="handleSelfRegister()" class="btn-primary">Register & Enter Portal</button>
+        <button id="regBtn" type="button" onclick="handleSelfRegister()" class="btn-primary">Register &amp; Enter Portal</button>
         <button type="button" onclick="toggleAuthMode('login')" class="btn-outline">Already Registered? Sign In</button>
       </div>
     </div>
@@ -144,12 +147,12 @@
       <div id="paymentDueSection"></div>
       <div id="alertsSection"></div>
 
-      <!-- TAB 1: BOX RANGE (20 BOXES PER INNER/SIZE) -->
+      <!-- TAB 1: BOX RANGE (20 BOXES PER CARTON/SIZE) -->
       <section id="tabBoxRange">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
           <div>
             <strong style="font-size:15px;">Box Range</strong>
-            <span style="display:block; font-size:11px; color:#64748b;">1 Inner = 20 Boxes per size</span>
+            <span style="display:block; font-size:11px; color:#64748b;">1 Carton = 20 Boxes per size (Tap image to zoom)</span>
           </div>
           <label style="font-size:12px; font-weight:700; color:#1B3686; cursor:pointer;">
             <input type="checkbox" id="newOnlyBoxFilter" onchange="renderProducts()" /> New Arrivals
@@ -181,13 +184,13 @@
             <span>Estimated Total:</span>
             <span id="cartTotal" style="color:#1B3686;">₹0</span>
           </div>
-          <button id="placeOrderBtn" type="button" onclick="submitOrder()" class="btn-primary">Confirm & Send Order</button>
+          <button id="placeOrderBtn" type="button" onclick="submitOrder()" class="btn-primary">Confirm &amp; Send Order</button>
         </div>
       </section>
 
       <!-- TAB 4: INVOICES & LR -->
       <section id="tabInvoices" class="hidden">
-        <strong style="font-size:15px; display:block;">Invoices & Transport Dockets</strong>
+        <strong style="font-size:15px; display:block;">Invoices &amp; Transport Dockets</strong>
         <p style="font-size:12px; color:#64748b; margin-bottom:12px;">Private vault — visible only to your account</p>
         <div id="invoiceList"></div>
       </section>
@@ -216,7 +219,7 @@
         <div id="adminOrdersList"></div>
       </div>
 
-      <!-- ADMIN 2: PRODUCTS MANAGER -->
+      <!-- ADMIN 2: PRODUCTS MANAGER (ADD & EDIT MULTIPLE IMAGES) -->
       <div id="admTabProducts" class="hidden">
         <div class="item-card">
           <strong style="font-size:15px; color:#1B3686;">Add New Glove Product</strong>
@@ -227,7 +230,7 @@
               <div>
                 <label class="field-label">Section *</label>
                 <select id="prodRangeType" class="input-box">
-                  <option value="Box Range">Box Range (20 Box Inner)</option>
+                  <option value="Box Range">Box Range (20 Box Carton)</option>
                   <option value="Loose Gloves">Loose Gloves</option>
                 </select>
               </div>
@@ -256,8 +259,18 @@
             <input id="prodSpecs" type="text" placeholder="e.g. AQL 1.5 • 4.5 Mil • Powder-Free • Box of 100" class="input-box" />
             <label class="field-label">Product MRP (₹ per Box / Unit) *</label>
             <input id="prodMrp" type="number" placeholder="e.g. 550" class="input-box" />
-            <label class="field-label">Upload Product Photo</label>
-            <input id="prodImgFile" type="file" accept="image/*" class="input-box" />
+            <div class="grid-2">
+              <div>
+                <label class="field-label">Front Photo</label>
+                <input id="prodImgFile" type="file" accept="image/*" class="input-box" />
+              </div>
+              <div>
+                <label class="field-label">Back Photo</label>
+                <input id="prodBackImgFile" type="file" accept="image/*" class="input-box" />
+              </div>
+            </div>
+            <label class="field-label">Extra / Box Detail Photo (Optional)</label>
+            <input id="prodExtraImgFile" type="file" accept="image/*" class="input-box" />
             <label class="field-label">Product Video Link (YouTube / Google Drive)</label>
             <input id="prodVideoUrl" type="url" placeholder="https://youtube.com/..." class="input-box" />
             <button id="addProdBtn" type="button" onclick="adminAddProduct()" class="btn-primary">Publish Product</button>
@@ -268,20 +281,21 @@
         <div id="adminProductsList"></div>
       </div>
 
-      <!-- ADMIN 3: UPLOAD INVOICE & LR -->
+      <!-- ADMIN 3: UPLOAD INVOICE & LR (NOTHING COMPULSORY) -->
       <div id="admTabUpload" class="hidden">
         <div class="item-card">
-          <strong style="font-size:15px; color:#1B3686;">Upload Invoice & Transport Docket</strong>
+          <strong style="font-size:15px; color:#1B3686;">Upload Invoice &amp; Transport Docket</strong>
+          <p style="font-size:11px; color:#64748b; margin-top:2px;">All fields are optional — upload invoice, LR docket, or both anytime.</p>
           <div>
             <label class="field-label">Select Customer</label>
             <select id="docCustomerId" onchange="autoFillCustomerTransport()" class="input-box"></select>
             <div class="grid-2">
               <div>
-                <label class="field-label">Invoice Number *</label>
+                <label class="field-label">Invoice Number</label>
                 <input id="docInvoiceNo" type="text" placeholder="e.g. GM/26/045" class="input-box" />
               </div>
               <div>
-                <label class="field-label">Invoice Amount (₹) *</label>
+                <label class="field-label">Invoice Amount (₹)</label>
                 <input id="docAmount" type="number" placeholder="e.g. 24500" class="input-box" />
               </div>
             </div>
@@ -324,7 +338,7 @@
         <div id="adminPaymentsList"></div>
       </div>
 
-      <!-- ADMIN 5: CUSTOMERS, INDIVIDUAL RATES & DISTRIBUTOR MAPPING -->
+      <!-- ADMIN 5: CUSTOMERS, RATES, EDIT & DISPATCH REMARKS -->
       <div id="admTabCustomers" class="hidden">
         <!-- INDIVIDUAL CUSTOMER RATE CARD SETTER -->
         <div class="item-card" style="background:#f0fdf4; border-color:#bbf7d0;">
@@ -348,13 +362,13 @@
 
         <!-- DISTRIBUTOR HANDOVER / RETAILER LIST -->
         <div class="item-card" style="background:#EEF3FF; border-color:#c7d2fe;">
-          <strong style="font-size:14px; color:#1B3686;">Distributor Area Handover & Retailer List</strong>
-          <label class="field-label">Select Current Distributor / Dealer</label>
+          <strong style="font-size:14px; color:#1B3686;">Distributor / Stockist Area Handover</strong>
+          <label class="field-label">Select Current Distributor / Stockist / Dealer</label>
           <select id="handoverFromPartner" onchange="renderPartnerRetailerList()" class="input-box"></select>
           <div id="partnerRetailerPreview" style="font-size:12px; color:#1e293b; margin-top:8px; background:#fff; padding:10px; border-radius:10px; border:1px solid #cbd5e1;"></div>
-          <button type="button" onclick="copyRetailerList()" class="btn-sm btn-tint" style="margin-top:8px; width:100%;">Copy Retailer List for Distributor</button>
+          <button type="button" onclick="copyRetailerList()" class="btn-sm btn-tint" style="margin-top:8px; width:100%;">Copy Retailer List</button>
 
-          <label class="field-label" style="margin-top:12px;">Transfer All Listed Retailers To New Distributor/Dealer</label>
+          <label class="field-label" style="margin-top:12px;">Transfer All Listed Retailers To New Partner</label>
           <div style="display:flex; gap:6px;">
             <select id="handoverToPartner" class="input-box"></select>
             <button type="button" onclick="bulkTransferRetailers()" class="btn-sm" style="white-space:nowrap;">Transfer All</button>
@@ -381,6 +395,7 @@
             <select id="custCategory" class="input-box">
               <option value="Retailer">Retailer</option>
               <option value="Distributor">Distributor</option>
+              <option value="Stockist">Stockist</option>
               <option value="Trader">Trader</option>
               <option value="Wholesaler">Wholesaler</option>
               <option value="Dealer">Dealer</option>
@@ -400,7 +415,9 @@
             </div>
             <label class="field-label">Transport Name</label>
             <input id="custTransport" type="text" placeholder="e.g. VRL Logistics" class="input-box" />
-            <label class="field-label">Assign Area Distributor / Dealer (For Retailers)</label>
+            <label class="field-label">Remark / Dispatch Note (Internal)</label>
+            <input id="custRemark" type="text" placeholder="e.g. Always pack in double corrugated box / Door delivery" class="input-box" />
+            <label class="field-label">Assign Area Partner (For Retailers)</label>
             <select id="custAssignedPartner" class="input-box"></select>
             <button type="button" onclick="adminAddCustomer()" class="btn-primary">Save Customer Account</button>
           </div>
@@ -426,6 +443,7 @@
               <option value="All">All Categories</option>
               <option value="Retailer">Retailer</option>
               <option value="Distributor">Distributor</option>
+              <option value="Stockist">Stockist</option>
               <option value="Trader">Trader</option>
               <option value="Wholesaler">Wholesaler</option>
               <option value="Dealer">Dealer</option>
@@ -449,6 +467,111 @@
       <button type="button" onclick="switchTab('Invoices')" id="navInvoices">Invoices/LR</button>
       <button type="button" onclick="switchTab('Orders')" id="navOrders">Orders</button>
     </nav>
+  </div>
+
+  <!-- IMAGE ZOOM LIGHTBOX MODAL -->
+  <div id="zoomModal" class="modal-bg hidden" onclick="if(event.target===this) closeZoomModal()">
+    <div class="modal-card" style="text-align:center; max-width:440px;">
+      <strong id="zoomTitle" style="color:#1B3686; font-size:15px; display:block; margin-bottom:10px;">Product View</strong>
+      <img id="zoomMainImg" style="width:100%; max-height:360px; object-fit:contain; border-radius:12px; background:#f8fafc; border:1px solid #e2e8f0;" />
+      <div id="zoomThumbs" style="display:flex; justify-content:center; gap:8px; margin-top:10px;"></div>
+      <button type="button" onclick="closeZoomModal()" class="btn-primary" style="background:#334155; margin-top:12px;">Close Zoom</button>
+    </div>
+  </div>
+
+  <!-- EDIT PRODUCT MODAL (ADMIN) -->
+  <div id="editProductModal" class="modal-bg hidden">
+    <div class="modal-card">
+      <strong style="color:#1B3686; font-size:16px;">Edit Product</strong>
+      <input type="hidden" id="editProdId" />
+      <label class="field-label">Product Name</label>
+      <input id="editProdName" type="text" class="input-box" />
+      <div class="grid-2">
+        <div>
+          <label class="field-label">Section</label>
+          <select id="editProdRangeType" class="input-box">
+            <option value="Box Range">Box Range</option>
+            <option value="Loose Gloves">Loose Gloves</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label">Category</label>
+          <input id="editProdCat" type="text" class="input-box" />
+        </div>
+      </div>
+      <div class="grid-2">
+        <div>
+          <label class="field-label">Status</label>
+          <select id="editProdStatus" class="input-box">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label">New Arrival</label>
+          <select id="editProdNew" class="input-box">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+        </div>
+      </div>
+      <label class="field-label">Specifications</label>
+      <input id="editProdSpecs" type="text" class="input-box" />
+      <label class="field-label">MRP (₹)</label>
+      <input id="editProdMrp" type="number" class="input-box" />
+      <label class="field-label">Video Link</label>
+      <input id="editProdVideo" type="url" class="input-box" />
+      <div class="grid-2">
+        <div>
+          <label class="field-label">Replace Front Photo</label>
+          <input id="editProdImgFile" type="file" accept="image/*" class="input-box" />
+        </div>
+        <div>
+          <label class="field-label">Replace Back Photo</label>
+          <input id="editProdBackFile" type="file" accept="image/*" class="input-box" />
+        </div>
+      </div>
+      <label class="field-label">Replace Extra Photo</label>
+      <input id="editProdExtraFile" type="file" accept="image/*" class="input-box" />
+      <button id="saveEditProdBtn" type="button" onclick="saveEditedProduct()" class="btn-primary">Save Changes</button>
+      <button type="button" onclick="document.getElementById('editProductModal').classList.add('hidden')" class="btn-outline">Cancel</button>
+    </div>
+  </div>
+
+  <!-- EDIT CUSTOMER MODAL (ADMIN: NAME & DISPATCH REMARK) -->
+  <div id="editCustomerModal" class="modal-bg hidden">
+    <div class="modal-card">
+      <strong style="color:#1B3686; font-size:16px;">Edit Customer &amp; Dispatch Note</strong>
+      <input type="hidden" id="editCustId" />
+      <label class="field-label">Company / Firm Name</label>
+      <input id="editCustName" type="text" class="input-box" />
+      <div class="grid-2">
+        <div>
+          <label class="field-label">Category</label>
+          <select id="editCustCategory" class="input-box">
+            <option value="Retailer">Retailer</option>
+            <option value="Distributor">Distributor</option>
+            <option value="Stockist">Stockist</option>
+            <option value="Trader">Trader</option>
+            <option value="Wholesaler">Wholesaler</option>
+            <option value="Dealer">Dealer</option>
+            <option value="End user">End user</option>
+            <option value="Hospital">Hospital</option>
+            <option value="Pharma">Pharma</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label">City</label>
+          <input id="editCustCity" type="text" class="input-box" />
+        </div>
+      </div>
+      <label class="field-label">Transport Name</label>
+      <input id="editCustTransport" type="text" class="input-box" />
+      <label class="field-label">Remark / Note to Remember While Dispatching</label>
+      <textarea id="editCustRemark" rows="3" placeholder="e.g. Send only via VRL / Pack fragile sticker / Call manager before dispatch" class="input-box"></textarea>
+      <button type="button" onclick="saveEditedCustomer()" class="btn-primary">Save Customer Details</button>
+      <button type="button" onclick="document.getElementById('editCustomerModal').classList.add('hidden')" class="btn-outline">Cancel</button>
+    </div>
   </div>
 
   <!-- QR MODAL -->
@@ -645,9 +768,7 @@
     function getCustomerRateInfo(prod) {
       const custom = MY_CUSTOM_RATES.find(r => r.product_id === prod.product_id);
       const mrp = Number(prod.retailer_price) || 0;
-      if (custom) {
-        return { hasCustomRate: true, rate: Number(custom.custom_price), mrp };
-      }
+      if (custom) return { hasCustomRate: true, rate: Number(custom.custom_price), mrp };
       return { hasCustomRate: false, rate: mrp, mrp };
     }
 
@@ -694,7 +815,7 @@
         box.innerHTML = `
           <div class="partner-card" style="background:#f8fafc; border-color:#64748b;">
             <strong style="font-size:12px; color:#334155; text-transform:uppercase;">Retailer Order Routing</strong>
-            <p style="font-size:12px; color:#475569; margin-top:3px;">Submit your requirement below — GloveMeds Head Office will connect you with your nearest area Distributor/Dealer.</p>
+            <p style="font-size:12px; color:#475569; margin-top:3px;">Submit your requirement below — GloveMeds Head Office will connect you with your nearest area Distributor/Stockist.</p>
           </div>`;
       }
     }
@@ -707,7 +828,7 @@
         const termText = terms === 'Advance' ? 'Advance Payment' : `${terms} Days Terms`;
         return `
           <div class="pay-due-card">
-            <strong style="font-size:12px; color:#92400e; text-transform:uppercase;">Payment Reminder • Invoice #${inv.invoice_no}</strong>
+            <strong style="font-size:12px; color:#92400e; text-transform:uppercase;">Payment Reminder • Invoice #${inv.invoice_no || 'Pending'}</strong>
             <p style="font-size:12px; color:#78350f; margin-top:4px;">Amount Due: <b>₹${inv.amount}</b> (${termText})</p>
           </div>`;
       }).join('');
@@ -726,6 +847,26 @@
         </div>`).join('');
     }
 
+    /* ZOOM LIGHTBOX FOR MULTIPLE IMAGES */
+    function openZoomGallery(pid, startIndex = 0) {
+      const prod = PRODUCTS.find(p => p.product_id === pid);
+      if (!prod) return;
+      const imgs = [
+        { label: 'Front', url: prod.image_url || 'https://placehold.co/400x400/EEF3FF/1B3686?text=GloveMeds' },
+        ...(prod.image_back_url ? [{ label: 'Back', url: prod.image_back_url }] : []),
+        ...(prod.image_extra_url ? [{ label: 'Detail', url: prod.image_extra_url }] : [])
+      ];
+      const active = imgs[startIndex] || imgs[0];
+      document.getElementById('zoomTitle').textContent = `${prod.name} (${active.label})`;
+      document.getElementById('zoomMainImg').src = active.url;
+      document.getElementById('zoomThumbs').innerHTML = imgs.map((im, idx) => `
+        <button type="button" onclick="openZoomGallery('${pid}', ${idx})" class="btn-sm ${idx === startIndex ? '' : 'btn-tint'}">${im.label}</button>
+      `).join('');
+      document.getElementById('zoomModal').classList.remove('hidden');
+    }
+
+    function closeZoomModal() { document.getElementById('zoomModal').classList.add('hidden'); }
+
     function buildProductCardHtml(p, isBoxRange) {
       const info = getCustomerRateInfo(p);
       const priceDisplay = info.hasCustomRate
@@ -733,15 +874,26 @@
         : `<strong style="color:#1B3686; font-size:15px;">MRP: ₹${info.mrp}</strong> <span style="font-size:10px; color:#94a3b8;">/ box</span>`;
 
       const helperText = isBoxRange
-        ? `<div id="calc_${p.product_id}" style="font-size:11px; color:#1B3686; font-weight:700; margin-top:6px;">Enter Inner Qty (1 Inner = 20 Boxes)</div>`
+        ? `<div id="calc_${p.product_id}" style="font-size:11px; color:#1B3686; font-weight:700; margin-top:6px;">Enter Carton Qty (1 Carton = 20 Boxes)</div>`
         : `<div style="font-size:11px; color:#64748b; margin-top:6px;">Enter Loose Quantity per size</div>`;
 
       const onInputAttr = isBoxRange ? `oninput="updateBoxCalc('${p.product_id}')"` : '';
 
+      const frontUrl = p.image_url || 'https://placehold.co/120x120/EEF3FF/1B3686?text=GloveMeds';
+      const extraThumbs = (p.image_back_url || p.image_extra_url) ? `
+        <div class="thumb-strip">
+          <img src="${frontUrl}" onclick="openZoomGallery('${p.product_id}', 0)" class="thumb-mini" title="Front" />
+          ${p.image_back_url ? `<img src="${p.image_back_url}" onclick="openZoomGallery('${p.product_id}', 1)" class="thumb-mini" title="Back" />` : ''}
+          ${p.image_extra_url ? `<img src="${p.image_extra_url}" onclick="openZoomGallery('${p.product_id}', 2)" class="thumb-mini" title="Detail" />` : ''}
+        </div>` : '';
+
       return `
         <div class="item-card">
           <div class="prod-row">
-            <img src="${p.image_url || 'https://placehold.co/120x120/EEF3FF/1B3686?text=GloveMeds'}" class="prod-img" />
+            <div>
+              <img src="${frontUrl}" onclick="openZoomGallery('${p.product_id}', 0)" class="prod-img" />
+              ${extraThumbs}
+            </div>
             <div style="flex:1;">
               <div style="display:flex; justify-content:space-between; gap:4px;">
                 <strong style="font-size:14px;">${p.name}</strong>
@@ -771,30 +923,28 @@
     }
 
     function updateBoxCalc(pid) {
-      let totalInners = 0;
+      let totalCartons = 0;
       ['XS', 'Small', 'Medium', 'Large'].forEach(sz => {
-        totalInners += parseInt(document.getElementById(`qty_${pid}_${sz}`).value, 10) || 0;
+        totalCartons += parseInt(document.getElementById(`qty_${pid}_${sz}`).value, 10) || 0;
       });
       const el = document.getElementById(`calc_${pid}`);
       if (el) {
-        el.textContent = totalInners > 0
-          ? `Selected: ${totalInners} Inner(s) × 20 = ${totalInners * 20} Total Boxes`
-          : `Enter Inner Qty (1 Inner = 20 Boxes)`;
+        el.textContent = totalCartons > 0
+          ? `Selected: ${totalCartons} Carton(s) × 20 = ${totalCartons * 20} Total Boxes`
+          : `Enter Carton Qty (1 Carton = 20 Boxes)`;
       }
     }
 
     function renderProducts() {
       const newBoxOnly = document.getElementById('newOnlyBoxFilter').checked;
       const boxProducts = PRODUCTS.filter(p => (p.range_type || 'Box Range') === 'Box Range' && (!newBoxOnly || p.is_new_arrival));
-      const boxContainer = document.getElementById('boxProductList');
-      boxContainer.innerHTML = boxProducts.length
+      document.getElementById('boxProductList').innerHTML = boxProducts.length
         ? boxProducts.map(p => buildProductCardHtml(p, true)).join('')
         : '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No active products in Box Range.</p>';
 
       const newLooseOnly = document.getElementById('newOnlyLooseFilter').checked;
       const looseProducts = PRODUCTS.filter(p => p.range_type === 'Loose Gloves' && (!newLooseOnly || p.is_new_arrival));
-      const looseContainer = document.getElementById('looseProductList');
-      looseContainer.innerHTML = looseProducts.length
+      document.getElementById('looseProductList').innerHTML = looseProducts.length
         ? looseProducts.map(p => buildProductCardHtml(p, false)).join('')
         : '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No active products in Loose Gloves.</p>';
     }
@@ -811,21 +961,14 @@
         if (rawQty > 0) {
           added = true;
           const actualBoxes = isBoxRange ? rawQty * 20 : rawQty;
-          const unitLabel = isBoxRange ? `${rawQty} Inner (${actualBoxes} Boxes)` : `${rawQty} Loose`;
           const existing = CART.find(item => item.pid === pid && item.size === sz && item.isBoxRange === isBoxRange);
           if (existing) {
             existing.rawQty += rawQty;
             existing.qty += actualBoxes;
           } else {
             CART.push({
-              pid,
-              name: prod.name,
-              size: sz,
-              rawQty,
-              qty: actualBoxes,
-              isBoxRange,
-              price: info.rate,
-              hasCustomRate: info.hasCustomRate
+              pid, name: prod.name, size: sz, rawQty, qty: actualBoxes,
+              isBoxRange, price: info.rate, hasCustomRate: info.hasCustomRate
             });
           }
           input.value = '';
@@ -853,7 +996,7 @@
       box.innerHTML = CART.map((item, idx) => {
         const lineTotal = item.price * item.qty;
         total += lineTotal;
-        const qtyLabel = item.isBoxRange ? `${item.rawQty} Inner = ${item.qty} Boxes` : `${item.qty} Loose`;
+        const qtyLabel = item.isBoxRange ? `${item.rawQty} Carton = ${item.qty} Boxes` : `${item.qty} Loose`;
         const priceLabel = item.hasCustomRate ? `₹${item.price}` : `MRP ₹${item.price}`;
         return `
           <div class="item-card" style="display:flex; justify-content:space-between; align-items:center;">
@@ -873,7 +1016,7 @@
       let total = 0;
       const lines = CART.map(item => {
         total += item.price * item.qty;
-        const detail = item.isBoxRange ? `${item.rawQty} Inner (${item.qty} Boxes)` : `${item.qty} Loose`;
+        const detail = item.isBoxRange ? `${item.rawQty} Carton (${item.qty} Boxes)` : `${item.qty} Loose`;
         return `${item.name} [${item.size}: ${detail}]`;
       });
       const orderId = 'GM-' + Math.floor(100000 + Math.random() * 900000);
@@ -905,7 +1048,7 @@
       box.innerHTML = list.map(inv => `
         <div class="item-card">
           <div style="display:flex; justify-content:space-between;">
-            <strong style="color:#1B3686; font-size:14px;">Invoice #${inv.invoice_no}</strong>
+            <strong style="color:#1B3686; font-size:14px;">${inv.invoice_no ? 'Invoice #' + inv.invoice_no : 'Transport / Dispatch Document'}</strong>
             <span class="${inv.payment_status === 'Paid' ? 'btn-green' : 'btn-amber'}" style="font-size:10px; font-weight:800; padding:2px 8px; border-radius:99px;">${inv.payment_status || 'Unpaid'}</span>
           </div>
           <p style="font-size:12px; color:#475569; margin:6px 0;">Amount: <b>₹${inv.amount || 0}</b> (${inv.credit_days === 'Advance' ? 'Advance' : (inv.credit_days || 15) + ' Days'}) • Transport: <b>${inv.transporter || 'N/A'}</b> • LR: <b>${inv.lr_no || 'N/A'}</b></p>
@@ -955,6 +1098,9 @@
         const routeNote = partnerObj
           ? `<div style="background:#ecfdf5; color:#065f46; font-size:11px; padding:5px 8px; border-radius:8px; margin-top:6px;">Assigned Area ${partnerObj.category}: <b>${partnerObj.company_name}</b> (${partnerObj.mobile})</div>`
           : '';
+        const remarkNote = (custObj && custObj.dispatch_remark)
+          ? `<div style="background:#fffbeb; color:#92400e; font-size:11px; padding:5px 8px; border-radius:8px; margin-top:6px;"><b>Dispatch Note:</b> ${custObj.dispatch_remark}</div>`
+          : '';
         return `
         <div class="item-card">
           <div style="display:flex; justify-content:space-between;">
@@ -963,6 +1109,7 @@
           </div>
           <p style="font-size:12px; color:#334155; margin:6px 0;">${o.items_summary}</p>
           ${routeNote}
+          ${remarkNote}
           <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; padding-top:6px; margin-top:6px; border-top:1px solid #f1f5f9;">
             <strong style="color:#1B3686;">Total: ₹${o.total_amount}</strong>
             <span style="background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:99px; font-weight:700;">${o.status}</span>
@@ -970,14 +1117,14 @@
         </div>`;
       }).join('') : '<p style="font-size:12px; color:#94a3b8;">No orders yet.</p>';
 
-      // Render Admin Products List with Active/Inactive Toggle
+      // Render Admin Products List with Edit + Active/Inactive + Delete
       const admProdBox = document.getElementById('adminProductsList');
       admProdBox.innerHTML = PRODUCTS.length ? PRODUCTS.map(p => {
         const isActive = (p.status || 'Active') === 'Active';
         return `
-        <div class="item-card" style="display:flex; justify-content:space-between; align-items:center; gap:10px; opacity:${isActive ? '1' : '0.65'};">
+        <div class="item-card" style="display:flex; justify-content:space-between; align-items:center; gap:10px; opacity:${isActive ? '1' : '0.68'};">
           <div style="display:flex; gap:10px; align-items:center;">
-            <img src="${p.image_url || 'https://placehold.co/80x80/EEF3FF/1B3686?text=GM'}" style="width:52px; height:52px; border-radius:10px; object-fit:cover;" />
+            <img src="${p.image_url || 'https://placehold.co/80x80/EEF3FF/1B3686?text=GM'}" onclick="openZoomGallery('${p.product_id}', 0)" style="width:54px; height:54px; border-radius:10px; object-fit:cover; cursor:zoom-in;" />
             <div>
               <strong style="font-size:13px;">${p.name}</strong>
               <div style="font-size:11px; color:#64748b;">${p.range_type || 'Box Range'} • ${p.category} • MRP: ₹${p.retailer_price}</div>
@@ -985,6 +1132,7 @@
             </div>
           </div>
           <div style="display:flex; flex-direction:column; gap:4px;">
+            <button type="button" onclick="openEditProductModal('${p.product_id}')" class="btn-sm">Edit</button>
             <button type="button" onclick="toggleProductStatus('${p.product_id}', '${isActive ? 'Inactive' : 'Active'}')" class="btn-sm btn-tint">${isActive ? 'Set Inactive' : 'Set Active'}</button>
             <button type="button" onclick="adminDeleteProduct('${p.product_id}')" class="btn-sm btn-red">Delete</button>
           </div>
@@ -998,13 +1146,13 @@
       autoFillCustomerTransport();
       renderCustomerCustomRates();
 
-      const partners = ADMIN_CUSTOMERS.filter(c => c.category === 'Distributor' || c.category === 'Dealer');
+      const partners = ADMIN_CUSTOMERS.filter(c => ['Distributor', 'Stockist', 'Dealer'].includes(c.category));
       const partnerOpts = `<option value="">-- Direct / Unassigned --</option>` + partners.map(p => `<option value="${p.customer_id}">${p.company_name} (${p.category} • ${p.city || p.state})</option>`).join('');
       document.getElementById('custAssignedPartner').innerHTML = partnerOpts;
 
       const partnerOnlyOpts = partners.length
         ? partners.map(p => `<option value="${p.customer_id}">${p.company_name} (${p.category} • ${p.city || p.state})</option>`).join('')
-        : `<option value="">No Distributors/Dealers added yet</option>`;
+        : `<option value="">No Distributors/Stockists/Dealers added yet</option>`;
       document.getElementById('handoverFromPartner').innerHTML = partnerOnlyOpts;
       document.getElementById('handoverToPartner').innerHTML = partnerOnlyOpts;
       renderPartnerRetailerList();
@@ -1022,10 +1170,14 @@
 
         return `
         <div class="item-card" style="padding:12px 14px; margin-bottom:8px;">
-          <div>
-            <strong style="font-size:13px;">${c.company_name}</strong>
-            <div style="font-size:11px; color:#64748b;">${c.mobile} • <b>${c.category}</b> • ${c.city ? c.city + ', ' : ''}${c.state}</div>
-            <div style="font-size:11px; color:#475569; margin-top:2px;">Transport: <b>${c.transport_name || 'N/A'}</b></div>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+            <div>
+              <strong style="font-size:13px;">${c.company_name}</strong>
+              <div style="font-size:11px; color:#64748b;">${c.mobile} • <b>${c.category}</b> • ${c.city ? c.city + ', ' : ''}${c.state}</div>
+              <div style="font-size:11px; color:#475569; margin-top:2px;">Transport: <b>${c.transport_name || 'N/A'}</b></div>
+              ${c.dispatch_remark ? `<div style="font-size:11px; color:#92400e; background:#fffbeb; padding:3px 7px; border-radius:6px; margin-top:4px;"><b>Note:</b> ${c.dispatch_remark}</div>` : ''}
+            </div>
+            <button type="button" onclick="openEditCustomerModal('${c.customer_id}')" class="btn-sm btn-tint">Edit</button>
           </div>
           ${assignDropdown}
         </div>`;
@@ -1043,7 +1195,11 @@
       const btn = document.getElementById('addProdBtn');
       btn.disabled = true; btn.textContent = 'Publishing Product...';
       try {
-        const image_url = await uploadFileRest('prodImgFile', 'PROD');
+        const [image_url, image_back_url, image_extra_url] = await Promise.all([
+          uploadFileRest('prodImgFile', 'PROD_F'),
+          uploadFileRest('prodBackImgFile', 'PROD_B'),
+          uploadFileRest('prodExtraImgFile', 'PROD_E')
+        ]);
         await sbInsert('products', {
           product_id: 'GM-' + Math.floor(100 + Math.random() * 900),
           name,
@@ -1054,19 +1210,94 @@
           specs: document.getElementById('prodSpecs').value.trim(),
           retailer_price: mrp,
           distributor_price: mrp,
-          image_url,
+          image_url, image_back_url, image_extra_url,
           video_url: document.getElementById('prodVideoUrl').value.trim()
         });
         alert('Product published!');
-        document.getElementById('prodName').value = '';
-        document.getElementById('prodCat').value = '';
-        document.getElementById('prodSpecs').value = '';
-        document.getElementById('prodMrp').value = '';
-        document.getElementById('prodImgFile').value = '';
-        document.getElementById('prodVideoUrl').value = '';
+        ['prodName', 'prodCat', 'prodSpecs', 'prodMrp', 'prodImgFile', 'prodBackImgFile', 'prodExtraImgFile', 'prodVideoUrl'].forEach(id => document.getElementById(id).value = '');
         loadAdminData();
       } catch (err) { alert('Error: ' + err.message); }
       btn.disabled = false; btn.textContent = 'Publish Product';
+    }
+
+    /* EDIT PRODUCT MODAL */
+    function openEditProductModal(pid) {
+      const p = PRODUCTS.find(x => x.product_id === pid);
+      if (!p) return;
+      document.getElementById('editProdId').value = p.product_id;
+      document.getElementById('editProdName').value = p.name;
+      document.getElementById('editProdRangeType').value = p.range_type || 'Box Range';
+      document.getElementById('editProdCat').value = p.category;
+      document.getElementById('editProdStatus').value = p.status || 'Active';
+      document.getElementById('editProdNew').value = String(!!p.is_new_arrival);
+      document.getElementById('editProdSpecs').value = p.specs || '';
+      document.getElementById('editProdMrp').value = p.retailer_price || 0;
+      document.getElementById('editProdVideo').value = p.video_url || '';
+      ['editProdImgFile', 'editProdBackFile', 'editProdExtraFile'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('editProductModal').classList.remove('hidden');
+    }
+
+    async function saveEditedProduct() {
+      const pid = document.getElementById('editProdId').value;
+      const btn = document.getElementById('saveEditProdBtn');
+      btn.disabled = true; btn.textContent = 'Saving...';
+      try {
+        const mrp = Number(document.getElementById('editProdMrp').value) || 0;
+        const updates = {
+          name: document.getElementById('editProdName').value.trim(),
+          range_type: document.getElementById('editProdRangeType').value,
+          category: document.getElementById('editProdCat').value.trim(),
+          status: document.getElementById('editProdStatus').value,
+          is_new_arrival: document.getElementById('editProdNew').value === 'true',
+          specs: document.getElementById('editProdSpecs').value.trim(),
+          retailer_price: mrp,
+          distributor_price: mrp,
+          video_url: document.getElementById('editProdVideo').value.trim()
+        };
+        const [fUrl, bUrl, eUrl] = await Promise.all([
+          uploadFileRest('editProdImgFile', 'PROD_F'),
+          uploadFileRest('editProdBackFile', 'PROD_B'),
+          uploadFileRest('editProdExtraFile', 'PROD_E')
+        ]);
+        if (fUrl) updates.image_url = fUrl;
+        if (bUrl) updates.image_back_url = bUrl;
+        if (eUrl) updates.image_extra_url = eUrl;
+
+        await sbPatch('products', `product_id=eq.${encodeURIComponent(pid)}`, updates);
+        document.getElementById('editProductModal').classList.add('hidden');
+        alert('Product updated!');
+        loadAdminData();
+      } catch (err) { alert('Error: ' + err.message); }
+      btn.disabled = false; btn.textContent = 'Save Changes';
+    }
+
+    /* EDIT CUSTOMER MODAL */
+    function openEditCustomerModal(cid) {
+      const c = ADMIN_CUSTOMERS.find(x => x.customer_id === cid);
+      if (!c) return;
+      document.getElementById('editCustId').value = c.customer_id;
+      document.getElementById('editCustName').value = c.company_name;
+      document.getElementById('editCustCategory').value = c.category;
+      document.getElementById('editCustCity').value = c.city || '';
+      document.getElementById('editCustTransport').value = c.transport_name || '';
+      document.getElementById('editCustRemark').value = c.dispatch_remark || '';
+      document.getElementById('editCustomerModal').classList.remove('hidden');
+    }
+
+    async function saveEditedCustomer() {
+      const cid = document.getElementById('editCustId').value;
+      try {
+        await sbPatch('customers', `customer_id=eq.${encodeURIComponent(cid)}`, {
+          company_name: document.getElementById('editCustName').value.trim(),
+          category: document.getElementById('editCustCategory').value,
+          city: document.getElementById('editCustCity').value.trim(),
+          transport_name: document.getElementById('editCustTransport').value.trim(),
+          dispatch_remark: document.getElementById('editCustRemark').value.trim()
+        });
+        document.getElementById('editCustomerModal').classList.add('hidden');
+        alert('Customer updated!');
+        loadAdminData();
+      } catch (err) { alert('Error: ' + err.message); }
     }
 
     async function toggleProductStatus(pid, newStatus) {
@@ -1124,9 +1355,9 @@
     function renderPartnerRetailerList() {
       const partnerId = document.getElementById('handoverFromPartner').value;
       const box = document.getElementById('partnerRetailerPreview');
-      if (!partnerId) { box.innerHTML = 'No distributor selected.'; return; }
+      if (!partnerId) { box.innerHTML = 'No partner selected.'; return; }
       const retailers = ADMIN_CUSTOMERS.filter(c => c.category === 'Retailer' && c.assigned_partner_id === partnerId);
-      if (!retailers.length) { box.innerHTML = '0 retailers currently mapped to this Distributor/Dealer.'; return; }
+      if (!retailers.length) { box.innerHTML = '0 retailers currently mapped to this partner.'; return; }
       box.innerHTML = `<b>${retailers.length} Mapped Retailer(s):</b><br/>` + retailers.map((r, i) =>
         `${i + 1}. ${r.company_name} — ${r.city || r.state} (Mob: ${r.mobile})`
       ).join('<br/>');
@@ -1146,12 +1377,12 @@
     async function bulkTransferRetailers() {
       const fromId = document.getElementById('handoverFromPartner').value;
       const toId = document.getElementById('handoverToPartner').value;
-      if (!fromId || !toId || fromId === toId) { alert('Select two different Distributors/Dealers.'); return; }
+      if (!fromId || !toId || fromId === toId) { alert('Select two different partners.'); return; }
       const retailers = ADMIN_CUSTOMERS.filter(c => c.category === 'Retailer' && c.assigned_partner_id === fromId);
-      if (!retailers.length) { alert('No retailers under the selected distributor.'); return; }
+      if (!retailers.length) { alert('No retailers under the selected partner.'); return; }
       try {
         await sbPatch('customers', `assigned_partner_id=eq.${encodeURIComponent(fromId)}`, { assigned_partner_id: toId });
-        alert(`Transferred ${retailers.length} retailer(s) to new Distributor!`);
+        alert(`Transferred ${retailers.length} retailer(s)!`);
         loadAdminData();
       } catch (err) { alert('Transfer error: ' + err.message); }
     }
@@ -1190,9 +1421,9 @@
               <strong style="font-size:13px; color:#1B3686;">${cust.company_name}</strong>
               ${badge}
             </div>
-            <p style="font-size:12px; color:#475569; margin:6px 0;">Invoice <b>#${inv.invoice_no}</b> • Terms: <b>${term === 'Advance' ? 'Advance' : term + ' Days'}</b> • Amount: <b>₹${inv.amount || 0}</b></p>
+            <p style="font-size:12px; color:#475569; margin:6px 0;">Invoice <b>#${inv.invoice_no || 'N/A'}</b> • Terms: <b>${term === 'Advance' ? 'Advance' : term + ' Days'}</b> • Amount: <b>₹${inv.amount || 0}</b></p>
             <div style="display:flex; gap:8px; margin-top:8px;">
-              <button type="button" onclick="sendPaymentReminder('${inv.invoice_no}', '${inv.amount || 0}', '${term}')" class="btn-sm btn-amber" style="flex:1;">Send Reminder</button>
+              <button type="button" onclick="sendPaymentReminder('${inv.invoice_no || ''}', '${inv.amount || 0}', '${term}')" class="btn-sm btn-amber" style="flex:1;">Send Reminder</button>
               <button type="button" onclick="markInvoicePaid('${inv.id}')" class="btn-sm btn-green" style="flex:1;">Mark Paid</button>
             </div>
           </div>`;
@@ -1202,8 +1433,8 @@
     async function sendPaymentReminder(invNo, amt, term) {
       try {
         await sbInsert('alerts', {
-          title: 'Payment Reminder: Invoice #' + invNo,
-          message: `Friendly reminder: ₹${amt} for Invoice #${invNo} (${term === 'Advance' ? 'Advance' : term + ' Days'} terms) is pending.`,
+          title: 'Payment Reminder: Invoice #' + (invNo || 'Pending'),
+          message: `Friendly reminder: ₹${amt} (${term === 'Advance' ? 'Advance' : term + ' Days'} terms) is pending.`,
           target_state: 'All', target_category: 'All', offer_code: 'DUE'
         });
         alert('Payment reminder alert published!');
@@ -1230,31 +1461,28 @@
       return `${SUPABASE_URL}/storage/v1/object/public/glovemeds-docs/${path}`;
     }
 
+    /* NOTHING COMPULSORY IN INVOICE/LR UPLOAD */
     async function adminUploadDoc() {
-      const invNo = document.getElementById('docInvoiceNo').value.trim();
-      const amount = Number(document.getElementById('docAmount').value) || 0;
-      const creditDays = document.getElementById('docCreditDays').value;
-      if (!invNo) { alert('Enter Invoice Number.'); return; }
+      const customer_id = document.getElementById('docCustomerId').value;
+      if (!customer_id) { alert('Please select a customer.'); return; }
       const btn = document.getElementById('uploadDocBtn');
       btn.disabled = true; btn.textContent = 'Uploading...';
       try {
         const invUrl = await uploadFileRest('docInvoiceFile', 'INV');
         const lrUrl = await uploadFileRest('docLrFile', 'LR');
         await sbInsert('invoices_lr', {
-          customer_id: document.getElementById('docCustomerId').value,
-          invoice_no: invNo, amount, credit_days: creditDays, payment_status: 'Unpaid',
+          customer_id,
+          invoice_no: document.getElementById('docInvoiceNo').value.trim(),
+          amount: Number(document.getElementById('docAmount').value) || 0,
+          credit_days: document.getElementById('docCreditDays').value,
+          payment_status: 'Unpaid',
           invoice_pdf_url: invUrl,
           transporter: document.getElementById('docTransporter').value.trim(),
           lr_no: document.getElementById('docLrNo').value.trim(),
           lr_copy_url: lrUrl
         });
-        alert('Invoice & Transport Docket uploaded!');
-        document.getElementById('docInvoiceNo').value = '';
-        document.getElementById('docAmount').value = '';
-        document.getElementById('docInvoiceFile').value = '';
-        document.getElementById('docTransporter').value = '';
-        document.getElementById('docLrNo').value = '';
-        document.getElementById('docLrFile').value = '';
+        alert('Document uploaded to customer vault!');
+        ['docInvoiceNo', 'docAmount', 'docInvoiceFile', 'docTransporter', 'docLrNo', 'docLrFile'].forEach(id => document.getElementById(id).value = '');
         loadAdminData();
       } catch (err) { alert('Upload error: ' + err.message); }
       btn.disabled = false; btn.textContent = 'Upload to Customer Vault';
@@ -1274,14 +1502,11 @@
           category: document.getElementById('custCategory').value,
           state, city,
           transport_name: document.getElementById('custTransport').value.trim(),
+          dispatch_remark: document.getElementById('custRemark').value.trim(),
           assigned_partner_id: document.getElementById('custAssignedPartner').value
         });
         alert('Customer account created!');
-        document.getElementById('custName').value = '';
-        document.getElementById('custMobile').value = '';
-        document.getElementById('custPin').value = '';
-        document.getElementById('custCity').value = '';
-        document.getElementById('custTransport').value = '';
+        ['custName', 'custMobile', 'custPin', 'custCity', 'custTransport', 'custRemark'].forEach(id => document.getElementById(id).value = '');
         loadAdminData();
       } catch (err) { alert('Error: ' + err.message); }
     }
@@ -1298,9 +1523,7 @@
           offer_code: document.getElementById('alertCode').value.trim()
         });
         alert('Notification published!');
-        document.getElementById('alertTitle').value = '';
-        document.getElementById('alertMsg').value = '';
-        document.getElementById('alertCode').value = '';
+        ['alertTitle', 'alertMsg', 'alertCode'].forEach(id => document.getElementById(id).value = '');
       } catch (err) { alert('Error: ' + err.message); }
     }
 
