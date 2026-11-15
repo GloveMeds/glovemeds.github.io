@@ -1,0 +1,1983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#1B3686" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="GloveMeds" />
+  <title>GloveMeds™ — Safety Fits like a Glove | B2B Medical Ordering PWA</title>
+
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              DEFAULT: '#1B3686',
+              dark: '#12255E',
+              light: '#294BB0',
+              tint: '#EEF3FF',
+              soft: '#F5F8FF'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'Inter', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- QRCode.js for real scannable QR code generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    /* Custom Mobile PWA Scrollbar & Print Rules */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      background-color: #E2E8F0;
+      font-family: 'Inter', sans-serif;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-in {
+      animation: fadeSlideUp 0.22s ease-out forwards;
+    }
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printableDocumentArea, #printableDocumentArea * {
+        visibility: visible;
+      }
+      #printableDocumentArea {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: white !important;
+        padding: 20px !important;
+        box-shadow: none !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex justify-center items-start md:py-4 text-slate-800">
+
+  <!-- Main Mobile App Shell (Centered Mobile Viewport on Desktop, Full Width on Mobile) -->
+  <div id="appShell" class="w-full max-w-md bg-slate-50 min-h-screen md:min-h-[860px] md:max-h-[900px] md:rounded-[32px] md:shadow-2xl md:border md:border-slate-300 flex flex-col relative overflow-hidden">
+
+    <!-- Top Role Switcher & Demo Isolation Bar -->
+    <div class="bg-slate-900 text-white px-3 py-2 text-xs flex flex-col gap-1.5 z-30 border-b border-slate-800">
+      <div class="flex items-center justify-between gap-2">
+        <span class="font-semibold text-[11px] uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Mode Switcher
+        </span>
+        <div class="inline-flex rounded-xl bg-slate-800 p-0.5 border border-slate-700">
+          <button id="btnRoleCustomer" onclick="switchRole('customer')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all bg-[#1B3686] text-white shadow">
+            Customer App
+          </button>
+          <button id="btnRoleAdmin" onclick="switchRole('admin')" class="px-3 py-1 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white">
+            Admin / Owner
+          </button>
+        </div>
+      </div>
+
+      <!-- Customer Account Switcher (Visible in Customer Mode to prove Data Isolation) -->
+      <div id="customerAccountBar" class="flex items-center justify-between gap-2 bg-slate-800/90 px-2.5 py-1.5 rounded-xl border border-slate-700/80">
+        <label for="customerSelect" class="text-[11px] text-slate-300 whitespace-nowrap font-medium">Logged in as:</label>
+        <select id="customerSelect" onchange="switchCustomerAccount(this.value)" class="bg-slate-900 text-white text-[11px] font-semibold rounded-lg px-2 py-1 border border-slate-600 focus:outline-none focus:border-blue-400 w-full truncate">
+          <!-- Populated dynamically -->
+        </select>
+      </div>
+    </div>
+
+    <!-- Sticky App Header with Custom GloveMeds TM Logo -->
+    <header class="bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between sticky top-0 z-20 shadow-sm">
+      <!-- GloveMeds TM Logo SVG matching uploaded brand identity -->
+      <div class="flex items-center cursor-pointer" onclick="navigateDefault()">
+        <svg width="166" height="46" viewBox="0 0 340 94" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="GloveMeds Safety Fits like a Glove">
+          <text x="2" y="54" fill="#1B3686" font-family="'Plus Jakarta Sans', 'Inter', Arial, sans-serif" font-weight="800" font-size="52" letter-spacing="-2.2">GloveMeds</text>
+          <text x="275" y="23" fill="#1B3686" font-family="'Inter', Arial, sans-serif" font-weight="800" font-size="14">TM</text>
+          <rect x="26" y="63" width="222" height="23" rx="3" fill="#1B3686" />
+          <text x="137" y="79" fill="#FFFFFF" font-family="'Inter', Arial, sans-serif" font-weight="600" font-size="14.5" text-anchor="middle" letter-spacing="0.2">Safety Fits like a Glove</text>
+        </svg>
+      </div>
+
+      <!-- Header Right Actions -->
+      <div class="flex items-center gap-2">
+        <!-- QR Onboarding & Bookmark Guide Button -->
+        <button onclick="openQrModal()" title="1-Time QR Code & Home Screen Bookmark Guide" class="p-2.5 rounded-xl bg-brand-tint text-[#1B3686] hover:bg-blue-100 transition active:scale-95 border border-blue-200/70">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h6v6H3V3zm12 0h6v6h-6V3zM3 15h6v6H3v-6zm12 0h2v2h-2v-2zm4 0h2v2h-2v-2zm-4 4h2v2h-2v-2zm4 0h2v2h-2v-2zm-2-2h2v2h-2v-2z" />
+          </svg>
+        </button>
+
+        <!-- Customer Notifications Bell (Hidden in Admin mode) -->
+        <button id="headerNotifBtn" onclick="switchCustomerTab('alerts')" title="State & Category Alerts" class="relative p-2.5 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition active:scale-95">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+          <span id="notifBadge" class="hidden absolute -top-1 -right-1 bg-rose-600 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow">0</span>
+        </button>
+
+        <!-- Admin Quick Reset Demo Data Button (Visible in Admin mode) -->
+        <button id="headerResetBtn" onclick="confirmResetDemo()" title="Reset Demo Data" class="hidden px-2.5 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-rose-50 hover:text-rose-600 text-xs font-semibold transition border border-slate-200">
+          Reset
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Scrollable Viewport -->
+    <main id="mainContent" class="flex-1 overflow-y-auto pb-24 px-4 pt-3 space-y-4">
+      <!-- Dynamic View Content Injected Here -->
+    </main>
+
+    <!-- Bottom Navigation Bar (Adapts automatically to Customer vs Admin Mode) -->
+    <nav id="bottomNav" class="bg-white border-t border-slate-200 px-2 py-1.5 flex items-center justify-around sticky bottom-0 z-20 shadow-[0_-4px_16px_rgba(15,23,42,0.06)]">
+      <!-- Navigation Items Injected Dynamically -->
+    </nav>
+
+    <!-- Floating Toast Notification Banner -->
+    <div id="toastContainer" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-sm pointer-events-none flex flex-col gap-2"></div>
+
+    <!-- ==================== MODALS & DRAWERS ==================== -->
+
+    <!-- 1. QR Code Onboarding & Bookmark Modal -->
+    <div id="qrModal" class="hidden fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="bg-white rounded-3xl w-full max-w-sm p-5 shadow-2xl border border-slate-200 animate-in max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-[#1B3686] bg-brand-tint px-2.5 py-0.5 rounded-full">100% Free • Zero WhatsApp</span>
+            <h3 class="text-lg font-extrabold text-slate-900 mt-1">1-Time QR & Bookmark Setup</h3>
+          </div>
+          <button onclick="closeModal('qrModal')" class="p-2 rounded-xl bg-slate-100 text-slate-500 hover:bg-slate-200">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <p class="text-xs text-slate-600 leading-relaxed mb-4">
+          Send this QR code once to any medical buyer or distributor. After scanning once and saving to their Home Screen, they can reorder anytime without scanning again!
+        </p>
+
+        <!-- QR Code Card -->
+        <div class="bg-gradient-to-b from-brand-tint to-white border-2 border-[#1B3686]/20 rounded-2xl p-4 flex flex-col items-center text-center shadow-inner mb-4">
+          <div id="qrcodeCanvas" class="bg-white p-3 rounded-2xl shadow-md border border-slate-100"></div>
+          <p class="text-xs font-extrabold text-[#1B3686] mt-3">GloveMeds™ Direct B2B Portal</p>
+          <p id="appUrlDisplay" class="text-[11px] text-slate-500 truncate max-w-full mt-0.5"></p>
+        </div>
+
+        <!-- 3-Step Visual Guide -->
+        <div class="space-y-2.5 mb-4">
+          <div class="flex items-start gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80">
+            <span class="w-6 h-6 rounded-full bg-[#1B3686] text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+            <div>
+              <p class="text-xs font-bold text-slate-800">Scan QR Once</p>
+              <p class="text-[11px] text-slate-500">Customer scans via phone camera or Google Lens on first visit.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80">
+            <span class="w-6 h-6 rounded-full bg-[#1B3686] text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+            <div>
+              <p class="text-xs font-bold text-slate-800">Tap "Add to Home Screen"</p>
+              <p class="text-[11px] text-slate-500">In Chrome (⋮) or Safari (Share ↑), save GloveMeds icon directly on mobile.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80">
+            <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+            <div>
+              <p class="text-xs font-bold text-slate-800">Reorder Anytime — Zero Salesmen</p>
+              <p class="text-[11px] text-slate-500">One tap opens the app for instant orders, invoices, transport LR & alerts.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="copyInviteLink()" class="w-full py-2.5 px-3 rounded-xl bg-[#1B3686] text-white text-xs font-bold hover:bg-brand-dark transition flex items-center justify-center gap-1.5 shadow">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Copy Invite Link
+          </button>
+          <button onclick="closeModal('qrModal')" class="w-full py-2.5 px-3 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold hover:bg-slate-200 transition">
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Product Specification & Video Preview Modal -->
+    <div id="productModal" class="hidden fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div id="productModalBody" class="bg-white rounded-t-3xl sm:rounded-3xl w-full max-w-md p-5 shadow-2xl border border-slate-200 animate-in max-h-[90vh] overflow-y-auto">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+
+    <!-- 3. Private Tax Invoice & Transport Docket / LR Document Viewer Modal -->
+    <div id="documentModal" class="hidden fixed inset-0 z-50 bg-slate-900/75 backdrop-blur-xs flex items-center justify-center p-3">
+      <div class="bg-white rounded-3xl w-full max-w-md shadow-2xl border border-slate-200 animate-in max-h-[92vh] flex flex-col overflow-hidden">
+        <div class="px-4 py-3 bg-slate-100 border-b border-slate-200 flex items-center justify-between no-print">
+          <span class="text-xs font-extrabold text-[#1B3686] uppercase tracking-wider flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            Private Customer Document Vault
+          </span>
+          <button onclick="closeModal('documentModal')" class="p-1.5 rounded-xl bg-white text-slate-600 hover:bg-slate-200 border border-slate-200">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <div id="printableDocumentArea" class="p-5 overflow-y-auto space-y-4 flex-1 text-xs">
+          <!-- Populated dynamically -->
+        </div>
+
+        <div class="p-3.5 bg-slate-50 border-t border-slate-200 flex gap-2 no-print">
+          <button onclick="window.print()" class="flex-1 py-2.5 px-4 rounded-xl bg-[#1B3686] text-white font-bold text-xs hover:bg-brand-dark transition flex items-center justify-center gap-2 shadow">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+            Download / Print PDF
+          </button>
+          <button onclick="closeModal('documentModal')" class="py-2.5 px-4 rounded-xl bg-slate-200 text-slate-700 font-bold text-xs hover:bg-slate-300 transition">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Admin Upload Invoice & Transport Docket Modal -->
+    <div id="adminUploadModal" class="hidden fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4">
+      <div id="adminUploadModalBody" class="bg-white rounded-3xl w-full max-w-md p-5 shadow-2xl border border-slate-200 animate-in max-h-[90vh] overflow-y-auto">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Application Logic & State Management -->
+  <script>
+    /*************************************************************************
+     * 1. INITIAL SEED DATA & LOCALSTORAGE PERSISTENCE
+     *************************************************************************/
+    const STORAGE_KEY = 'glovemeds_pwa_v1';
+
+    const DEFAULT_STATE = {
+      role: 'customer', // 'customer' | 'admin'
+      activeCustomerId: 'CUST-MH-01',
+      customerTab: 'catalog', // 'catalog' | 'cart' | 'orders' | 'alerts'
+      adminTab: 'dashboard', // 'dashboard' | 'orders' | 'products' | 'broadcast'
+      catalogFilter: 'All',
+      searchQuery: '',
+      cart: [
+        { productId: 'PROD-01', cartons: 5 }
+      ],
+      customers: [
+        {
+          id: 'CUST-MH-01',
+          name: 'Apollo MedPlus Distributors',
+          contactPerson: 'Rajesh Sharma',
+          state: 'Maharashtra',
+          city: 'Mumbai',
+          category: 'Wholesaler',
+          gstin: '27AABCA8921M1Z5',
+          address: 'Plot 42, MIDC Andheri East, Mumbai, Maharashtra 400093',
+          phone: '+91 98201 44210'
+        },
+        {
+          id: 'CUST-GJ-02',
+          name: 'CarePlus Multispeciality Hospital',
+          contactPerson: 'Dr. Neha Patel',
+          state: 'Gujarat',
+          city: 'Ahmedabad',
+          category: 'Hospital',
+          gstin: '24AAACC4129K1Z2',
+          address: 'SG Highway, Bodakdev, Ahmedabad, Gujarat 380054',
+          phone: '+91 98250 77190'
+        },
+        {
+          id: 'CUST-DL-03',
+          name: 'Metro Surgical & Pharmacy',
+          contactPerson: 'Vikram Malhotra',
+          state: 'Delhi',
+          city: 'New Delhi',
+          category: 'Pharmacy',
+          gstin: '07AABCM6632P1Z8',
+          address: 'Bhagirath Palace, Chandni Chowk, New Delhi 110006',
+          phone: '+91 98112 33901'
+        }
+      ],
+      products: [
+        {
+          id: 'PROD-01',
+          sku: 'GM-NIT-BLU-100',
+          name: 'GloveMeds ProShield Nitrile Examination Gloves',
+          category: 'Nitrile Examination',
+          isNewArrival: true,
+          pricePerCarton: 3850,
+          packSize: '10 Boxes × 100 Gloves (1,000 pcs/Carton)',
+          moq: 2,
+          offerBadge: '10% Off on 10+ Cartons',
+          colorHex: '#2563EB',
+          accentHex: '#DBEAFE',
+          videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+          videoLabel: 'Nitrile Puncture & Chemical Resistance Test Demo',
+          specs: {
+            material: '100% Synthetic Nitrile Butadiene Rubber (Latex-Free)',
+            aql: 'AQL 1.5 Medical Grade',
+            thickness: '4.5 mil (Palm) / 5.2 mil (Finger)',
+            powderStatus: '100% Powder-Free (Chlorinated)',
+            length: '240 mm Beaded Cuff',
+            sizes: 'S, M, L, XL',
+            certifications: 'EN 455-1/2/3/4, ASTM D6319, ISO 13485, CDSCO'
+          }
+        },
+        {
+          id: 'PROD-02',
+          sku: 'GM-SURG-STR-50',
+          name: 'GloveMeds SteriTouch Latex Surgical Gloves',
+          category: 'Sterile & Powder-Free',
+          isNewArrival: true,
+          pricePerCarton: 4600,
+          packSize: '8 Boxes × 50 Pairs (400 Pairs/Carton)',
+          moq: 2,
+          offerBadge: 'New Gamma-Sterilized Batch',
+          colorHex: '#0D9488',
+          accentHex: '#CCFBF1',
+          videoUrl: 'https://www.youtube.com/embed/aqz-KE-bpKQ',
+          videoLabel: 'Micro-Textured Grip & Sterile Peel-Pouch Demo',
+          specs: {
+            material: 'Low-Protein Natural Rubber Latex (<50 µg/g)',
+            aql: 'AQL 0.65 Surgical Standard',
+            thickness: '7.5 mil Anatomical Curved Fingers',
+            powderStatus: 'Powder-Free Polymer Coated',
+            length: '290 mm Extended Surgical Cuff',
+            sizes: '6.0, 6.5, 7.0, 7.5, 8.0, 8.5',
+            certifications: 'EN 455, ASTM D3577, CE Class IIa, ISO 11137'
+          }
+        },
+        {
+          id: 'PROD-03',
+          sku: 'GM-LTX-EXM-100',
+          name: 'GloveMeds FlexiCare Latex Examination Gloves',
+          category: 'Latex Surgical',
+          isNewArrival: false,
+          pricePerCarton: 2950,
+          packSize: '10 Boxes × 100 Gloves (1,000 pcs/Carton)',
+          moq: 3,
+          offerBadge: 'Best Seller for Clinics',
+          colorHex: '#1B3686',
+          accentHex: '#E0E7FF',
+          videoUrl: 'https://www.youtube.com/embed/LXb3EKWsInQ',
+          videoLabel: 'High Elasticity & Tear Strength Showcase',
+          specs: {
+            material: 'High-Grade Natural Rubber Latex',
+            aql: 'AQL 1.5 Examination Grade',
+            thickness: '5.0 mil Textured Fingertips',
+            powderStatus: 'Powder-Free Online Chlorinated',
+            length: '240 mm Ambidextrous',
+            sizes: 'S, M, L',
+            certifications: 'EN 455, ASTM D3578, ISO 9001 & 13485'
+          }
+        },
+        {
+          id: 'PROD-04',
+          sku: 'GM-NIT-BLK-100',
+          name: 'GloveMeds ChemoGuard Heavy-Duty Nitrile (6 mil)',
+          category: 'Nitrile Examination',
+          isNewArrival: true,
+          pricePerCarton: 4450,
+          packSize: '10 Boxes × 100 Gloves (1,000 pcs/Carton)',
+          moq: 2,
+          offerBadge: 'Chemo & Lab Certified',
+          colorHex: '#334155',
+          accentHex: '#E2E8F0',
+          videoUrl: 'https://www.youtube.com/embed/tgbNymZ7vqY',
+          videoLabel: 'USP 800 Chemotherapy & Lab Handling Video',
+          specs: {
+            material: 'Accelerator-Free Heavy Nitrile',
+            aql: 'AQL 1.0 High-Barrier Grade',
+            thickness: '6.0 mil Diamond-Textured Grip',
+            powderStatus: '100% Powder-Free & Silicone-Free',
+            length: '250 mm Rolled Cuff',
+            sizes: 'M, L, XL',
+            certifications: 'ASTM D6978 (Chemo), EN ISO 374-5, EN 455'
+          }
+        }
+      ],
+      orders: [
+        {
+          id: 'GM-ORD-2026-104',
+          customerId: 'CUST-MH-01',
+          date: '2026-11-12',
+          status: 'Dispatched',
+          transportPref: 'VRL Logistics (Express Surface)',
+          items: [
+            { productId: 'PROD-01', name: 'GloveMeds ProShield Nitrile Examination Gloves', cartons: 12, pricePerCarton: 3850 },
+            { productId: 'PROD-03', name: 'GloveMeds FlexiCare Latex Examination Gloves', cartons: 5, pricePerCarton: 2950 }
+          ],
+          subtotal: 60950,
+          discount: 4620,
+          gst: 6760,
+          totalAmount: 63090,
+          invoice: {
+            invoiceNo: 'GM/MH/26-27/0891',
+            invoiceDate: '2026-11-12',
+            irnHash: '8f94b2c1a90e771d...e412',
+            fileName: 'Tax_Invoice_GM_0891_ApolloMedPlus.pdf'
+          },
+          docket: {
+            lrNumber: 'VRL-MUM-7749201',
+            transporterName: 'VRL Logistics Ltd.',
+            dispatchDate: '2026-11-13',
+            packages: '17 Master Cartons (214 kg)',
+            vehicleNo: 'MH-04-JK-8821',
+            fileName: 'Transport_Docket_LR_7749201.pdf'
+          }
+        },
+        {
+          id: 'GM-ORD-2026-105',
+          customerId: 'CUST-GJ-02',
+          date: '2026-11-13',
+          status: 'Dispatched',
+          transportPref: 'TCI Express Air/Surface',
+          items: [
+            { productId: 'PROD-02', name: 'GloveMeds SteriTouch Latex Surgical Gloves', cartons: 10, pricePerCarton: 4600 }
+          ],
+          subtotal: 46000,
+          discount: 0,
+          gst: 5520,
+          totalAmount: 51520,
+          invoice: {
+            invoiceNo: 'GM/GJ/26-27/0894',
+            invoiceDate: '2026-11-13',
+            irnHash: '3a11d8c4f55b901e...992a',
+            fileName: 'Tax_Invoice_GM_0894_CarePlusHospital.pdf'
+          },
+          docket: {
+            lrNumber: 'TCI-AMD-339184',
+            transporterName: 'TCI Express Ltd.',
+            dispatchDate: '2026-11-14',
+            packages: '10 Master Cartons (132 kg)',
+            vehicleNo: 'GJ-01-HT-4410',
+            fileName: 'Docket_Copy_TCI_339184.pdf'
+          }
+        },
+        {
+          id: 'GM-ORD-2026-106',
+          customerId: 'CUST-DL-03',
+          date: '2026-11-15',
+          status: 'Pending',
+          transportPref: 'Safexpress Cargo',
+          items: [
+            { productId: 'PROD-04', name: 'GloveMeds ChemoGuard Heavy-Duty Nitrile (6 mil)', cartons: 4, pricePerCarton: 4450 }
+          ],
+          subtotal: 17800,
+          discount: 0,
+          gst: 2136,
+          totalAmount: 19936,
+          invoice: null,
+          docket: null
+        }
+      ],
+      notifications: [
+        {
+          id: 'NOTIF-01',
+          type: 'State Exhibition',
+          targetState: 'Maharashtra',
+          targetCategory: 'All',
+          title: 'Visit GloveMeds at Medicall Expo Mumbai — Hall 2, Stall B14',
+          message: 'Exclusive live testing of our new 6-mil ChemoGuard Nitrile & SteriTouch Surgical range at Bombay Exhibition Centre, Goregaon (Nov 22–24). Collect free sample kits!',
+          date: '2026-11-14',
+          readBy: []
+        },
+        {
+          id: 'NOTIF-02',
+          type: 'Special Offer',
+          targetState: 'Gujarat',
+          targetCategory: 'Hospital',
+          title: 'Gujarat Hospital Rate Contract: Flat 12% Off on Sterile Surgical Gloves',
+          message: 'Special NABH-compliant Hospital supply pricing valid across Ahmedabad, Surat & Vadodara for orders of 8+ cartons booked directly on GloveMeds app.',
+          date: '2026-11-14',
+          readBy: []
+        },
+        {
+          id: 'NOTIF-03',
+          type: 'New Arrival',
+          targetState: 'All',
+          targetCategory: 'All',
+          title: 'New Arrival: GloveMeds ChemoGuard Heavy-Duty Nitrile (6 mil)',
+          message: 'Now in ready stock! ASTM D6978 chemotherapy-rated accelerator-free nitrile gloves with diamond grip. Watch the lab test video inside the Catalogue.',
+          date: '2026-11-15',
+          readBy: []
+        },
+        {
+          id: 'NOTIF-04',
+          type: 'Special Offer',
+          targetState: 'Delhi',
+          targetCategory: 'Pharmacy',
+          title: 'Delhi NCR Pharmacy Winter Stock-Up Scheme',
+          message: 'Order 5 cartons of ProShield Nitrile Examination Gloves and get free doorstep cargo delivery across Delhi NCR.',
+          date: '2026-11-15',
+          readBy: []
+        }
+      ]
+    };
+
+    let state = loadState();
+
+    function loadState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          return JSON.parse(saved);
+        }
+      } catch (e) {
+        console.warn('Could not load saved state:', e);
+      }
+      return JSON.parse(JSON.stringify(DEFAULT_STATE));
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {
+        console.warn('Could not save state:', e);
+      }
+    }
+
+    function confirmResetDemo() {
+      state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+      saveState();
+      showToast('Demo data restored to default state.', 'info');
+      renderApp();
+    }
+
+    /*************************************************************************
+     * 2. HELPERS & DATA ISOLATION SELECTORS
+     *************************************************************************/
+    function getActiveCustomer() {
+      return state.customers.find(c => c.id === state.activeCustomerId) || state.customers[0];
+    }
+
+    // Strict Data Isolation: Customer sees ONLY their own orders/invoices/dockets
+    function getCustomerOrders(customerId) {
+      return state.orders.filter(o => o.customerId === customerId);
+    }
+
+    // Strict State + Category Targeting: Customer sees ONLY alerts matching their State & Category (or 'All')
+    function getCustomerNotifications(customer) {
+      return state.notifications.filter(n => {
+        const stateMatch = n.targetState === 'All' || n.targetState === customer.state;
+        const catMatch = n.targetCategory === 'All' || n.targetCategory === customer.category;
+        return stateMatch && catMatch;
+      });
+    }
+
+    function formatINR(amount) {
+      return '₹' + Number(amount).toLocaleString('en-IN');
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const colors = {
+        success: 'bg-emerald-900 text-white border-emerald-700',
+        info: 'bg-[#1B3686] text-white border-blue-700',
+        warn: 'bg-amber-900 text-white border-amber-700'
+      };
+      const toast = document.createElement('div');
+      toast.className = `pointer-events-auto px-4 py-3 rounded-2xl shadow-xl border text-xs font-semibold flex items-center gap-2.5 animate-in ${colors[type] || colors.info}`;
+      toast.innerHTML = `
+        <span class="w-2 h-2 rounded-full bg-white shrink-0"></span>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.25s ease';
+        setTimeout(() => toast.remove(), 260);
+      }, 3000);
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    /*************************************************************************
+     * 3. ROLE & NAVIGATION CONTROLS
+     *************************************************************************/
+    function switchRole(newRole) {
+      state.role = newRole;
+      saveState();
+      renderApp();
+    }
+
+    function switchCustomerAccount(customerId) {
+      state.activeCustomerId = customerId;
+      saveState();
+      const cust = getActiveCustomer();
+      showToast(`Switched to ${cust.name} (${cust.state} • ${cust.category})`, 'info');
+      renderApp();
+    }
+
+    function switchCustomerTab(tab) {
+      state.customerTab = tab;
+      if (tab === 'alerts') {
+        const cust = getActiveCustomer();
+        getCustomerNotifications(cust).forEach(n => {
+          if (!n.readBy.includes(cust.id)) n.readBy.push(cust.id);
+        });
+      }
+      saveState();
+      renderApp();
+    }
+
+    function switchAdminTab(tab) {
+      state.adminTab = tab;
+      saveState();
+      renderApp();
+    }
+
+    function navigateDefault() {
+      if (state.role === 'customer') {
+        switchCustomerTab('catalog');
+      } else {
+        switchAdminTab('dashboard');
+      }
+    }
+
+    /*************************************************************************
+     * 4. QR CODE & HOME-SCREEN BOOKMARK ONBOARDING MODAL
+     *************************************************************************/
+    let qrRendered = false;
+    function openQrModal() {
+      openModal('qrModal');
+      const url = window.location.href.startsWith('http')
+        ? window.location.href
+        : 'https://order.glovemeds.in/direct-portal';
+      document.getElementById('appUrlDisplay').textContent = url;
+
+      if (!qrRendered) {
+        const box = document.getElementById('qrcodeCanvas');
+        box.innerHTML = '';
+        new QRCode(box, {
+          text: url,
+          width: 168,
+          height: 168,
+          colorDark: '#1B3686',
+          colorLight: '#FFFFFF',
+          correctLevel: QRCode.CorrectLevel.H
+        });
+        qrRendered = true;
+      }
+    }
+
+    function copyInviteLink() {
+      const url = window.location.href.startsWith('http')
+        ? window.location.href
+        : 'https://order.glovemeds.in/direct-portal';
+      const inviteText = `Order directly from GloveMeds™ (Safety Fits like a Glove) — Zero waiting, instant Tax Invoices & Transport LR tracking:\n${url}\n\nTip: Scan QR once and tap "Add to Home Screen" on your mobile!`;
+      const temp = document.createElement('textarea');
+      temp.value = inviteText;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+      showToast('Customer QR Invite Link copied to clipboard!');
+    }
+
+    /*************************************************************************
+     * 5. GLOVE SVG ILLUSTRATION GENERATOR (High-Contrast Medical Vector)
+     *************************************************************************/
+    function renderGloveIllustration(colorHex = '#1B3686', accentHex = '#EEF3FF', badgeText = '') {
+      return `
+        <div class="relative w-full h-36 rounded-2xl flex items-center justify-center overflow-hidden border border-slate-200/70" style="background: linear-gradient(135deg, ${accentHex} 0%, #FFFFFF 100%);">
+          <!-- Subtle Medical Grid Pattern -->
+          <svg class="w-28 h-28 drop-shadow-md transition-transform duration-300 group-hover:scale-105" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Back Glove -->
+            <path d="M44 26C44 22.6863 46.6863 20 50 20C53.3137 20 56 22.6863 56 26V52H58V18C58 14.6863 60.6863 12 64 12C67.3137 12 70 14.6863 70 18V52H72V22C72 18.6863 74.6863 16 78 16C81.3137 16 84 18.6863 84 22V56H86V34C86 30.6863 88.6863 28 92 28C95.3137 28 98 30.6863 98 34V74C98 89.464 85.464 102 70 102H54C41.8497 102 32 92.1503 32 80V66L22 56C19.5 53.5 19.5 49.5 22 47C24.5 44.5 28.5 44.5 31 47L44 58V26Z" fill="${colorHex}" fill-opacity="0.22" />
+            <!-- Front Primary Medical Glove -->
+            <path d="M38 30C38 26.6863 40.6863 24 44 24C47.3137 24 50 26.6863 50 30V56H52V22C52 18.6863 54.6863 16 58 16C61.3137 16 64 18.6863 64 22V56H66V26C66 22.6863 68.6863 20 72 20C75.3137 20 78 22.6863 78 26V60H80V38C80 34.6863 82.6863 32 86 32C89.3137 32 92 34.6863 92 38V78C92 93.464 79.464 106 64 106H48C35.8497 106 26 96.1503 26 84V70L16 60C13.5 57.5 13.5 53.5 16 51C18.5 48.5 22.5 48.5 25 51L38 62V30Z" fill="${colorHex}" />
+            <!-- Beaded Cuff Detail -->
+            <rect x="31" y="99" width="56" height="6" rx="3" fill="#FFFFFF" fill-opacity="0.85" />
+            <!-- Medical Shield Cross Emblem -->
+            <circle cx="60" cy="76" r="11" fill="#FFFFFF" fill-opacity="0.95" />
+            <path d="M60 70V82M54 76H66" stroke="${colorHex}" stroke-width="3" stroke-linecap="round" />
+          </svg>
+          ${badgeText ? `<span class="absolute top-2.5 left-2.5 bg-amber-400 text-slate-950 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow-xs uppercase tracking-wide">${badgeText}</span>` : ''}
+          <span class="absolute bottom-2 right-2.5 bg-white/90 backdrop-blur-xs text-[#1B3686] text-[10px] font-bold px-2 py-0.5 rounded-lg border border-slate-200">EN 455 • ASTM</span>
+        </div>
+      `;
+    }
+
+    /*************************************************************************
+     * 6. CUSTOMER VIEW RENDERERS
+     *************************************************************************/
+    function renderCustomerCatalog() {
+      const cust = getActiveCustomer();
+      const categories = ['All', 'New Arrivals', 'Nitrile Examination', 'Latex Surgical', 'Sterile & Powder-Free'];
+      const cartCount = state.cart.reduce((sum, item) => sum + item.cartons, 0);
+
+      const filtered = state.products.filter(p => {
+        const matchesCat =
+          state.catalogFilter === 'All' ||
+          (state.catalogFilter === 'New Arrivals' && p.isNewArrival) ||
+          p.category === state.catalogFilter;
+        const q = state.searchQuery.trim().toLowerCase();
+        const matchesSearch = !q || p.name.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q) || p.category.toLowerCase().includes(q);
+        return matchesCat && matchesSearch;
+      });
+
+      // Active offer banner tailored to logged-in customer's state/category
+      const stateAlerts = getCustomerNotifications(cust);
+      const latestAlert = stateAlerts[0];
+
+      return `
+        <div class="space-y-3.5 animate-in">
+          <!-- Welcome & Direct Self-Order Banner -->
+          <div class="bg-gradient-to-r from-[#1B3686] to-[#294BB0] rounded-2xl p-4 text-white shadow-md relative overflow-hidden">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <div class="inline-flex items-center gap-1.5 bg-white/15 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide mb-1.5">
+                  <span>DIRECT B2B PORTAL</span>
+                  <span>•</span>
+                  <span>${cust.state.toUpperCase()}</span>
+                </div>
+                <h1 class="text-base font-extrabold leading-snug">Welcome, ${cust.name}</h1>
+                <p class="text-[11px] text-blue-100 mt-0.5">Order cartons anytime • Instant GST Invoice & Transport LR</p>
+              </div>
+              <button onclick="openQrModal()" class="bg-white text-[#1B3686] text-[10px] font-extrabold px-2.5 py-1.5 rounded-xl shadow shrink-0 hover:bg-blue-50">
+                Save App ★
+              </button>
+            </div>
+            ${latestAlert ? `
+              <div onclick="switchCustomerTab('alerts')" class="mt-3 bg-white/10 hover:bg-white/15 cursor-pointer rounded-xl p-2.5 border border-white/15 flex items-center justify-between gap-2 transition">
+                <div class="min-w-0">
+                  <span class="text-[10px] font-bold uppercase text-amber-300">${latestAlert.type} (${latestAlert.targetState})</span>
+                  <p class="text-xs font-semibold truncate">${latestAlert.title}</p>
+                </div>
+                <span class="text-xs font-bold shrink-0">View →</span>
+              </div>
+            ` : ''}
+          </div>
+
+          <!-- Search Input -->
+          <div class="relative">
+            <input
+              type="text"
+              value="${state.searchQuery}"
+              oninput="updateSearch(this.value)"
+              placeholder="Search nitrile, surgical, powder-free, SKU..."
+              class="w-full pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-2xl text-xs font-medium focus:outline-none focus:border-[#1B3686] shadow-2xs"
+            />
+            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z"/>
+            </svg>
+          </div>
+
+          <!-- Horizontal Category & New Arrivals Filter Pills -->
+          <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+            ${categories.map(cat => {
+              const active = state.catalogFilter === cat;
+              return `
+                <button onclick="setCatalogFilter('${cat}')" class="px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition ${active ? 'bg-[#1B3686] text-white shadow' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'}">
+                  ${cat === 'New Arrivals' ? '✨ ' + cat : cat}
+                </button>
+              `;
+            }).join('')}
+          </div>
+
+          <!-- Product Cards List -->
+          <div class="space-y-3.5">
+            ${filtered.length === 0 ? `
+              <div class="bg-white rounded-2xl p-8 text-center border border-slate-200">
+                <p class="text-sm font-bold text-slate-700">No gloves match your filter</p>
+                <button onclick="setCatalogFilter('All'); updateSearch('');" class="mt-2 text-xs font-bold text-[#1B3686] underline">Show all products</button>
+              </div>
+            ` : filtered.map(prod => {
+              const inCart = state.cart.find(c => c.productId === prod.id);
+              return `
+                <div class="bg-white rounded-3xl p-3.5 border border-slate-200/90 shadow-xs hover:shadow-md transition group">
+                  ${renderGloveIllustration(prod.colorHex, prod.accentHex, prod.isNewArrival ? 'NEW ARRIVAL' : '')}
+
+                  <div class="mt-3">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="text-[10px] font-bold uppercase tracking-wider text-[#1B3686] bg-brand-tint px-2 py-0.5 rounded-md">${prod.category}</span>
+                      <span class="text-[10px] font-semibold text-slate-400">SKU: ${prod.sku}</span>
+                    </div>
+
+                    <h3 class="text-sm font-extrabold text-slate-900 mt-1.5 leading-snug">${prod.name}</h3>
+                    <p class="text-[11px] text-slate-500 mt-0.5">${prod.packSize}</p>
+
+                    ${prod.offerBadge ? `
+                      <div class="mt-2 inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-lg text-[11px] font-bold">
+                        <span>🏷️ ${prod.offerBadge}</span>
+                      </div>
+                    ` : ''}
+
+                    <!-- Price & MOQ Row -->
+                    <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-end justify-between">
+                      <div>
+                        <span class="text-[10px] text-slate-400 block">Wholesale Carton Rate</span>
+                        <span class="text-base font-extrabold text-[#1B3686]">${formatINR(prod.pricePerCarton)}</span>
+                        <span class="text-[10px] text-slate-500">/ carton (MOQ: ${prod.moq})</span>
+                      </div>
+
+                      <div class="flex items-center gap-1.5">
+                        <button onclick="openProductDetail('${prod.id}', false)" class="px-2.5 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 text-[11px] font-bold transition">
+                          Specs
+                        </button>
+                        <button onclick="openProductDetail('${prod.id}', true)" title="Watch Product Video" class="p-2 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200 transition">
+                          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Automated Add to Cart Controls -->
+                    <div class="mt-3">
+                      ${inCart ? `
+                        <div class="flex items-center justify-between bg-brand-tint border border-[#1B3686]/25 rounded-2xl p-1.5">
+                          <button onclick="updateCartQty('${prod.id}', -1)" class="w-9 h-9 rounded-xl bg-white text-[#1B3686] font-extrabold text-base shadow-xs hover:bg-slate-50 active:scale-95">−</button>
+                          <div class="text-center">
+                            <span class="text-xs font-extrabold text-[#1B3686]">${inCart.cartons} Cartons in Order</span>
+                            <span class="block text-[10px] text-slate-600">${formatINR(inCart.cartons * prod.pricePerCarton)}</span>
+                          </div>
+                          <button onclick="updateCartQty('${prod.id}', 1)" class="w-9 h-9 rounded-xl bg-[#1B3686] text-white font-extrabold text-base shadow-xs hover:bg-brand-dark active:scale-95">+</button>
+                        </div>
+                      ` : `
+                        <button onclick="addToCart('${prod.id}')" class="w-full py-2.5 px-4 rounded-2xl bg-[#1B3686] hover:bg-brand-dark text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-xs active:scale-[0.99]">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                          Add ${prod.moq} Cartons (MOQ) to Order
+                        </button>
+                      `}
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+
+          <!-- Floating Checkout Strip if Cart Has Items -->
+          ${cartCount > 0 ? `
+            <div onclick="switchCustomerTab('cart')" class="sticky bottom-2 bg-slate-900 text-white rounded-2xl p-3.5 shadow-xl border border-slate-700 flex items-center justify-between cursor-pointer hover:bg-slate-800 transition">
+              <div class="flex items-center gap-2.5">
+                <span class="bg-[#1B3686] text-white text-xs font-extrabold px-2.5 py-1 rounded-xl">${cartCount} Cartons</span>
+                <div>
+                  <p class="text-xs font-bold">Ready for Automated Order</p>
+                  <p class="text-[10px] text-slate-300">Instant processing • No salesman call needed</p>
+                </div>
+              </div>
+              <span class="text-xs font-extrabold text-emerald-400">Review Cart →</span>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    function setCatalogFilter(cat) {
+      state.catalogFilter = cat;
+      saveState();
+      renderApp();
+    }
+
+    function updateSearch(val) {
+      state.searchQuery = val;
+      renderApp();
+    }
+
+    function addToCart(productId) {
+      const prod = state.products.find(p => p.id === productId);
+      if (!prod) return;
+      const existing = state.cart.find(c => c.productId === productId);
+      if (existing) {
+        existing.cartons += 1;
+      } else {
+        state.cart.push({ productId, cartons: prod.moq || 1 });
+      }
+      saveState();
+      showToast(`Added ${prod.name.split(' ').slice(0, 3).join(' ')} to order cart`);
+      renderApp();
+    }
+
+    function updateCartQty(productId, delta) {
+      const idx = state.cart.findIndex(c => c.productId === productId);
+      if (idx === -1) return;
+      state.cart[idx].cartons += delta;
+      if (state.cart[idx].cartons <= 0) {
+        state.cart.splice(idx, 1);
+      }
+      saveState();
+      renderApp();
+    }
+
+    function openProductDetail(productId, focusVideo = false) {
+      const prod = state.products.find(p => p.id === productId);
+      if (!prod) return;
+
+      const body = document.getElementById('productModalBody');
+      body.innerHTML = `
+        <div class="flex items-start justify-between gap-2 mb-3">
+          <div>
+            <span class="text-[10px] font-extrabold uppercase tracking-wider text-[#1B3686] bg-brand-tint px-2.5 py-0.5 rounded-full">${prod.category}</span>
+            <h3 class="text-base font-extrabold text-slate-900 mt-1">${prod.name}</h3>
+            <p class="text-[11px] text-slate-500">SKU: ${prod.sku} • ${prod.packSize}</p>
+          </div>
+          <button onclick="closeModal('productModal')" class="p-2 rounded-xl bg-slate-100 text-slate-500 hover:bg-slate-200 shrink-0">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <!-- Product Video Link Player Section -->
+        <div class="mb-4 bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-inner">
+          <div class="px-3 py-2 bg-slate-800 text-white flex items-center justify-between">
+            <span class="text-[11px] font-bold flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+              Product Video Demo
+            </span>
+            <a href="${prod.videoUrl.replace('/embed/', '/watch?v=')}" target="_blank" rel="noopener noreferrer" class="text-[10px] text-blue-300 underline font-semibold">Open Link ↗</a>
+          </div>
+          <div class="aspect-video w-full bg-black">
+            <iframe class="w-full h-full" src="${prod.videoUrl}" title="${prod.videoLabel}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p class="px-3 py-2 text-[11px] text-slate-300">${prod.videoLabel}</p>
+        </div>
+
+        <!-- Technical Specifications Table -->
+        <div class="mb-4">
+          <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2">Technical Glove Specifications</h4>
+          <div class="bg-slate-50 rounded-2xl border border-slate-200 divide-y divide-slate-200/80 text-xs">
+            <div class="p-2.5 flex justify-between gap-3"><span class="text-slate-500">Material</span><span class="font-bold text-slate-800 text-right">${prod.specs.material}</span></div>
+            <div class="p-2.5 flex justify-between gap-3"><span class="text-slate-500">AQL Quality Level</span><span class="font-bold text-[#1B3686] text-right">${prod.specs.aql}</span></div>
+            <div class="p-2.5 flex justify-between gap-3"><span class="text-slate-500">Wall Thickness</span><span class="font-bold text-slate-800 text-right">${prod.specs.thickness}</span></div>
+            <div class="p-2.5 flex justify-between gap-3"><span class="text-slate-500">Powder Status</span><span class="font-bold text-emerald-700 text-right">${prod.specs.powderStatus}</span></div>
+            <div class="p-2.5 flex justify-between gap-3"><span class="text-slate-500">Cuff Length</span><span class="font-bold text-slate-800 text-right">${prod.specs.length}</span></div>
+            <div class="p-2.5 flex justify-between gap-3"><span class="text-slate-500">Available Sizes</span><span class="font-bold text-slate-800 text-right">${prod.specs.sizes}</span></div>
+            <div class="p-2.5 flex justify-between gap-3"><span class="text-slate-500">Certifications</span><span class="font-bold text-slate-800 text-right">${prod.specs.certifications}</span></div>
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <button onclick="addToCart('${prod.id}'); closeModal('productModal');" class="flex-1 py-3 px-4 rounded-2xl bg-[#1B3686] text-white text-xs font-extrabold hover:bg-brand-dark transition shadow">
+            Add to Order (${formatINR(prod.pricePerCarton)}/ctn)
+          </button>
+          <button onclick="closeModal('productModal')" class="py-3 px-4 rounded-2xl bg-slate-100 text-slate-700 text-xs font-bold hover:bg-slate-200">
+            Close
+          </button>
+        </div>
+      `;
+      openModal('productModal');
+    }
+
+    /*************************************************************************
+     * 7. CUSTOMER AUTOMATED ORDER CART VIEW
+     *************************************************************************/
+    function renderCustomerCart() {
+      const cust = getActiveCustomer();
+      let subtotal = 0;
+      let totalCartons = 0;
+
+      const enrichedItems = state.cart.map(c => {
+        const prod = state.products.find(p => p.id === c.productId);
+        if (!prod) return null;
+        const lineTotal = prod.pricePerCarton * c.cartons;
+        subtotal += lineTotal;
+        totalCartons += c.cartons;
+        return { ...c, prod, lineTotal };
+      }).filter(Boolean);
+
+      // Automated volume discount rule (10% off when >= 10 total cartons)
+      const discount = totalCartons >= 10 ? Math.round(subtotal * 0.10) : 0;
+      const taxable = subtotal - discount;
+      const gst = Math.round(taxable * 0.12); // 12% Medical Supplies GST
+      const grandTotal = taxable + gst;
+
+      return `
+        <div class="space-y-4 animate-in">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-base font-extrabold text-slate-900">Automated Purchase Order</h2>
+              <p class="text-[11px] text-slate-500">Direct factory dispatch • Zero WhatsApp back-and-forth</p>
+            </div>
+            <span class="text-[11px] font-bold bg-brand-tint text-[#1B3686] px-2.5 py-1 rounded-xl">${totalCartons} Cartons</span>
+          </div>
+
+          ${enrichedItems.length === 0 ? `
+            <div class="bg-white rounded-3xl p-8 text-center border border-slate-200 space-y-3">
+              <div class="w-12 h-12 rounded-2xl bg-brand-tint text-[#1B3686] mx-auto flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+              </div>
+              <h3 class="text-sm font-extrabold text-slate-800">Your Order Cart is Empty</h3>
+              <p class="text-xs text-slate-500">Browse our Nitrile & Surgical glove catalogue to add master cartons.</p>
+              <button onclick="switchCustomerTab('catalog')" class="px-5 py-2.5 rounded-xl bg-[#1B3686] text-white text-xs font-bold shadow">Browse Product Catalogue</button>
+            </div>
+          ` : `
+            <!-- Line Items -->
+            <div class="space-y-2.5">
+              ${enrichedItems.map(item => `
+                <div class="bg-white rounded-2xl p-3.5 border border-slate-200 flex items-center justify-between gap-3">
+                  <div class="min-w-0 flex-1">
+                    <span class="text-[10px] font-bold text-[#1B3686]">${item.prod.sku}</span>
+                    <h4 class="text-xs font-extrabold text-slate-900 truncate">${item.prod.name}</h4>
+                    <p class="text-[11px] text-slate-500">${formatINR(item.prod.pricePerCarton)} × ${item.cartons} cartons</p>
+                  </div>
+                  <div class="flex flex-col items-end gap-1.5">
+                    <span class="text-xs font-extrabold text-slate-900">${formatINR(item.lineTotal)}</span>
+                    <div class="flex items-center gap-1.5 bg-slate-100 rounded-xl p-1">
+                      <button onclick="updateCartQty('${item.productId}', -1)" class="w-6 h-6 rounded-lg bg-white text-slate-700 font-bold text-xs shadow-2xs">−</button>
+                      <span class="text-xs font-extrabold px-1.5">${item.cartons}</span>
+                      <button onclick="updateCartQty('${item.productId}', 1)" class="w-6 h-6 rounded-lg bg-[#1B3686] text-white font-bold text-xs shadow-2xs">+</button>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+
+            <!-- Billing & Delivery Details -->
+            <div class="bg-white rounded-2xl p-4 border border-slate-200 space-y-3 text-xs">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                <span class="font-extrabold text-slate-800">Billing & Dispatch Destination</span>
+                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">GST Verified</span>
+              </div>
+              <div>
+                <p class="font-bold text-slate-900">${cust.name}</p>
+                <p class="text-slate-500 text-[11px] mt-0.5">${cust.address}</p>
+                <p class="text-slate-600 text-[11px] font-semibold mt-0.5">GSTIN: ${cust.gstin}</p>
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">Preferred Transport / Courier</label>
+                <select id="orderTransportSelect" class="w-full p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold focus:outline-none focus:border-[#1B3686]">
+                  <option value="VRL Logistics (Surface Cargo)">VRL Logistics (Surface Cargo)</option>
+                  <option value="TCI Express (Fast Road/Air)">TCI Express (Fast Road/Air)</option>
+                  <option value="Safexpress Cargo">Safexpress Cargo</option>
+                  <option value="Gati-KWE Transport">Gati-KWE Transport</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Automated Price & Offer Summary -->
+            <div class="bg-white rounded-2xl p-4 border border-slate-200 space-y-2 text-xs">
+              <div class="flex justify-between text-slate-600">
+                <span>Carton Subtotal (${totalCartons} cartons)</span>
+                <span class="font-bold text-slate-900">${formatINR(subtotal)}</span>
+              </div>
+              <div class="flex justify-between ${discount > 0 ? 'text-emerald-700 font-bold' : 'text-slate-400'}">
+                <span>Bulk Volume Offer ${totalCartons >= 10 ? '(10% Applied!)' : '(Add ' + (10 - totalCartons) + ' more for 10% off)'}</span>
+                <span>− ${formatINR(discount)}</span>
+              </div>
+              <div class="flex justify-between text-slate-600">
+                <span>GST (12% Medical Grade)</span>
+                <span class="font-bold text-slate-900">+ ${formatINR(gst)}</span>
+              </div>
+              <div class="pt-2 border-t border-slate-200 flex justify-between items-center">
+                <span class="text-sm font-extrabold text-slate-900">Net Payable Amount</span>
+                <span class="text-lg font-extrabold text-[#1B3686]">${formatINR(grandTotal)}</span>
+              </div>
+            </div>
+
+            <button onclick="submitAutomatedOrder()" class="w-full py-3.5 px-5 rounded-2xl bg-[#1B3686] hover:bg-brand-dark text-white font-extrabold text-sm shadow-lg transition flex items-center justify-center gap-2 active:scale-[0.99]">
+              <span>Submit Automated Purchase Order</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </button>
+          `}
+        </div>
+      `;
+    }
+
+    function submitAutomatedOrder() {
+      if (state.cart.length === 0) return;
+      const cust = getActiveCustomer();
+      const transportPref = document.getElementById('orderTransportSelect')?.value || 'VRL Logistics';
+
+      let subtotal = 0;
+      let totalCartons = 0;
+      const items = state.cart.map(c => {
+        const prod = state.products.find(p => p.id === c.productId);
+        subtotal += prod.pricePerCarton * c.cartons;
+        totalCartons += c.cartons;
+        return {
+          productId: prod.id,
+          name: prod.name,
+          cartons: c.cartons,
+          pricePerCarton: prod.pricePerCarton
+        };
+      });
+
+      const discount = totalCartons >= 10 ? Math.round(subtotal * 0.10) : 0;
+      const gst = Math.round((subtotal - discount) * 0.12);
+      const totalAmount = subtotal - discount + gst;
+
+      const newOrder = {
+        id: 'GM-ORD-2026-' + (100 + state.orders.length + 1),
+        customerId: cust.id,
+        date: new Date().toISOString().split('T')[0],
+        status: 'Pending',
+        transportPref,
+        items,
+        subtotal,
+        discount,
+        gst,
+        totalAmount,
+        invoice: null,
+        docket: null
+      };
+
+      state.orders.unshift(newOrder);
+      state.cart = [];
+      state.customerTab = 'orders';
+      saveState();
+      showToast(`Order ${newOrder.id} placed! Admin notified for dispatch.`);
+      renderApp();
+    }
+
+    /*************************************************************************
+     * 8. CUSTOMER PRIVATE ORDERS, INVOICES & TRANSPORT DOCKETS VIEW
+     *************************************************************************/
+    function renderCustomerOrdersVault() {
+      const cust = getActiveCustomer();
+      // STRICT ISOLATION: Only fetch orders belonging to logged-in customer
+      const myOrders = getCustomerOrders(cust.id);
+
+      return `
+        <div class="space-y-3.5 animate-in">
+          <div class="bg-white rounded-2xl p-3.5 border border-slate-200 flex items-center justify-between">
+            <div>
+              <h2 class="text-base font-extrabold text-slate-900">My Orders & Document Vault</h2>
+              <p class="text-[11px] text-slate-500">Private GST Invoices & Transport LR / Docket Copies</p>
+            </div>
+            <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-extrabold px-2.5 py-1 rounded-xl">
+              🔒 Private Vault
+            </span>
+          </div>
+
+          <!-- Privacy Guarantee Notice -->
+          <div class="bg-brand-tint border border-[#1B3686]/20 rounded-2xl p-3 text-[11px] text-[#1B3686] flex items-center gap-2.5">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <span>Showing documents strictly for <strong>${cust.name}</strong> (${cust.gstin}). Other buyers cannot view your rates, invoices, or dockets.</span>
+          </div>
+
+          ${myOrders.length === 0 ? `
+            <div class="bg-white rounded-2xl p-8 text-center border border-slate-200">
+              <p class="text-sm font-bold text-slate-700">No orders placed yet for ${cust.name}</p>
+              <button onclick="switchCustomerTab('catalog')" class="mt-3 px-4 py-2 rounded-xl bg-[#1B3686] text-white text-xs font-bold">Start Ordering</button>
+            </div>
+          ` : myOrders.map(ord => {
+            const statusBadge = {
+              Pending: 'bg-amber-100 text-amber-800 border-amber-200',
+              Packed: 'bg-blue-100 text-blue-800 border-blue-200',
+              Dispatched: 'bg-emerald-100 text-emerald-800 border-emerald-200'
+            }[ord.status] || 'bg-slate-100 text-slate-800';
+
+            return `
+              <div class="bg-white rounded-3xl p-4 border border-slate-200 shadow-2xs space-y-3">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <span class="text-xs font-extrabold text-[#1B3686]">${ord.id}</span>
+                    <p class="text-[11px] text-slate-400">Ordered on ${ord.date} • ${ord.transportPref}</p>
+                  </div>
+                  <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full border ${statusBadge}">${ord.status.toUpperCase()}</span>
+                </div>
+
+                <!-- Ordered Cartons Summary -->
+                <div class="bg-slate-50 rounded-2xl p-2.5 space-y-1 text-xs border border-slate-100">
+                  ${ord.items.map(it => `
+                    <div class="flex justify-between gap-2">
+                      <span class="text-slate-700 font-medium truncate">${it.name}</span>
+                      <span class="font-bold text-slate-900 shrink-0">${it.cartons} ctn</span>
+                    </div>
+                  `).join('')}
+                  <div class="pt-1.5 mt-1.5 border-t border-slate-200 flex justify-between font-extrabold text-slate-900">
+                    <span>Total Invoice Value</span>
+                    <span class="text-[#1B3686]">${formatINR(ord.totalAmount)}</span>
+                  </div>
+                </div>
+
+                <!-- Tax Invoice & Transport Docket Status / Viewer Buttons -->
+                ${ord.invoice && ord.docket ? `
+                  <div class="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-3 space-y-2">
+                    <div class="flex items-center justify-between text-[11px]">
+                      <span class="font-bold text-emerald-900">📄 Invoice: ${ord.invoice.invoiceNo}</span>
+                      <span class="font-bold text-[#1B3686]">🚚 LR: ${ord.docket.lrNumber}</span>
+                    </div>
+                    <p class="text-[11px] text-slate-600">Transporter: <strong>${ord.docket.transporterName}</strong> • Dispatched: ${ord.docket.dispatchDate}</p>
+                    <div class="grid grid-cols-2 gap-2 pt-1">
+                      <button onclick="openDocumentViewer('${ord.id}', 'invoice')" class="py-2 px-3 rounded-xl bg-[#1B3686] text-white text-[11px] font-bold hover:bg-brand-dark transition flex items-center justify-center gap-1.5 shadow-2xs">
+                        <span>View Tax Invoice</span>
+                      </button>
+                      <button onclick="openDocumentViewer('${ord.id}', 'docket')" class="py-2 px-3 rounded-xl bg-white text-[#1B3686] border border-[#1B3686]/30 text-[11px] font-bold hover:bg-brand-tint transition flex items-center justify-center gap-1.5">
+                        <span>Transport Docket</span>
+                      </button>
+                    </div>
+                  </div>
+                ` : `
+                  <div class="bg-slate-50 border border-dashed border-slate-300 rounded-2xl p-3 text-center">
+                    <p class="text-[11px] font-semibold text-slate-500">⏳ Invoice & Transport LR Docket will appear here automatically once Admin dispatches your cartons.</p>
+                  </div>
+                `}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    function openDocumentViewer(orderId, docType = 'invoice') {
+      const ord = state.orders.find(o => o.id === orderId);
+      if (!ord || !ord.invoice || !ord.docket) return;
+      const cust = state.customers.find(c => c.id === ord.customerId);
+
+      const area = document.getElementById('printableDocumentArea');
+      area.innerHTML = `
+        <!-- Official GloveMeds Letterhead -->
+        <div class="flex items-center justify-between border-b-2 border-[#1B3686] pb-3">
+          <div>
+            <div class="text-lg font-extrabold text-[#1B3686] tracking-tight">GloveMeds™</div>
+            <div class="text-[10px] font-semibold bg-[#1B3686] text-white px-2 py-0.5 rounded inline-block">Safety Fits like a Glove</div>
+            <p class="text-[10px] text-slate-500 mt-1">Bhiwandi Logistics Park, Thane, Maharashtra • GSTIN: 27AABCG5510R1Z9</p>
+          </div>
+          <div class="text-right">
+            <span class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase ${docType === 'invoice' ? 'bg-blue-100 text-[#1B3686]' : 'bg-emerald-100 text-emerald-800'}">
+              ${docType === 'invoice' ? 'GST TAX INVOICE' : 'TRANSPORT LR / DOCKET COPY'}
+            </span>
+            <p class="text-[10px] text-slate-500 mt-1">Order Ref: <strong>${ord.id}</strong></p>
+          </div>
+        </div>
+
+        <!-- Consignee / Customer Private Details -->
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 grid grid-cols-2 gap-2">
+          <div>
+            <span class="text-[10px] uppercase font-bold text-slate-400">Billed & Shipped To</span>
+            <p class="font-extrabold text-slate-900 mt-0.5">${cust.name}</p>
+            <p class="text-[11px] text-slate-600">${cust.address}</p>
+            <p class="text-[11px] font-bold text-slate-800 mt-0.5">GSTIN: ${cust.gstin}</p>
+          </div>
+          <div class="border-l border-slate-200 pl-3">
+            <span class="text-[10px] uppercase font-bold text-slate-400">Dispatch & LR Metadata</span>
+            <p class="text-[11px] text-slate-700 mt-0.5">Invoice No: <strong>${ord.invoice.invoiceNo}</strong></p>
+            <p class="text-[11px] text-slate-700">Transporter: <strong>${ord.docket.transporterName}</strong></p>
+            <p class="text-[11px] text-[#1B3686] font-extrabold">LR / Docket No: ${ord.docket.lrNumber}</p>
+            <p class="text-[11px] text-slate-600">Dispatch Date: ${ord.docket.dispatchDate}</p>
+          </div>
+        </div>
+
+        <!-- Transport Docket Highlight Box -->
+        <div class="bg-brand-tint border border-[#1B3686]/25 rounded-xl p-3">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[11px] font-extrabold text-[#1B3686]">🚚 Official Transport Docket / Lorry Receipt Copy</span>
+            <span class="text-[10px] font-bold text-emerald-700 bg-white px-2 py-0.5 rounded border border-emerald-200">Verified Upload</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-[11px] text-slate-700 mt-1">
+            <div>Load Details: <strong>${ord.docket.packages}</strong></div>
+            <div>Vehicle No: <strong>${ord.docket.vehicleNo || 'Assigned at Hub'}</strong></div>
+            <div class="col-span-2 text-[10px] text-slate-500">Attached File: ${ord.docket.fileName} & ${ord.invoice.fileName}</div>
+          </div>
+        </div>
+
+        <!-- Itemized Cartons Table -->
+        <table class="w-full text-left border-collapse border border-slate-200 rounded-xl overflow-hidden">
+          <thead>
+            <tr class="bg-slate-100 text-[10px] uppercase text-slate-600">
+              <th class="p-2 border-b border-slate-200">Product Description</th>
+              <th class="p-2 border-b border-slate-200 text-center">Cartons</th>
+              <th class="p-2 border-b border-slate-200 text-right">Amount</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 text-[11px]">
+            ${ord.items.map(it => `
+              <tr>
+                <td class="p-2 font-semibold text-slate-800">${it.name}</td>
+                <td class="p-2 text-center font-bold">${it.cartons}</td>
+                <td class="p-2 text-right font-bold">${formatINR(it.cartons * it.pricePerCarton)}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+
+        <!-- Totals -->
+        <div class="flex justify-end">
+          <div class="w-56 space-y-1 text-[11px] bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+            <div class="flex justify-between"><span>Subtotal:</span><span class="font-bold">${formatINR(ord.subtotal)}</span></div>
+            <div class="flex justify-between text-emerald-700"><span>Discount:</span><span class="font-bold">− ${formatINR(ord.discount)}</span></div>
+            <div class="flex justify-between"><span>GST (12%):</span><span class="font-bold">+ ${formatINR(ord.gst)}</span></div>
+            <div class="flex justify-between border-t border-slate-300 pt-1 text-xs font-extrabold text-[#1B3686]">
+              <span>Grand Total:</span><span>${formatINR(ord.totalAmount)}</span>
+            </div>
+          </div>
+        </div>
+      `;
+      openModal('documentModal');
+    }
+
+    /*************************************************************************
+     * 9. CUSTOMER STATE & CATEGORY TARGETED NOTIFICATIONS INBOX
+     *************************************************************************/
+    function renderCustomerAlerts() {
+      const cust = getActiveCustomer();
+      const myAlerts = getCustomerNotifications(cust);
+
+      const typeStyles = {
+        'State Exhibition': 'bg-purple-100 text-purple-800 border-purple-200',
+        'New Arrival': 'bg-blue-100 text-[#1B3686] border-blue-200',
+        'Special Offer': 'bg-emerald-100 text-emerald-800 border-emerald-200'
+      };
+
+      return `
+        <div class="space-y-3.5 animate-in">
+          <div class="bg-white rounded-2xl p-3.5 border border-slate-200">
+            <div class="flex items-center justify-between">
+              <h2 class="text-base font-extrabold text-slate-900">GloveMeds Direct Alerts</h2>
+              <span class="text-[10px] font-bold bg-brand-tint text-[#1B3686] px-2.5 py-1 rounded-xl">Zero Spam • App Only</span>
+            </div>
+            <p class="text-[11px] text-slate-500 mt-1">
+              Filtered specifically for <strong>${cust.state}</strong> & Category: <strong>${cust.category}</strong>
+            </p>
+          </div>
+
+          ${myAlerts.length === 0 ? `
+            <div class="bg-white rounded-2xl p-8 text-center border border-slate-200">
+              <p class="text-sm font-bold text-slate-700">No active alerts for ${cust.state} right now</p>
+            </div>
+          ` : myAlerts.map(alert => `
+            <div class="bg-white rounded-3xl p-4 border border-slate-200 shadow-2xs space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border ${typeStyles[alert.type] || 'bg-slate-100 text-slate-700'}">
+                  ${alert.type}
+                </span>
+                <span class="text-[10px] font-semibold text-slate-400">${alert.date}</span>
+              </div>
+              <h3 class="text-sm font-extrabold text-slate-900 leading-snug">${alert.title}</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">${alert.message}</p>
+              <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-500">
+                <span>Target: <strong>${alert.targetState}</strong> • <strong>${alert.targetCategory}</strong></span>
+                <button onclick="switchCustomerTab('catalog')" class="font-extrabold text-[#1B3686] hover:underline">Order Now →</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    /*************************************************************************
+     * 10. ADMIN / OWNER PORTAL RENDERERS (Full Access to Everything)
+     *************************************************************************/
+    function renderAdminDashboard() {
+      const totalRevenue = state.orders.reduce((s, o) => s + o.totalAmount, 0);
+      const pendingCount = state.orders.filter(o => o.status !== 'Dispatched').length;
+
+      return `
+        <div class="space-y-4 animate-in">
+          <div class="bg-slate-900 text-white rounded-3xl p-4 shadow-md">
+            <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400">Admin / Owner Control Center</span>
+            <h1 class="text-lg font-extrabold mt-0.5">GloveMeds™ Operations</h1>
+            <p class="text-xs text-slate-300 mt-0.5">Zero field salesmen • Zero WhatsApp ban risk • Full buyer visibility</p>
+
+            <div class="grid grid-cols-3 gap-2 mt-4">
+              <div class="bg-white/10 rounded-2xl p-2.5">
+                <span class="text-[10px] text-slate-300 block">Total Orders</span>
+                <span class="text-lg font-extrabold">${state.orders.length}</span>
+              </div>
+              <div class="bg-white/10 rounded-2xl p-2.5">
+                <span class="text-[10px] text-slate-300 block">Pending Dispatch</span>
+                <span class="text-lg font-extrabold text-amber-300">${pendingCount}</span>
+              </div>
+              <div class="bg-white/10 rounded-2xl p-2.5">
+                <span class="text-[10px] text-slate-300 block">B2B Buyers</span>
+                <span class="text-lg font-extrabold text-emerald-300">${state.customers.length}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Admin Actions -->
+          <div class="grid grid-cols-2 gap-2.5">
+            <button onclick="switchAdminTab('orders')" class="bg-white p-3.5 rounded-2xl border border-slate-200 text-left hover:border-[#1B3686] transition shadow-2xs">
+              <span class="text-lg">📄</span>
+              <h3 class="text-xs font-extrabold text-slate-900 mt-1">Upload Invoice & LR</h3>
+              <p class="text-[10px] text-slate-500 mt-0.5">Attach dockets to customer vault</p>
+            </button>
+            <button onclick="switchAdminTab('broadcast')" class="bg-white p-3.5 rounded-2xl border border-slate-200 text-left hover:border-[#1B3686] transition shadow-2xs">
+              <span class="text-lg">📢</span>
+              <h3 class="text-xs font-extrabold text-slate-900 mt-1">State & Expo Alert</h3>
+              <p class="text-[10px] text-slate-500 mt-0.5">Send ban-free targeted notifications</p>
+            </button>
+            <button onclick="switchAdminTab('products')" class="bg-white p-3.5 rounded-2xl border border-slate-200 text-left hover:border-[#1B3686] transition shadow-2xs">
+              <span class="text-lg">🧤</span>
+              <h3 class="text-xs font-extrabold text-slate-900 mt-1">Add New Product</h3>
+              <p class="text-[10px] text-slate-500 mt-0.5">Specs, offers & video links</p>
+            </button>
+            <button onclick="openQrModal()" class="bg-brand-tint p-3.5 rounded-2xl border border-[#1B3686]/25 text-left hover:bg-blue-100 transition shadow-2xs">
+              <span class="text-lg">📱</span>
+              <h3 class="text-xs font-extrabold text-[#1B3686] mt-1">Share Customer QR</h3>
+              <p class="text-[10px] text-slate-600 mt-0.5">1-scan onboarding flyer</p>
+            </button>
+          </div>
+
+          <!-- Registered B2B Customers Across States -->
+          <div class="bg-white rounded-3xl p-4 border border-slate-200 space-y-2.5">
+            <div class="flex items-center justify-between">
+              <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-700">Active B2B Customers (All States)</h3>
+              <span class="text-[11px] font-bold text-[#1B3686]">Total Value: ${formatINR(totalRevenue)}</span>
+            </div>
+            <div class="divide-y divide-slate-100">
+              ${state.customers.map(c => `
+                <div class="py-2.5 flex items-center justify-between gap-2">
+                  <div>
+                    <p class="text-xs font-extrabold text-slate-900">${c.name}</p>
+                    <p class="text-[11px] text-slate-500">${c.city}, <strong>${c.state}</strong> • ${c.category}</p>
+                  </div>
+                  <button onclick="switchCustomerAccount('${c.id}'); switchRole('customer');" class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-brand-tint text-[#1B3686] text-[10px] font-bold">
+                    Preview View →
+                  </button>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderAdminOrders() {
+      return `
+        <div class="space-y-3.5 animate-in">
+          <div>
+            <h2 class="text-base font-extrabold text-slate-900">All Customer Orders & Docket Uploader</h2>
+            <p class="text-[11px] text-slate-500">Upload Tax Invoice & Transport LR — visible ONLY to the respective buyer</p>
+          </div>
+
+          ${state.orders.map(ord => {
+            const cust = state.customers.find(c => c.id === ord.customerId) || { name: 'Unknown', state: '', category: '' };
+            return `
+              <div class="bg-white rounded-3xl p-4 border border-slate-200 shadow-2xs space-y-3">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-xs font-extrabold text-[#1B3686]">${ord.id}</span>
+                      <span class="text-[10px] font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded">${cust.state}</span>
+                    </div>
+                    <h3 class="text-sm font-extrabold text-slate-900 mt-0.5">${cust.name}</h3>
+                    <p class="text-[11px] text-slate-500">${ord.date} • ${ord.transportPref}</p>
+                  </div>
+                  <select onchange="updateOrderStatus('${ord.id}', this.value)" class="text-[11px] font-extrabold rounded-xl px-2.5 py-1.5 border border-slate-300 bg-slate-50 text-slate-800">
+                    <option value="Pending" ${ord.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                    <option value="Packed" ${ord.status === 'Packed' ? 'selected' : ''}>Packed</option>
+                    <option value="Dispatched" ${ord.status === 'Dispatched' ? 'selected' : ''}>Dispatched</option>
+                  </select>
+                </div>
+
+                <div class="bg-slate-50 rounded-2xl p-2.5 text-xs space-y-1 border border-slate-100">
+                  ${ord.items.map(i => `<div class="flex justify-between"><span>${i.name}</span><strong>${i.cartons} ctn</strong></div>`).join('')}
+                  <div class="pt-1 border-t border-slate-200 flex justify-between font-extrabold text-[#1B3686]">
+                    <span>Order Total (incl. GST)</span>
+                    <span>${formatINR(ord.totalAmount)}</span>
+                  </div>
+                </div>
+
+                ${ord.invoice && ord.docket ? `
+                  <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-2.5 flex items-center justify-between gap-2 text-[11px]">
+                    <div>
+                      <p class="font-bold text-emerald-900">✓ Uploaded: ${ord.invoice.invoiceNo}</p>
+                      <p class="text-emerald-700">LR: ${ord.docket.lrNumber} (${ord.docket.transporterName})</p>
+                    </div>
+                    <button onclick="openAdminUploadModal('${ord.id}')" class="px-2.5 py-1.5 rounded-xl bg-white text-slate-700 font-bold border border-emerald-300">Edit</button>
+                  </div>
+                ` : `
+                  <button onclick="openAdminUploadModal('${ord.id}')" class="w-full py-2.5 px-4 rounded-2xl bg-[#1B3686] hover:bg-brand-dark text-white text-xs font-extrabold transition flex items-center justify-center gap-2 shadow">
+                    <span>📤 Upload Tax Invoice & Transport Docket</span>
+                  </button>
+                `}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    function updateOrderStatus(orderId, newStatus) {
+      const ord = state.orders.find(o => o.id === orderId);
+      if (!ord) return;
+      ord.status = newStatus;
+      saveState();
+      showToast(`Order ${orderId} marked as ${newStatus}`);
+      renderApp();
+    }
+
+    function openAdminUploadModal(orderId) {
+      const ord = state.orders.find(o => o.id === orderId);
+      const cust = state.customers.find(c => c.id === ord.customerId);
+      const body = document.getElementById('adminUploadModalBody');
+
+      body.innerHTML = `
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <span class="text-[10px] font-extrabold uppercase text-[#1B3686] bg-brand-tint px-2 py-0.5 rounded-full">Private Customer Vault Upload</span>
+            <h3 class="text-base font-extrabold text-slate-900 mt-1">Attach Invoice & Transport LR</h3>
+            <p class="text-[11px] text-slate-500">For: <strong>${cust.name}</strong> (${ord.id})</p>
+          </div>
+          <button onclick="closeModal('adminUploadModal')" class="p-2 rounded-xl bg-slate-100 text-slate-500">✕</button>
+        </div>
+
+        <form onsubmit="saveAdminDocketUpload(event, '${ord.id}')" class="space-y-3 text-xs">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">GST Tax Invoice Number *</label>
+            <input id="inpInvNo" required value="${ord.invoice?.invoiceNo || 'GM/' + cust.state.slice(0,2).toUpperCase() + '/26-27/0905'}" class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Transporter Company Name *</label>
+            <input id="inpTransporter" required value="${ord.docket?.transporterName || ord.transportPref}" class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold" />
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Transport LR / Docket No *</label>
+              <input id="inpLrNo" required value="${ord.docket?.lrNumber || 'LR-8849201'}" class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold" />
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Dispatch Date *</label>
+              <input id="inpDispatchDate" type="date" required value="${ord.docket?.dispatchDate || new Date().toISOString().split('T')[0]}" class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold" />
+            </div>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Vehicle Number & Packages</label>
+            <input id="inpPackages" value="${ord.docket?.packages || ord.items.reduce((s,i)=>s+i.cartons,0) + ' Master Cartons'}" class="w-full p-2.5 rounded-xl border border-slate-300" />
+          </div>
+          <div class="bg-slate-50 p-3 rounded-2xl border border-dashed border-slate-300">
+            <label class="block font-bold text-slate-700 mb-1">Select Invoice & Docket PDF / Scan Copy</label>
+            <input id="inpFileSelect" type="file" accept=".pdf,image/*" class="text-[11px] text-slate-600 w-full" />
+            <p class="text-[10px] text-slate-400 mt-1">Only ${cust.name} will be able to access these uploaded files.</p>
+          </div>
+
+          <button type="submit" class="w-full py-3 rounded-2xl bg-[#1B3686] text-white font-extrabold text-xs shadow hover:bg-brand-dark transition">
+            Save & Publish to ${cust.name}'s App
+          </button>
+        </form>
+      `;
+      openModal('adminUploadModal');
+    }
+
+    function saveAdminDocketUpload(e, orderId) {
+      e.preventDefault();
+      const ord = state.orders.find(o => o.id === orderId);
+      if (!ord) return;
+
+      const fileInput = document.getElementById('inpFileSelect');
+      const uploadedName = fileInput?.files?.[0]?.name || `Docket_Copy_${document.getElementById('inpLrNo').value}.pdf`;
+
+      ord.status = 'Dispatched';
+      ord.invoice = {
+        invoiceNo: document.getElementById('inpInvNo').value,
+        invoiceDate: document.getElementById('inpDispatchDate').value,
+        irnHash: '7c92a4f1b88d310e...551b',
+        fileName: `Invoice_${document.getElementById('inpInvNo').value.replace(/\//g, '_')}.pdf`
+      };
+      ord.docket = {
+        lrNumber: document.getElementById('inpLrNo').value,
+        transporterName: document.getElementById('inpTransporter').value,
+        dispatchDate: document.getElementById('inpDispatchDate').value,
+        packages: document.getElementById('inpPackages').value,
+        vehicleNo: 'MH-04-GM-2026',
+        fileName: uploadedName
+      };
+
+      saveState();
+      closeModal('adminUploadModal');
+      showToast(`Invoice & LR ${ord.docket.lrNumber} uploaded to customer's private vault!`);
+      renderApp();
+    }
+
+    function renderAdminProducts() {
+      return `
+        <div class="space-y-4 animate-in">
+          <div>
+            <h2 class="text-base font-extrabold text-slate-900">Catalogue, New Arrivals & Videos</h2>
+            <p class="text-[11px] text-slate-500">Add new gloves, set offers & embed product demo video links</p>
+          </div>
+
+          <!-- Add New Product Form -->
+          <form onsubmit="handleAddProduct(event)" class="bg-white rounded-3xl p-4 border border-slate-200 space-y-3 text-xs shadow-2xs">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-[#1B3686]">+ Add New Glove Product</h3>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Product Title *</label>
+              <input id="newProdName" required placeholder="e.g. GloveMeds UltraSafe Blue Nitrile (5 mil)" class="w-full p-2.5 rounded-xl border border-slate-300" />
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Category *</label>
+                <select id="newProdCat" class="w-full p-2.5 rounded-xl border border-slate-300 bg-white">
+                  <option value="Nitrile Examination">Nitrile Examination</option>
+                  <option value="Latex Surgical">Latex Surgical</option>
+                  <option value="Sterile & Powder-Free">Sterile & Powder-Free</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Carton Rate (₹) *</label>
+                <input id="newProdPrice" type="number" required placeholder="3950" class="w-full p-2.5 rounded-xl border border-slate-300" />
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">AQL & Thickness</label>
+                <input id="newProdSpec" placeholder="AQL 1.5 • 5.0 mil" class="w-full p-2.5 rounded-xl border border-slate-300" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Offer Tag (Optional)</label>
+                <input id="newProdOffer" placeholder="e.g. Flat 8% Launch Off" class="w-full p-2.5 rounded-xl border border-slate-300" />
+              </div>
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Product Video URL (YouTube / Link)</label>
+              <input id="newProdVideo" placeholder="https://www.youtube.com/watch?v=..." class="w-full p-2.5 rounded-xl border border-slate-300" />
+            </div>
+            <label class="flex items-center gap-2 font-bold text-slate-700 cursor-pointer">
+              <input id="newProdIsNew" type="checkbox" checked class="w-4 h-4 accent-[#1B3686]" />
+              <span>Highlight with "NEW ARRIVAL" Badge</span>
+            </label>
+            <button type="submit" class="w-full py-3 rounded-2xl bg-[#1B3686] text-white font-extrabold text-xs shadow hover:bg-brand-dark transition">
+              Publish to Live Customer Catalogue
+            </button>
+          </form>
+
+          <!-- Existing Products List -->
+          <div class="space-y-2">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-600">Live Catalogue (${state.products.length} Products)</h3>
+            ${state.products.map(p => `
+              <div class="bg-white rounded-2xl p-3 border border-slate-200 flex items-center justify-between gap-2 text-xs">
+                <div class="min-w-0">
+                  <div class="flex items-center gap-1.5">
+                    <span class="font-extrabold text-slate-900 truncate">${p.name}</span>
+                  </div>
+                  <p class="text-[11px] text-slate-500">${p.category} • ${formatINR(p.pricePerCarton)}/ctn</p>
+                </div>
+                <button onclick="toggleNewArrival('${p.id}')" class="px-2.5 py-1 rounded-xl text-[10px] font-extrabold shrink-0 border ${p.isNewArrival ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-slate-100 text-slate-500 border-slate-200'}">
+                  ${p.isNewArrival ? '★ New Arrival' : 'Mark New'}
+                </button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function handleAddProduct(e) {
+      e.preventDefault();
+      const rawVideo = document.getElementById('newProdVideo').value.trim();
+      let embedUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ';
+      if (rawVideo.includes('watch?v=')) {
+        embedUrl = rawVideo.replace('watch?v=', 'embed/').split('&')[0];
+      } else if (rawVideo.includes('youtu.be/')) {
+        embedUrl = 'https://www.youtube.com/embed/' + rawVideo.split('youtu.be/')[1].split('?')[0];
+      } else if (rawVideo.startsWith('http')) {
+        embedUrl = rawVideo;
+      }
+
+      const newProd = {
+        id: 'PROD-0' + (state.products.length + 1),
+        sku: 'GM-NEW-' + Math.floor(100 + Math.random() * 900),
+        name: document.getElementById('newProdName').value.trim(),
+        category: document.getElementById('newProdCat').value,
+        isNewArrival: document.getElementById('newProdIsNew').checked,
+        pricePerCarton: Number(document.getElementById('newProdPrice').value) || 3500,
+        packSize: '10 Boxes × 100 Gloves (1,000 pcs/Carton)',
+        moq: 2,
+        offerBadge: document.getElementById('newProdOffer').value.trim(),
+        colorHex: '#1B3686',
+        accentHex: '#EEF3FF',
+        videoUrl: embedUrl,
+        videoLabel: 'Product Quality & Packaging Overview',
+        specs: {
+          material: 'Medical Grade Polymer',
+          aql: document.getElementById('newProdSpec').value.trim() || 'AQL 1.5 Medical Grade',
+          thickness: '5.0 mil Standard',
+          powderStatus: '100% Powder-Free',
+          length: '240 mm Beaded Cuff',
+          sizes: 'S, M, L, XL',
+          certifications: 'EN 455, ASTM, ISO 13485'
+        }
+      };
+
+      state.products.unshift(newProd);
+      saveState();
+      showToast('New product added to live customer catalogue!');
+      renderApp();
+    }
+
+    function toggleNewArrival(prodId) {
+      const p = state.products.find(x => x.id === prodId);
+      if (p) {
+        p.isNewArrival = !p.isNewArrival;
+        saveState();
+        renderApp();
+      }
+    }
+
+    function renderAdminBroadcast() {
+      return `
+        <div class="space-y-4 animate-in">
+          <div class="bg-gradient-to-r from-[#1B3686] to-[#294BB0] text-white rounded-3xl p-4 shadow">
+            <span class="text-[10px] font-extrabold uppercase tracking-wider bg-white/15 px-2.5 py-0.5 rounded-full">Zero WhatsApp Blocking</span>
+            <h2 class="text-base font-extrabold mt-1.5">State & Category Targeted Broadcasts</h2>
+            <p class="text-[11px] text-blue-100 mt-0.5">Send exhibition invites, new product launches & state offers directly inside GloveMeds—never flagged as spam.</p>
+          </div>
+
+          <form onsubmit="sendTargetedBroadcast(event)" class="bg-white rounded-3xl p-4 border border-slate-200 space-y-3 text-xs shadow-2xs">
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Target State *</label>
+                <select id="bcState" class="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-bold text-[#1B3686]">
+                  <option value="All">All India (All States)</option>
+                  <option value="Maharashtra">Maharashtra Only</option>
+                  <option value="Gujarat">Gujarat Only</option>
+                  <option value="Delhi">Delhi NCR Only</option>
+                  <option value="Karnataka">Karnataka Only</option>
+                  <option value="Tamil Nadu">Tamil Nadu Only</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Customer Category *</label>
+                <select id="bcCategory" class="w-full p-2.5 rounded-xl border border-slate-300 bg-slate-50 font-bold text-[#1B3686]">
+                  <option value="All">All Categories</option>
+                  <option value="Hospital">Hospitals Only</option>
+                  <option value="Wholesaler">Wholesalers Only</option>
+                  <option value="Pharmacy">Pharmacies Only</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Announcement Type *</label>
+              <select id="bcType" class="w-full p-2.5 rounded-xl border border-slate-300 bg-white font-semibold">
+                <option value="State Exhibition">🎪 State Medical Exhibition / Expo Invite</option>
+                <option value="New Arrival">✨ New Product Arrival</option>
+                <option value="Special Offer">🏷️ Special Product / State Offer</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Headline / Title *</label>
+              <input id="bcTitle" required placeholder="e.g. Meet GloveMeds at Ahmedabad Medical Expo — Stall C12" class="w-full p-2.5 rounded-xl border border-slate-300 font-semibold" />
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Message Details *</label>
+              <textarea id="bcMessage" required rows="3" placeholder="Enter exhibition venue, stall number, or offer validity..." class="w-full p-2.5 rounded-xl border border-slate-300"></textarea>
+            </div>
+
+            <button type="submit" class="w-full py-3 rounded-2xl bg-[#1B3686] hover:bg-brand-dark text-white font-extrabold text-xs shadow transition flex items-center justify-center gap-2">
+              <span>🚀 Send Targeted App Notification</span>
+            </button>
+          </form>
+
+          <!-- Broadcast History -->
+          <div class="space-y-2">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-600">Sent Broadcast History (${state.notifications.length})</h3>
+            ${state.notifications.map(n => `
+              <div class="bg-white rounded-2xl p-3 border border-slate-200 text-xs space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-extrabold text-[#1B3686] bg-brand-tint px-2 py-0.5 rounded">${n.targetState} • ${n.targetCategory}</span>
+                  <span class="text-[10px] text-slate-400">${n.date}</span>
+                </div>
+                <p class="font-extrabold text-slate-900">${n.title}</p>
+                <p class="text-[11px] text-slate-600">${n.message}</p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function sendTargetedBroadcast(e) {
+      e.preventDefault();
+      const targetState = document.getElementById('bcState').value;
+      const targetCategory = document.getElementById('bcCategory').value;
+      const type = document.getElementById('bcType').value;
+      const title = document.getElementById('bcTitle').value.trim();
+      const message = document.getElementById('bcMessage').value.trim();
+
+      state.notifications.unshift({
+        id: 'NOTIF-' + Date.now(),
+        type,
+        targetState,
+        targetCategory,
+        title,
+        message,
+        date: new Date().toISOString().split('T')[0],
+        readBy: []
+      });
+
+      saveState();
+      document.getElementById('bcTitle').value = '';
+      document.getElementById('bcMessage').value = '';
+      showToast(`Alert delivered strictly to ${targetState} (${targetCategory}) customers!`);
+      renderApp();
+    }
+
+    /*************************************************************************
+     * 11. MAIN APPLICATION SHELL & BOTTOM NAVIGATION ORCHESTRATOR
+     *************************************************************************/
+    function renderApp() {
+      const isCustomer = state.role === 'customer';
+
+      // Update Top Role Switcher Buttons
+      const btnCust = document.getElementById('btnRoleCustomer');
+      const btnAdm = document.getElementById('btnRoleAdmin');
+      btnCust.className = `px-3 py-1 rounded-lg text-xs font-bold transition-all ${isCustomer ? 'bg-[#1B3686] text-white shadow' : 'text-slate-300 hover:text-white'}`;
+      btnAdm.className = `px-3 py-1 rounded-lg text-xs font-bold transition-all ${!isCustomer ? 'bg-[#1B3686] text-white shadow' : 'text-slate-300 hover:text-white'}`;
+
+      // Toggle Customer Account Bar & Header Controls
+      const accountBar = document.getElementById('customerAccountBar');
+      const notifBtn = document.getElementById('headerNotifBtn');
+      const resetBtn = document.getElementById('headerResetBtn');
+
+      if (isCustomer) {
+        accountBar.classList.remove('hidden');
+        notifBtn.classList.remove('hidden');
+        resetBtn.classList.add('hidden');
+
+        // Populate Customer Account Switcher Dropdown
+        const select = document.getElementById('customerSelect');
+        select.innerHTML = state.customers.map(c => `
+          <option value="${c.id}" ${c.id === state.activeCustomerId ? 'selected' : ''}>
+            ${c.name} (${c.state} • ${c.category})
+          </option>
+        `).join('');
+
+        // Update Unread Notification Badge for Active Customer
+        const cust = getActiveCustomer();
+        const unreadCount = getCustomerNotifications(cust).filter(n => !n.readBy.includes(cust.id)).length;
+        const badge = document.getElementById('notifBadge');
+        if (unreadCount > 0) {
+          badge.textContent = unreadCount;
+          badge.classList.remove('hidden');
+        } else {
+          badge.classList.add('hidden');
+        }
+      } else {
+        accountBar.classList.add('hidden');
+        notifBtn.classList.add('hidden');
+        resetBtn.classList.remove('hidden');
+      }
+
+      // Render Main Content Area
+      const main = document.getElementById('mainContent');
+      if (isCustomer) {
+        if (state.customerTab === 'catalog') main.innerHTML = renderCustomerCatalog();
+        else if (state.customerTab === 'cart') main.innerHTML = renderCustomerCart();
+        else if (state.customerTab === 'orders') main.innerHTML = renderCustomerOrdersVault();
+        else if (state.customerTab === 'alerts') main.innerHTML = renderCustomerAlerts();
+      } else {
+        if (state.adminTab === 'dashboard') main.innerHTML = renderAdminDashboard();
+        else if (state.adminTab === 'orders') main.innerHTML = renderAdminOrders();
+        else if (state.adminTab === 'products') main.innerHTML = renderAdminProducts();
+        else if (state.adminTab === 'broadcast') main.innerHTML = renderAdminBroadcast();
+      }
+
+      // Render Bottom Navigation Bar
+      const bottomNav = document.getElementById('bottomNav');
+      if (isCustomer) {
+        const cartItemsCount = state.cart.reduce((s, c) => s + c.cartons, 0);
+        const cust = getActiveCustomer();
+        const unreadAlerts = getCustomerNotifications(cust).filter(n => !n.readBy.includes(cust.id)).length;
+
+        const custNavs = [
+          {
+            id: 'catalog',
+            label: 'Catalogue',
+            icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>`
+          },
+          {
+            id: 'cart',
+            label: 'Order Cart',
+            badge: cartItemsCount,
+            icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>`
+          },
+          {
+            id: 'orders',
+            label: 'Invoices & LR',
+            icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`
+          },
+          {
+            id: 'alerts',
+            label: 'State Alerts',
+            badge: unreadAlerts,
+            icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>`
+          }
+        ];
+
+        bottomNav.innerHTML = custNavs.map(item => {
+          const active = state.customerTab === item.id;
+          return `
+            <button onclick="switchCustomerTab('${item.id}')" class="relative flex-1 py-1.5 px-1 rounded-2xl flex flex-col items-center gap-0.5 transition ${active ? 'text-[#1B3686] bg-brand-tint font-extrabold' : 'text-slate-500 hover:text-slate-800 font-semibold'}">
+              ${item.icon}
+              <span class="text-[10px]">${item.label}</span>
+              ${item.badge > 0 ? `<span class="absolute top-1 right-4 bg-rose-600 text-white text-[9px] font-extrabold px-1.5 rounded-full">${item.badge}</span>` : ''}
+            </button>
+          `;
+        }).join('');
+      } else {
+        const adminNavs = [
+          {
+            id: 'dashboard',
+            label: 'Overview',
+            icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>`
+          },
+          {
+            id: 'orders',
+            label: 'Orders & LR',
+            icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`
+          },
+          {
+            id: 'products',
+            label: 'Products',
+            icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`
+          },
+          {
+            id: 'broadcast',
+            label: 'State Alerts',
+            icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>`
+          }
+        ];
+
+        bottomNav.innerHTML = adminNavs.map(item => {
+          const active = state.adminTab === item.id;
+          return `
+            <button onclick="switchAdminTab('${item.id}')" class="flex-1 py-1.5 px-1 rounded-2xl flex flex-col items-center gap-0.5 transition ${active ? 'text-[#1B3686] bg-brand-tint font-extrabold' : 'text-slate-500 hover:text-slate-800 font-semibold'}">
+              ${item.icon}
+              <span class="text-[10px]">${item.label}</span>
+            </button>
+          `;
+        }).join('');
+      }
+    }
+
+    // Initialize PWA App on Load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderApp();
+    });
+  </script>
+</body>
+</html>
