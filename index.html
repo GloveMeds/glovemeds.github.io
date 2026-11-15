@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#1B3686" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="GloveMeds" />
   <title>GloveMeds</title>
+  <link rel="manifest" href="data:application/manifest+json,{"name":"GloveMeds","short_name":"GloveMeds","start_url":".","display":"standalone","background_color":"%231B3686","theme_color":"%231B3686"}" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background: #f1f5f9; color: #1e293b; }
@@ -19,7 +22,7 @@
     .btn-primary:disabled { opacity: 0.6; }
     .btn-outline { width: 100%; background: #EEF3FF; color: #1B3686; border: 1px solid #c7d2fe; padding: 11px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; margin-top: 10px; }
     .err-box { background: #fef2f2; color: #dc2626; font-size: 12px; font-weight: 600; padding: 10px; border-radius: 8px; margin-top: 12px; }
-    #appScreen { max-width: 540px; margin: 0 auto; min-height: 100vh; background: #f8fafc; padding-bottom: 84px; box-shadow: 0 0 20px rgba(0,0,0,0.08); }
+    #appScreen { max-width: 560px; margin: 0 auto; min-height: 100vh; background: #f8fafc; padding-bottom: 84px; box-shadow: 0 0 20px rgba(0,0,0,0.08); }
     header { background: #1B3686; color: #fff; padding: 14px 16px; position: sticky; top: 0; z-index: 20; display: flex; justify-content: space-between; align-items: center; }
     .badge-pill { background: rgba(255,255,255,0.2); font-size: 10px; padding: 2px 8px; border-radius: 99px; font-weight: 700; margin-left: 6px; text-transform: uppercase; }
     .btn-header { background: rgba(255,255,255,0.18); color: #fff; border: none; padding: 7px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; }
@@ -39,13 +42,14 @@
     .btn-tint { background: #EEF3FF; color: #1B3686; }
     .btn-amber { background: #fef3c7; color: #92400e; }
     .btn-green { background: #dcfce7; color: #166534; }
+    .btn-red { background: #fee2e2; color: #b91c1c; }
     .new-tag { background: #dcfce7; color: #166534; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 99px; }
-    nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 540px; margin: 0 auto; background: #fff; border-top: 1px solid #e2e8f0; display: grid; grid-template-columns: repeat(4, 1fr); padding: 10px 0; text-align: center; z-index: 20; }
+    nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 560px; margin: 0 auto; background: #fff; border-top: 1px solid #e2e8f0; display: grid; grid-template-columns: repeat(4, 1fr); padding: 10px 0; text-align: center; z-index: 20; }
     nav button { background: none; border: none; font-size: 12px; font-weight: 600; color: #64748b; cursor: pointer; }
     nav button.active { color: #1B3686; font-weight: 800; }
     .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50; }
     .modal-card { background: #fff; border-radius: 20px; padding: 22px; max-width: 360px; width: 100%; }
-    .sub-tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-bottom: 14px; }
+    .sub-tabs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 14px; }
     .sub-tab-btn { padding: 8px 2px; border-radius: 10px; border: 1px solid #cbd5e1; background: #fff; font-size: 10px; font-weight: 700; color: #475569; cursor: pointer; }
     .sub-tab-btn.active { background: #1B3686; color: #fff; border-color: #1B3686; }
     .filter-pills { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
@@ -61,7 +65,7 @@
     <div class="card-login">
       <div style="text-align:center; margin-bottom:14px;">
         <div class="logo-badge">GloveMeds</div>
-        <p style="color:#64748b; font-size:13px; margin-top:8px;">B2B Medical Gloves Ordering Portal</p>
+        <p style="color:#64748b; font-size:13px; margin-top:8px;">B2B Gloves ordering portal</p>
       </div>
 
       <!-- SIGN IN BOX -->
@@ -113,7 +117,7 @@
         </div>
         <div class="grid-2">
           <div>
-            <label class="field-label">Preferred Transport Name</label>
+            <label class="field-label">Transport Name</label>
             <input id="regTransport" type="text" placeholder="e.g. VRL Logistics" class="input-box" />
           </div>
           <div>
@@ -186,6 +190,7 @@
     <div id="adminView" class="container hidden">
       <div class="sub-tabs">
         <button type="button" onclick="switchAdminTab('Orders')" id="admBtnOrders" class="sub-tab-btn active">Orders</button>
+        <button type="button" onclick="switchAdminTab('Products')" id="admBtnProducts" class="sub-tab-btn">Products</button>
         <button type="button" onclick="switchAdminTab('Upload')" id="admBtnUpload" class="sub-tab-btn">Invoice/LR</button>
         <button type="button" onclick="switchAdminTab('Payments')" id="admBtnPayments" class="sub-tab-btn">Payments</button>
         <button type="button" onclick="switchAdminTab('Customers')" id="admBtnCustomers" class="sub-tab-btn">Customers</button>
@@ -198,7 +203,51 @@
         <div id="adminOrdersList"></div>
       </div>
 
-      <!-- ADMIN 2: UPLOAD INVOICE & LR -->
+      <!-- ADMIN 2: PRODUCTS MANAGER (ADD IMAGES, SPECS, VIDEOS, RATES) -->
+      <div id="admTabProducts" class="hidden">
+        <div class="item-card">
+          <strong style="font-size:15px; color:#1B3686;">Add New Glove Product</strong>
+          <div>
+            <label class="field-label">Product Name *</label>
+            <input id="prodName" type="text" placeholder="e.g. Nitrile Examination Gloves (Black)" class="input-box" />
+            <div class="grid-2">
+              <div>
+                <label class="field-label">Category *</label>
+                <input id="prodCat" type="text" placeholder="e.g. Nitrile Examination" class="input-box" />
+              </div>
+              <div>
+                <label class="field-label">New Arrival Tag</label>
+                <select id="prodNew" class="input-box">
+                  <option value="true">Yes (Show NEW Badge)</option>
+                  <option value="false">No (Standard)</option>
+                </select>
+              </div>
+            </div>
+            <label class="field-label">Specifications (AQL, Thickness, Box Packing)</label>
+            <input id="prodSpecs" type="text" placeholder="e.g. AQL 1.5 • 4.5 Mil • Powder-Free • Box of 100" class="input-box" />
+            <div class="grid-2">
+              <div>
+                <label class="field-label">Base Retail/Hospital Rate (₹) *</label>
+                <input id="prodRetPrice" type="number" placeholder="e.g. 450" class="input-box" />
+              </div>
+              <div>
+                <label class="field-label">Base Distributor/Bulk Rate (₹) *</label>
+                <input id="prodDistPrice" type="number" placeholder="e.g. 380" class="input-box" />
+              </div>
+            </div>
+            <label class="field-label">Upload Product Photo</label>
+            <input id="prodImgFile" type="file" accept="image/*" class="input-box" />
+            <label class="field-label">Product Video Link (YouTube / Google Drive)</label>
+            <input id="prodVideoUrl" type="url" placeholder="https://youtube.com/..." class="input-box" />
+            <button id="addProdBtn" type="button" onclick="adminAddProduct()" class="btn-primary">Publish Product to Catalogue</button>
+          </div>
+        </div>
+
+        <strong style="font-size:14px; display:block; margin-bottom:8px;">Current Catalogue Items</strong>
+        <div id="adminProductsList"></div>
+      </div>
+
+      <!-- ADMIN 3: UPLOAD INVOICE & LR -->
       <div id="admTabUpload" class="hidden">
         <div class="item-card">
           <strong style="font-size:15px; color:#1B3686;">Upload Invoice & Transport Docket</strong>
@@ -241,7 +290,7 @@
         </div>
       </div>
 
-      <!-- ADMIN 3: PAYMENT REMINDERS (ADVANCE / 7 / 15 / 30 DAYS) -->
+      <!-- ADMIN 4: PAYMENT REMINDERS -->
       <div id="admTabPayments" class="hidden">
         <strong style="font-size:15px; display:block; margin-bottom:8px;">Payment Reminder Tracker</strong>
         <div class="filter-pills">
@@ -254,12 +303,31 @@
         <div id="adminPaymentsList"></div>
       </div>
 
-      <!-- ADMIN 4: CUSTOMERS, RETAILER MAPPING & DISTRIBUTOR HANDOVER -->
+      <!-- ADMIN 5: CUSTOMERS, INDIVIDUAL RATES & DISTRIBUTOR MAPPING -->
       <div id="admTabCustomers" class="hidden">
-        <!-- DISTRIBUTOR HANDOVER / RETAILER LIST EXPORT TOOL -->
+        <!-- INDIVIDUAL CUSTOMER RATE CARD SETTER -->
+        <div class="item-card" style="background:#f0fdf4; border-color:#bbf7d0;">
+          <strong style="font-size:14px; color:#166534;">Set Special Rate for Individual Customer</strong>
+          <p style="font-size:11px; color:#15803d; margin-top:3px;">Assign a custom rate for any specific customer. They will see only their rate when ordering.</p>
+          <label class="field-label">Select Customer</label>
+          <select id="rateCustomerId" onchange="renderCustomerCustomRates()" class="input-box"></select>
+          <div class="grid-2">
+            <div>
+              <label class="field-label">Select Product</label>
+              <select id="rateProductId" class="input-box"></select>
+            </div>
+            <div>
+              <label class="field-label">Special Rate (₹) *</label>
+              <input id="rateCustomPrice" type="number" placeholder="e.g. 345" class="input-box" />
+            </div>
+          </div>
+          <button type="button" onclick="saveCustomerCustomRate()" class="btn-primary" style="background:#15803d;">Save Customer Rate</button>
+          <div id="customerRatesPreview" style="font-size:12px; color:#1e293b; margin-top:8px;"></div>
+        </div>
+
+        <!-- DISTRIBUTOR HANDOVER / RETAILER LIST -->
         <div class="item-card" style="background:#EEF3FF; border-color:#c7d2fe;">
           <strong style="font-size:14px; color:#1B3686;">Distributor Area Handover & Retailer List</strong>
-          <p style="font-size:11px; color:#475569; margin-top:3px;">View/copy all retailers under a Distributor or transfer them to a new Distributor in 1 click.</p>
           <label class="field-label">Select Current Distributor / Dealer</label>
           <select id="handoverFromPartner" onchange="renderPartnerRetailerList()" class="input-box"></select>
           <div id="partnerRetailerPreview" style="font-size:12px; color:#1e293b; margin-top:8px; background:#fff; padding:10px; border-radius:10px; border:1px solid #cbd5e1;"></div>
@@ -325,12 +393,11 @@
           </div>
         </div>
 
-        <!-- ALL REGISTERED CUSTOMERS WITH QUICK REASSIGN -->
         <strong style="font-size:14px; display:block; margin-bottom:8px;">All Registered Customers</strong>
         <div id="adminCustomersList"></div>
       </div>
 
-      <!-- ADMIN 5: STATE & CATEGORY ALERTS -->
+      <!-- ADMIN 6: STATE & CATEGORY ALERTS -->
       <div id="admTabAlerts" class="hidden">
         <div class="item-card">
           <strong style="font-size:15px; color:#1B3686;">Send State / Category Notification</strong>
@@ -373,7 +440,7 @@
   <div id="qrModal" class="modal-bg hidden">
     <div class="modal-card" style="text-align:center;">
       <strong style="color:#1B3686; font-size:17px;">GloveMeds 1-Time Scan</strong>
-      <p style="font-size:12px; color:#475569; margin:10px 0;">Scan once, then tap <b>Add to Home Screen</b> in your browser to bookmark and order anytime.</p>
+      <p style="font-size:12px; color:#475569; margin:10px 0;">Scan once, then tap <b>Add to Home Screen</b> in your browser — it saves as <b>GloveMeds</b> on your phone.</p>
       <img id="qrImg" style="width:180px; height:180px; margin:10px auto; display:block;" />
       <button type="button" onclick="document.getElementById('qrModal').classList.add('hidden')" class="btn-primary" style="background:#334155;">Close</button>
     </div>
@@ -407,10 +474,12 @@
       return await res.json();
     }
 
-    async function sbInsert(table, payload) {
+    async function sbInsert(table, payload, upsert = false) {
+      const h = { ...HEADERS };
+      if (upsert) h["Prefer"] = "resolution=merge-duplicates,return=representation";
       const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
         method: "POST",
-        headers: HEADERS,
+        headers: h,
         body: JSON.stringify(payload)
       });
       if (!res.ok) throw new Error(await res.text());
@@ -427,11 +496,21 @@
       return await res.json();
     }
 
+    async function sbDelete(table, query) {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${query}`, {
+        method: "DELETE",
+        headers: HEADERS
+      });
+      if (!res.ok) throw new Error(await res.text());
+    }
+
     let CURRENT_USER = null;
     let PRODUCTS = [];
+    let MY_CUSTOM_RATES = [];
     let CART = [];
     let ADMIN_INVOICES = [];
     let ADMIN_CUSTOMERS = [];
+    let ADMIN_RATES = [];
     let PAY_FILTER = 'All';
 
     function toggleAuthMode(mode) {
@@ -534,20 +613,24 @@
     }
 
     function getUnitPrice(prod) {
+      const custom = MY_CUSTOM_RATES.find(r => r.product_id === prod.product_id);
+      if (custom) return Number(custom.custom_price);
       const bulkCategories = ['Distributor', 'Wholesaler', 'Dealer', 'Trader'];
       return bulkCategories.includes(CURRENT_USER.category) ? Number(prod.distributor_price) : Number(prod.retailer_price);
     }
 
     async function loadCustomerData() {
-      const [prods, ords, invs, alts, partners] = await Promise.all([
+      const [prods, ords, invs, alts, rates, partners] = await Promise.all([
         sbSelect('products', 'order=created_at.desc'),
         sbSelect('orders', `customer_id=eq.${encodeURIComponent(CURRENT_USER.customer_id)}&order=created_at.desc`),
         sbSelect('invoices_lr', `customer_id=eq.${encodeURIComponent(CURRENT_USER.customer_id)}&order=created_at.desc`),
         sbSelect('alerts', 'order=created_at.desc'),
+        sbSelect('customer_rates', `customer_id=eq.${encodeURIComponent(CURRENT_USER.customer_id)}`),
         CURRENT_USER.assigned_partner_id ? sbSelect('customers', `customer_id=eq.${encodeURIComponent(CURRENT_USER.assigned_partner_id)}`) : Promise.resolve([])
       ]);
 
       PRODUCTS = prods || [];
+      MY_CUSTOM_RATES = rates || [];
       renderAssignedPartner(partners && partners[0] ? partners[0] : null);
 
       const myInvoices = invs || [];
@@ -638,7 +721,7 @@
             <div class="size-cell"><label>SIZE XL</label><input id="qty_${p.product_id}_XL" type="number" min="0" placeholder="0" class="size-input" /></div>
           </div>
           <div class="prod-footer">
-            <div><strong style="color:#1B3686; font-size:16px;">₹${price}</strong> <span style="font-size:11px; color:#94a3b8;">(${CURRENT_USER.category} Rate)</span></div>
+            <div><strong style="color:#1B3686; font-size:16px;">₹${price}</strong> <span style="font-size:11px; color:#94a3b8;">(Your Rate)</span></div>
             <div style="display:flex; gap:6px;">
               ${p.video_url ? `<a href="${p.video_url}" target="_blank" class="btn-sm btn-tint">Video</a>` : ''}
               <button type="button" onclick="addProductSizes('${p.product_id}')" class="btn-sm">+ Add</button>
@@ -760,14 +843,18 @@
 
     /* ADMIN PANEL FUNCTIONS */
     async function loadAdminData() {
-      const [ords, custs, invs] = await Promise.all([
+      const [ords, custs, invs, prods, rates] = await Promise.all([
         sbSelect('orders', 'order=created_at.desc'),
         sbSelect('customers', 'category=neq.Admin&order=company_name.asc'),
-        sbSelect('invoices_lr', 'order=created_at.desc')
+        sbSelect('invoices_lr', 'order=created_at.desc'),
+        sbSelect('products', 'order=created_at.desc'),
+        sbSelect('customer_rates', '')
       ]);
 
       ADMIN_CUSTOMERS = custs || [];
       ADMIN_INVOICES = invs || [];
+      PRODUCTS = prods || [];
+      ADMIN_RATES = rates || [];
 
       const ordBox = document.getElementById('adminOrdersList');
       ordBox.innerHTML = (ords && ords.length) ? ords.map(o => {
@@ -791,9 +878,26 @@
         </div>`;
       }).join('') : '<p style="font-size:12px; color:#94a3b8;">No orders yet.</p>';
 
-      const sel = document.getElementById('docCustomerId');
-      sel.innerHTML = ADMIN_CUSTOMERS.map(c => `<option value="${c.customer_id}">${c.company_name} (${c.category} - ${c.city || c.state})</option>`).join('');
+      // Render Admin Products List
+      const admProdBox = document.getElementById('adminProductsList');
+      admProdBox.innerHTML = PRODUCTS.length ? PRODUCTS.map(p => `
+        <div class="item-card" style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+          <div style="display:flex; gap:10px; align-items:center;">
+            <img src="${p.image_url || 'https://placehold.co/80x80/EEF3FF/1B3686?text=GM'}" style="width:52px; height:52px; border-radius:10px; object-fit:cover;" />
+            <div>
+              <strong style="font-size:13px;">${p.name}</strong>
+              <div style="font-size:11px; color:#64748b;">${p.category} • Retail: ₹${p.retailer_price} | Bulk: ₹${p.distributor_price}</div>
+            </div>
+          </div>
+          <button type="button" onclick="adminDeleteProduct('${p.product_id}')" class="btn-sm btn-red">Delete</button>
+        </div>`).join('') : '<p style="font-size:12px; color:#94a3b8;">No products added yet.</p>';
+
+      const custOpts = ADMIN_CUSTOMERS.map(c => `<option value="${c.customer_id}">${c.company_name} (${c.category} - ${c.city || c.state})</option>`).join('');
+      document.getElementById('docCustomerId').innerHTML = custOpts;
+      document.getElementById('rateCustomerId').innerHTML = custOpts;
+      document.getElementById('rateProductId').innerHTML = PRODUCTS.map(p => `<option value="${p.product_id}">${p.name}</option>`).join('');
       autoFillCustomerTransport();
+      renderCustomerCustomRates();
 
       const partners = ADMIN_CUSTOMERS.filter(c => c.category === 'Distributor' || c.category === 'Dealer');
       const partnerOpts = `<option value="">-- Direct / Unassigned --</option>` + partners.map(p => `<option value="${p.customer_id}">${p.company_name} (${p.category} • ${p.city || p.state})</option>`).join('');
@@ -819,12 +923,10 @@
 
         return `
         <div class="item-card" style="padding:12px 14px; margin-bottom:8px;">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-            <div>
-              <strong style="font-size:13px;">${c.company_name}</strong>
-              <div style="font-size:11px; color:#64748b;">${c.mobile} • <b>${c.category}</b> • ${c.city ? c.city + ', ' : ''}${c.state}</div>
-              <div style="font-size:11px; color:#475569; margin-top:2px;">Transport: <b>${c.transport_name || 'N/A'}</b> • GST: <b>${c.gstin || 'N/A'}</b></div>
-            </div>
+          <div>
+            <strong style="font-size:13px;">${c.company_name}</strong>
+            <div style="font-size:11px; color:#64748b;">${c.mobile} • <b>${c.category}</b> • ${c.city ? c.city + ', ' : ''}${c.state}</div>
+            <div style="font-size:11px; color:#475569; margin-top:2px;">Transport: <b>${c.transport_name || 'N/A'}</b> • GST: <b>${c.gstin || 'N/A'}</b></div>
           </div>
           ${assignDropdown}
         </div>`;
@@ -833,21 +935,89 @@
       renderAdminPayments();
     }
 
+    async function adminAddProduct() {
+      const name = document.getElementById('prodName').value.trim();
+      const category = document.getElementById('prodCat').value.trim();
+      const retailer_price = Number(document.getElementById('prodRetPrice').value) || 0;
+      const distributor_price = Number(document.getElementById('prodDistPrice').value) || 0;
+      if (!name || !category || !retailer_price) { alert('Enter Product Name, Category, and Rate.'); return; }
+
+      const btn = document.getElementById('addProdBtn');
+      btn.disabled = true; btn.textContent = 'Publishing Product...';
+      try {
+        const image_url = await uploadFileRest('prodImgFile', 'PROD');
+        await sbInsert('products', {
+          product_id: 'GM-' + Math.floor(100 + Math.random() * 900),
+          name, category,
+          is_new_arrival: document.getElementById('prodNew').value === 'true',
+          specs: document.getElementById('prodSpecs').value.trim(),
+          retailer_price,
+          distributor_price: distributor_price || retailer_price,
+          image_url,
+          video_url: document.getElementById('prodVideoUrl').value.trim()
+        });
+        alert('Product added to GloveMeds catalogue!');
+        document.getElementById('prodName').value = '';
+        document.getElementById('prodCat').value = '';
+        document.getElementById('prodSpecs').value = '';
+        document.getElementById('prodRetPrice').value = '';
+        document.getElementById('prodDistPrice').value = '';
+        document.getElementById('prodImgFile').value = '';
+        document.getElementById('prodVideoUrl').value = '';
+        loadAdminData();
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+      btn.disabled = false; btn.textContent = 'Publish Product to Catalogue';
+    }
+
+    async function adminDeleteProduct(pid) {
+      if (!confirm('Remove this product from catalogue?')) return;
+      try {
+        await sbDelete('products', `product_id=eq.${encodeURIComponent(pid)}`);
+        loadAdminData();
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    }
+
+    function renderCustomerCustomRates() {
+      const cid = document.getElementById('rateCustomerId').value;
+      const box = document.getElementById('customerRatesPreview');
+      const list = ADMIN_RATES.filter(r => r.customer_id === cid);
+      if (!list.length) { box.innerHTML = '<span style="color:#64748b;">Using default category rates for this customer.</span>'; return; }
+      box.innerHTML = '<b>Active Custom Rates:</b><br/>' + list.map(r => {
+        const p = PRODUCTS.find(x => x.product_id === r.product_id);
+        return `• ${p ? p.name : r.product_id}: <b>₹${r.custom_price}</b>`;
+      }).join('<br/>');
+    }
+
+    async function saveCustomerCustomRate() {
+      const customer_id = document.getElementById('rateCustomerId').value;
+      const product_id = document.getElementById('rateProductId').value;
+      const custom_price = Number(document.getElementById('rateCustomPrice').value);
+      if (!customer_id || !product_id || !custom_price) { alert('Select Customer, Product, and enter Special Rate.'); return; }
+      try {
+        await sbInsert('customer_rates', { customer_id, product_id, custom_price }, true);
+        alert('Custom rate saved for this customer!');
+        document.getElementById('rateCustomPrice').value = '';
+        loadAdminData();
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    }
+
     function autoFillCustomerTransport() {
       const cid = document.getElementById('docCustomerId').value;
       const cust = ADMIN_CUSTOMERS.find(c => c.customer_id === cid);
-      if (cust && cust.transport_name) {
-        document.getElementById('docTransporter').value = cust.transport_name;
-      }
+      if (cust && cust.transport_name) document.getElementById('docTransporter').value = cust.transport_name;
     }
 
     async function reassignSingleRetailer(retailerId, partnerId) {
       try {
         await sbPatch('customers', `customer_id=eq.${encodeURIComponent(retailerId)}`, { assigned_partner_id: partnerId });
         loadAdminData();
-      } catch (err) {
-        alert('Error updating assignment: ' + err.message);
-      }
+      } catch (err) { alert('Error: ' + err.message); }
     }
 
     function renderPartnerRetailerList() {
@@ -855,10 +1025,7 @@
       const box = document.getElementById('partnerRetailerPreview');
       if (!partnerId) { box.innerHTML = 'No distributor selected.'; return; }
       const retailers = ADMIN_CUSTOMERS.filter(c => c.category === 'Retailer' && c.assigned_partner_id === partnerId);
-      if (!retailers.length) {
-        box.innerHTML = '0 retailers currently mapped to this Distributor/Dealer.';
-        return;
-      }
+      if (!retailers.length) { box.innerHTML = '0 retailers currently mapped to this Distributor/Dealer.'; return; }
       box.innerHTML = `<b>${retailers.length} Mapped Retailer(s):</b><br/>` + retailers.map((r, i) =>
         `${i + 1}. ${r.company_name} — ${r.city || r.state} (Mob: ${r.mobile})`
       ).join('<br/>');
@@ -872,22 +1039,20 @@
       const text = `GloveMeds Area Retailer List (${partner ? partner.company_name : ''}):\n` +
         retailers.map((r, i) => `${i + 1}. ${r.company_name} | ${r.city || ''}, ${r.state} | Mob: ${r.mobile}`).join('\n');
       navigator.clipboard.writeText(text);
-      alert('Retailer list copied! You can paste and share it with your distributor anytime.');
+      alert('Retailer list copied!');
     }
 
     async function bulkTransferRetailers() {
       const fromId = document.getElementById('handoverFromPartner').value;
       const toId = document.getElementById('handoverToPartner').value;
-      if (!fromId || !toId || fromId === toId) { alert('Select two different Distributors/Dealers to transfer.'); return; }
+      if (!fromId || !toId || fromId === toId) { alert('Select two different Distributors/Dealers.'); return; }
       const retailers = ADMIN_CUSTOMERS.filter(c => c.category === 'Retailer' && c.assigned_partner_id === fromId);
       if (!retailers.length) { alert('No retailers under the selected distributor.'); return; }
       try {
         await sbPatch('customers', `assigned_partner_id=eq.${encodeURIComponent(fromId)}`, { assigned_partner_id: toId });
-        alert(`Transferred ${retailers.length} retailer(s) to the new Distributor!`);
+        alert(`Transferred ${retailers.length} retailer(s) to new Distributor!`);
         loadAdminData();
-      } catch (err) {
-        alert('Transfer error: ' + err.message);
-      }
+      } catch (err) { alert('Transfer error: ' + err.message); }
     }
 
     function filterPayments(term) {
@@ -904,12 +1069,7 @@
         inv.payment_status !== 'Paid' &&
         (PAY_FILTER === 'All' || String(inv.credit_days) === String(PAY_FILTER))
       );
-
-      if (!list.length) {
-        box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:24px 0;">No pending invoices in this bucket.</p>';
-        return;
-      }
-
+      if (!list.length) { box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:24px 0;">No pending invoices in this bucket.</p>'; return; }
       box.innerHTML = list.map(inv => {
         const cust = ADMIN_CUSTOMERS.find(c => c.customer_id === inv.customer_id) || { company_name: inv.customer_id };
         const term = String(inv.credit_days || '15');
@@ -923,7 +1083,6 @@
             ? `<span style="background:#fee2e2; color:#b91c1c; font-size:10px; font-weight:800; padding:2px 8px; border-radius:99px;">OVERDUE (${Math.abs(daysLeft)}d)</span>`
             : `<span style="background:#fef3c7; color:#92400e; font-size:10px; font-weight:800; padding:2px 8px; border-radius:99px;">Due in ${daysLeft}d</span>`;
         }
-
         return `
           <div class="item-card">
             <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -943,24 +1102,18 @@
       try {
         await sbInsert('alerts', {
           title: 'Payment Reminder: Invoice #' + invNo,
-          message: `Friendly reminder: ₹${amt} for Invoice #${invNo} (${term === 'Advance' ? 'Advance' : term + ' Days'} terms) is pending. Kindly remit payment at your earliest convenience.`,
-          target_state: 'All',
-          target_category: 'All',
-          offer_code: 'DUE'
+          message: `Friendly reminder: ₹${amt} for Invoice #${invNo} (${term === 'Advance' ? 'Advance' : term + ' Days'} terms) is pending.`,
+          target_state: 'All', target_category: 'All', offer_code: 'DUE'
         });
         alert('Payment reminder alert published!');
-      } catch (err) {
-        alert('Error: ' + err.message);
-      }
+      } catch (err) { alert('Error: ' + err.message); }
     }
 
     async function markInvoicePaid(id) {
       try {
         await sbPatch('invoices_lr', `id=eq.${id}`, { payment_status: 'Paid' });
         loadAdminData();
-      } catch (err) {
-        alert('Error: ' + err.message);
-      }
+      } catch (err) { alert('Error: ' + err.message); }
     }
 
     async function uploadFileRest(fileInputId, prefix) {
@@ -969,4 +1122,117 @@
       const path = `${prefix}_${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
       const res = await fetch(`${SUPABASE_URL}/storage/v1/object/glovemeds-docs/${path}`, {
         method: "POST",
-        headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUP
+        headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY, "Content-Type": file.type || "application/octet-stream" },
+        body: file
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return `${SUPABASE_URL}/storage/v1/object/public/glovemeds-docs/${path}`;
+    }
+
+    async function adminUploadDoc() {
+      const invNo = document.getElementById('docInvoiceNo').value.trim();
+      const amount = Number(document.getElementById('docAmount').value) || 0;
+      const creditDays = document.getElementById('docCreditDays').value;
+      if (!invNo) { alert('Enter Invoice Number.'); return; }
+      const btn = document.getElementById('uploadDocBtn');
+      btn.disabled = true; btn.textContent = 'Uploading...';
+      try {
+        const invUrl = await uploadFileRest('docInvoiceFile', 'INV');
+        const lrUrl = await uploadFileRest('docLrFile', 'LR');
+        await sbInsert('invoices_lr', {
+          customer_id: document.getElementById('docCustomerId').value,
+          invoice_no: invNo, amount, credit_days: creditDays, payment_status: 'Unpaid',
+          invoice_pdf_url: invUrl,
+          transporter: document.getElementById('docTransporter').value.trim(),
+          lr_no: document.getElementById('docLrNo').value.trim(),
+          lr_copy_url: lrUrl
+        });
+        alert('Invoice & Transport Docket uploaded!');
+        document.getElementById('docInvoiceNo').value = '';
+        document.getElementById('docAmount').value = '';
+        document.getElementById('docInvoiceFile').value = '';
+        document.getElementById('docTransporter').value = '';
+        document.getElementById('docLrNo').value = '';
+        document.getElementById('docLrFile').value = '';
+        loadAdminData();
+      } catch (err) { alert('Upload error: ' + err.message); }
+      btn.disabled = false; btn.textContent = 'Upload to Customer Vault';
+    }
+
+    async function adminAddCustomer() {
+      const name = document.getElementById('custName').value.trim();
+      const mobile = document.getElementById('custMobile').value.trim();
+      const pin = document.getElementById('custPin').value.trim();
+      const state = document.getElementById('custState').value.trim();
+      const city = document.getElementById('custCity').value.trim();
+      if (!name || !mobile || !pin || !state || !city) { alert('Fill Company, Mobile, PIN, State, and City.'); return; }
+      try {
+        await sbInsert('customers', {
+          customer_id: 'CUST-' + Math.floor(1000 + Math.random() * 9000),
+          company_name: name, mobile, pin,
+          category: document.getElementById('custCategory').value,
+          state, city,
+          transport_name: document.getElementById('custTransport').value.trim(),
+          gstin: document.getElementById('custGst').value.trim(),
+          assigned_partner_id: document.getElementById('custAssignedPartner').value
+        });
+        alert('Customer account created!');
+        document.getElementById('custName').value = '';
+        document.getElementById('custMobile').value = '';
+        document.getElementById('custPin').value = '';
+        document.getElementById('custState').value = '';
+        document.getElementById('custCity').value = '';
+        document.getElementById('custTransport').value = '';
+        document.getElementById('custGst').value = '';
+        loadAdminData();
+      } catch (err) { alert('Error: ' + err.message); }
+    }
+
+    async function adminSendAlert() {
+      const title = document.getElementById('alertTitle').value.trim();
+      const msg = document.getElementById('alertMsg').value.trim();
+      if (!title || !msg) { alert('Enter Title and Message.'); return; }
+      try {
+        await sbInsert('alerts', {
+          title, message: msg,
+          target_state: document.getElementById('alertState').value.trim() || 'All',
+          target_category: document.getElementById('alertCat').value,
+          offer_code: document.getElementById('alertCode').value.trim()
+        });
+        alert('Notification published!');
+        document.getElementById('alertTitle').value = '';
+        document.getElementById('alertMsg').value = '';
+        document.getElementById('alertCode').value = '';
+      } catch (err) { alert('Error: ' + err.message); }
+    }
+
+    function switchTab(name) {
+      ['Catalogue', 'Cart', 'Invoices', 'Orders'].forEach(t => {
+        document.getElementById('tab' + t).classList.toggle('hidden', t !== name);
+        document.getElementById('nav' + t).classList.toggle('active', t === name);
+      });
+    }
+
+    function switchAdminTab(name) {
+      ['Orders', 'Products', 'Upload', 'Payments', 'Customers', 'Alerts'].forEach(t => {
+        document.getElementById('admTab' + t).classList.toggle('hidden', t !== name);
+        document.getElementById('admBtn' + t).classList.toggle('active', t === name);
+      });
+    }
+
+    function openQrModal() {
+      document.getElementById('qrModal').classList.remove('hidden');
+      document.getElementById('qrImg').src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&color=1B3686&data=' + encodeURIComponent(window.location.origin + window.location.pathname);
+    }
+
+    function logout() {
+      CURRENT_USER = null; CART = [];
+      document.getElementById('appScreen').classList.add('hidden');
+      document.getElementById('customerView').classList.add('hidden');
+      document.getElementById('customerNav').classList.add('hidden');
+      document.getElementById('adminView').classList.add('hidden');
+      document.getElementById('loginScreen').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
