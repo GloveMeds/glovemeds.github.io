@@ -10,20 +10,22 @@
     body { background: #f1f5f9; color: #1e293b; }
     .hidden { display: none !important; }
     #loginScreen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: linear-gradient(180deg, #1B3686 0%, #12255E 100%); }
-    .card-login { background: #fff; width: 100%; max-width: 400px; border-radius: 24px; padding: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); }
+    .card-login { background: #fff; width: 100%; max-width: 400px; border-radius: 24px; padding: 26px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); }
     .logo-badge { display: inline-block; background: #1B3686; color: #fff; font-weight: 800; font-size: 26px; padding: 10px 24px; border-radius: 14px; letter-spacing: -0.02em; }
-    .field-label { display: block; font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin: 14px 0 5px; }
+    .field-label { display: block; font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin: 12px 0 4px; }
     .input-box { width: 100%; padding: 11px 13px; border: 1px solid #cbd5e1; border-radius: 11px; font-size: 15px; outline: none; background: #fff; }
     .input-box:focus { border-color: #1B3686; }
     .btn-primary { width: 100%; background: #1B3686; color: #fff; border: none; padding: 13px; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 16px; }
     .btn-primary:disabled { opacity: 0.6; }
+    .btn-outline { width: 100%; background: #EEF3FF; color: #1B3686; border: 1px solid #c7d2fe; padding: 11px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; margin-top: 10px; }
     .err-box { background: #fef2f2; color: #dc2626; font-size: 12px; font-weight: 600; padding: 10px; border-radius: 8px; margin-top: 12px; }
-    #appScreen { max-width: 500px; margin: 0 auto; min-height: 100vh; background: #f8fafc; padding-bottom: 84px; box-shadow: 0 0 20px rgba(0,0,0,0.08); }
+    #appScreen { max-width: 520px; margin: 0 auto; min-height: 100vh; background: #f8fafc; padding-bottom: 84px; box-shadow: 0 0 20px rgba(0,0,0,0.08); }
     header { background: #1B3686; color: #fff; padding: 14px 16px; position: sticky; top: 0; z-index: 20; display: flex; justify-content: space-between; align-items: center; }
     .badge-pill { background: rgba(255,255,255,0.2); font-size: 10px; padding: 2px 8px; border-radius: 99px; font-weight: 700; margin-left: 6px; text-transform: uppercase; }
-    .btn-header { background: rgba(255,255,255,0.18); color: #fff; border: none; padding: 7px 11px; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; }
+    .btn-header { background: rgba(255,255,255,0.18); color: #fff; border: none; padding: 7px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; }
     .container { padding: 16px; }
     .alert-card { background: #EEF3FF; border-left: 4px solid #1B3686; padding: 12px; border-radius: 12px; margin-bottom: 10px; }
+    .pay-due-card { background: #fffbeb; border-left: 4px solid #d97706; padding: 12px; border-radius: 12px; margin-bottom: 10px; }
     .item-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 14px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
     .prod-row { display: flex; gap: 12px; }
     .prod-img { width: 72px; height: 72px; border-radius: 12px; object-fit: cover; background: #EEF3FF; flex-shrink: 0; }
@@ -32,35 +34,72 @@
     .size-cell label { display: block; font-size: 10px; font-weight: 800; color: #1B3686; margin-bottom: 3px; }
     .size-input { width: 100%; text-align: center; padding: 6px 2px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; font-weight: 700; background: #fff; }
     .prod-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f1f5f9; }
-    .btn-sm { background: #1B3686; color: #fff; border: none; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; }
+    .btn-sm { background: #1B3686; color: #fff; border: none; padding: 7px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; }
     .btn-tint { background: #EEF3FF; color: #1B3686; }
+    .btn-amber { background: #fef3c7; color: #92400e; }
+    .btn-green { background: #dcfce7; color: #166534; }
     .new-tag { background: #dcfce7; color: #166534; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 99px; }
-    nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 500px; margin: 0 auto; background: #fff; border-top: 1px solid #e2e8f0; display: grid; grid-template-columns: repeat(4, 1fr); padding: 10px 0; text-align: center; z-index: 20; }
+    nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 520px; margin: 0 auto; background: #fff; border-top: 1px solid #e2e8f0; display: grid; grid-template-columns: repeat(4, 1fr); padding: 10px 0; text-align: center; z-index: 20; }
     nav button { background: none; border: none; font-size: 12px; font-weight: 600; color: #64748b; cursor: pointer; }
     nav button.active { color: #1B3686; font-weight: 800; }
     .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50; }
-    .modal-card { background: #fff; border-radius: 20px; padding: 24px; max-width: 340px; width: 100%; text-align: center; }
-    .sub-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px; }
-    .sub-tab-btn { padding: 8px 4px; border-radius: 10px; border: 1px solid #cbd5e1; background: #fff; font-size: 11px; font-weight: 700; color: #475569; cursor: pointer; }
+    .modal-card { background: #fff; border-radius: 20px; padding: 22px; max-width: 350px; width: 100%; }
+    .sub-tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-bottom: 14px; }
+    .sub-tab-btn { padding: 8px 2px; border-radius: 10px; border: 1px solid #cbd5e1; background: #fff; font-size: 10px; font-weight: 700; color: #475569; cursor: pointer; }
     .sub-tab-btn.active { background: #1B3686; color: #fff; border-color: #1B3686; }
+    .filter-pills { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+    .pill-btn { padding: 6px 12px; border-radius: 99px; border: 1px solid #cbd5e1; background: #fff; font-size: 11px; font-weight: 700; cursor: pointer; }
+    .pill-btn.active { background: #1B3686; color: #fff; border-color: #1B3686; }
   </style>
 </head>
 <body>
 
-  <!-- LOGIN SCREEN (NO <form> TAG SO PAGE NEVER RESETS) -->
+  <!-- LOGIN & SELF-REGISTRATION SCREEN -->
   <div id="loginScreen">
     <div class="card-login">
-      <div style="text-align:center; margin-bottom:20px;">
+      <div style="text-align:center; margin-bottom:16px;">
         <div class="logo-badge">GloveMeds</div>
-        <p style="color:#64748b; font-size:13px; margin-top:10px;">Retailer & Distributor Ordering Portal</p>
+        <p style="color:#64748b; font-size:13px; margin-top:8px;">Retailer & Distributor Ordering Portal</p>
       </div>
-      <div>
+
+      <!-- SIGN IN BOX -->
+      <div id="signInBox">
         <label class="field-label">Registered Mobile Number</label>
-        <input id="loginMobile" type="tel" placeholder="e.g. 9969353858" class="input-box" />
-        <label class="field-label">PIN</label>
-        <input id="loginPin" type="password" inputmode="numeric" placeholder="••••" class="input-box" onkeydown="if(event.key==='Enter') handleLogin()" />
+        <input id="loginMobile" type="tel" placeholder="10-digit mobile number" class="input-box" />
+        <label class="field-label">4-Digit PIN</label>
+        <input id="loginPin" type="password" inputmode="numeric" maxlength="6" placeholder="••••" class="input-box" onkeydown="if(event.key==='Enter') handleLogin()" />
         <div id="loginError" class="err-box hidden"></div>
         <button id="loginBtn" type="button" onclick="handleLogin()" class="btn-primary">Access Portal</button>
+        <button type="button" onclick="toggleAuthMode('register')" class="btn-outline">New Customer? Create Your Own PIN</button>
+      </div>
+
+      <!-- SELF-REGISTRATION BOX (CUSTOMER CREATES THEIR OWN ACCOUNT & PIN) -->
+      <div id="registerBox" class="hidden">
+        <strong style="font-size:14px; color:#1B3686; display:block; text-align:center;">New Customer Self-Registration</strong>
+        <label class="field-label">Company / Pharmacy / Hospital Name *</label>
+        <input id="regName" type="text" placeholder="e.g. City Care Pharmacy" class="input-box" />
+        <label class="field-label">Mobile Number (Your Login ID) *</label>
+        <input id="regMobile" type="tel" placeholder="10-digit mobile" class="input-box" />
+        <label class="field-label">Create Your Own 4-Digit PIN *</label>
+        <input id="regPin" type="text" inputmode="numeric" maxlength="6" placeholder="Choose a 4-digit PIN" class="input-box" />
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <div>
+            <label class="field-label">Account Type *</label>
+            <select id="regCategory" class="input-box">
+              <option value="Retailer">Retailer</option>
+              <option value="Distributor">Distributor</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">State *</label>
+            <input id="regState" type="text" placeholder="e.g. Maharashtra" class="input-box" />
+          </div>
+        </div>
+        <label class="field-label">GSTIN (Optional)</label>
+        <input id="regGst" type="text" placeholder="GST Number" class="input-box" />
+        <div id="regError" class="err-box hidden"></div>
+        <button id="regBtn" type="button" onclick="handleSelfRegister()" class="btn-primary">Register & Enter Portal</button>
+        <button type="button" onclick="toggleAuthMode('login')" class="btn-outline">Already Registered? Sign In</button>
       </div>
     </div>
   </div>
@@ -72,7 +111,8 @@
         <div><strong style="font-size:18px;">GloveMeds</strong><span id="userStateBadge" class="badge-pill"></span></div>
         <div id="userCompanyHeader" style="font-size:12px; color:#dbeafe; margin-top:2px;"></div>
       </div>
-      <div style="display:flex; gap:6px;">
+      <div style="display:flex; gap:5px;">
+        <button type="button" onclick="openPinModal()" class="btn-header">PIN</button>
         <button type="button" onclick="openQrModal()" class="btn-header">QR</button>
         <button type="button" onclick="logout()" class="btn-header">Exit</button>
       </div>
@@ -80,6 +120,7 @@
 
     <!-- CUSTOMER VIEW -->
     <div id="customerView" class="container hidden">
+      <div id="paymentDueSection"></div>
       <div id="alertsSection"></div>
 
       <section id="tabCatalogue">
@@ -119,31 +160,54 @@
     <!-- ADMIN / HEAD OFFICE VIEW -->
     <div id="adminView" class="container hidden">
       <div class="sub-tabs">
-        <button type="button" onclick="switchAdminTab('Orders')" id="admBtnOrders" class="sub-tab-btn active">All Orders</button>
+        <button type="button" onclick="switchAdminTab('Orders')" id="admBtnOrders" class="sub-tab-btn active">Orders</button>
         <button type="button" onclick="switchAdminTab('Upload')" id="admBtnUpload" class="sub-tab-btn">Invoice/LR</button>
+        <button type="button" onclick="switchAdminTab('Payments')" id="admBtnPayments" class="sub-tab-btn">Payments</button>
         <button type="button" onclick="switchAdminTab('Customers')" id="admBtnCustomers" class="sub-tab-btn">Customers</button>
-        <button type="button" onclick="switchAdminTab('Alerts')" id="admBtnAlerts" class="sub-tab-btn">Send Alert</button>
+        <button type="button" onclick="switchAdminTab('Alerts')" id="admBtnAlerts" class="sub-tab-btn">Alerts</button>
       </div>
 
+      <!-- ADMIN 1: ALL ORDERS -->
       <div id="admTabOrders">
         <strong style="font-size:15px; display:block; margin-bottom:10px;">Incoming Customer Orders</strong>
         <div id="adminOrdersList"></div>
       </div>
 
+      <!-- ADMIN 2: UPLOAD INVOICE & LR WITH CREDIT TERMS -->
       <div id="admTabUpload" class="hidden">
         <div class="item-card">
           <strong style="font-size:15px; color:#1B3686;">Upload Invoice & Transport Docket</strong>
           <div>
             <label class="field-label">Select Customer</label>
             <select id="docCustomerId" class="input-box"></select>
-            <label class="field-label">Invoice Number</label>
-            <input id="docInvoiceNo" type="text" placeholder="e.g. GM/26-27/045" class="input-box" />
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+              <div>
+                <label class="field-label">Invoice Number *</label>
+                <input id="docInvoiceNo" type="text" placeholder="e.g. GM/26/045" class="input-box" />
+              </div>
+              <div>
+                <label class="field-label">Invoice Amount (₹) *</label>
+                <input id="docAmount" type="number" placeholder="e.g. 24500" class="input-box" />
+              </div>
+            </div>
+            <label class="field-label">Payment Credit Terms</label>
+            <select id="docCreditDays" class="input-box">
+              <option value="7">7 Days Credit</option>
+              <option value="15" selected>15 Days Credit</option>
+              <option value="30">30 Days Credit</option>
+            </select>
             <label class="field-label">Invoice PDF / Photo</label>
             <input id="docInvoiceFile" type="file" accept=".pdf,image/*" class="input-box" />
-            <label class="field-label">Transporter Name</label>
-            <input id="docTransporter" type="text" placeholder="e.g. VRL Logistics" class="input-box" />
-            <label class="field-label">LR / Docket Number</label>
-            <input id="docLrNo" type="text" placeholder="e.g. LR-884920" class="input-box" />
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+              <div>
+                <label class="field-label">Transporter Name</label>
+                <input id="docTransporter" type="text" placeholder="e.g. VRL Logistics" class="input-box" />
+              </div>
+              <div>
+                <label class="field-label">LR / Docket No.</label>
+                <input id="docLrNo" type="text" placeholder="e.g. LR-884920" class="input-box" />
+              </div>
+            </div>
             <label class="field-label">Transport Docket / LR Photo or PDF</label>
             <input id="docLrFile" type="file" accept=".pdf,image/*" class="input-box" />
             <button id="uploadDocBtn" type="button" onclick="adminUploadDoc()" class="btn-primary">Upload to Customer Vault</button>
@@ -151,23 +215,45 @@
         </div>
       </div>
 
+      <!-- ADMIN 3: PAYMENT REMINDERS (7 DAYS / 15 DAYS / 30 DAYS) -->
+      <div id="admTabPayments" class="hidden">
+        <strong style="font-size:15px; display:block; margin-bottom:8px;">Payment Reminder Tracker</strong>
+        <div class="filter-pills">
+          <button type="button" onclick="filterPayments('All')" id="payPillAll" class="pill-btn active">All Unpaid</button>
+          <button type="button" onclick="filterPayments(7)" id="payPill7" class="pill-btn">7 Days</button>
+          <button type="button" onclick="filterPayments(15)" id="payPill15" class="pill-btn">15 Days</button>
+          <button type="button" onclick="filterPayments(30)" id="payPill30" class="pill-btn">30 Days</button>
+        </div>
+        <div id="adminPaymentsList"></div>
+      </div>
+
+      <!-- ADMIN 4: REGISTERED CUSTOMERS LIST & MANUAL ADD -->
       <div id="admTabCustomers" class="hidden">
+        <strong style="font-size:15px; display:block; margin-bottom:8px;">Registered Retailers & Distributors</strong>
+        <div id="adminCustomersList" style="margin-bottom:14px;"></div>
+
         <div class="item-card">
-          <strong style="font-size:15px; color:#1B3686;">Add Retailer / Distributor</strong>
+          <strong style="font-size:14px; color:#1B3686;">Manually Add Customer (Optional)</strong>
           <div>
             <label class="field-label">Company / Shop Name</label>
             <input id="custName" type="text" placeholder="e.g. MedPlus Pharmacy" class="input-box" />
-            <label class="field-label">Mobile Number (Login ID)</label>
+            <label class="field-label">Mobile Number</label>
             <input id="custMobile" type="tel" placeholder="10-digit mobile" class="input-box" />
-            <label class="field-label">4-Digit PIN</label>
+            <label class="field-label">Initial 4-Digit PIN</label>
             <input id="custPin" type="text" placeholder="e.g. 4321" class="input-box" />
-            <label class="field-label">Category</label>
-            <select id="custCategory" class="input-box">
-              <option value="Retailer">Retailer</option>
-              <option value="Distributor">Distributor</option>
-            </select>
-            <label class="field-label">State</label>
-            <input id="custState" type="text" placeholder="e.g. Maharashtra" class="input-box" />
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+              <div>
+                <label class="field-label">Category</label>
+                <select id="custCategory" class="input-box">
+                  <option value="Retailer">Retailer</option>
+                  <option value="Distributor">Distributor</option>
+                </select>
+              </div>
+              <div>
+                <label class="field-label">State</label>
+                <input id="custState" type="text" placeholder="e.g. Maharashtra" class="input-box" />
+              </div>
+            </div>
             <label class="field-label">GSTIN (Optional)</label>
             <input id="custGst" type="text" placeholder="GST Number" class="input-box" />
             <button type="button" onclick="adminAddCustomer()" class="btn-primary">Save Customer Account</button>
@@ -175,6 +261,7 @@
         </div>
       </div>
 
+      <!-- ADMIN 5: STATE & CATEGORY ALERTS -->
       <div id="admTabAlerts" class="hidden">
         <div class="item-card">
           <strong style="font-size:15px; color:#1B3686;">Send State / Category Notification</strong>
@@ -207,12 +294,24 @@
     </nav>
   </div>
 
+  <!-- QR MODAL -->
   <div id="qrModal" class="modal-bg hidden">
-    <div class="modal-card">
+    <div class="modal-card" style="text-align:center;">
       <strong style="color:#1B3686; font-size:17px;">GloveMeds 1-Time Scan</strong>
       <p style="font-size:12px; color:#475569; margin:10px 0;">Scan once, then tap <b>Add to Home Screen</b> in your browser to bookmark and order anytime.</p>
       <img id="qrImg" style="width:180px; height:180px; margin:10px auto; display:block;" />
       <button type="button" onclick="document.getElementById('qrModal').classList.add('hidden')" class="btn-primary" style="background:#334155;">Close</button>
+    </div>
+  </div>
+
+  <!-- CHANGE PIN MODAL (CUSTOMER SELF-SERVICE) -->
+  <div id="pinModal" class="modal-bg hidden">
+    <div class="modal-card">
+      <strong style="color:#1B3686; font-size:16px;">Change Your 4-Digit PIN</strong>
+      <label class="field-label">New PIN</label>
+      <input id="newPinInput" type="text" inputmode="numeric" maxlength="6" placeholder="Enter new 4-digit PIN" class="input-box" />
+      <button type="button" onclick="saveNewPin()" class="btn-primary">Update PIN</button>
+      <button type="button" onclick="document.getElementById('pinModal').classList.add('hidden')" class="btn-outline">Cancel</button>
     </div>
   </div>
 
@@ -243,9 +342,27 @@
       return await res.json();
     }
 
+    async function sbPatch(table, query, payload) {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${query}`, {
+        method: "PATCH",
+        headers: HEADERS,
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return await res.json();
+    }
+
     let CURRENT_USER = null;
     let PRODUCTS = [];
     let CART = [];
+    let ADMIN_INVOICES = [];
+    let ADMIN_CUSTOMERS = [];
+    let PAY_FILTER = 'All';
+
+    function toggleAuthMode(mode) {
+      document.getElementById('signInBox').classList.toggle('hidden', mode !== 'login');
+      document.getElementById('registerBox').classList.toggle('hidden', mode !== 'register');
+    }
 
     async function handleLogin() {
       const mobile = document.getElementById('loginMobile').value.trim();
@@ -253,46 +370,92 @@
       const btn = document.getElementById('loginBtn');
       const err = document.getElementById('loginError');
 
-      if (!mobile || !pin) {
-        err.textContent = 'Please enter both Mobile Number and PIN.';
+      if (!mobile || !pin) { err.textContent = 'Enter Mobile Number and PIN.'; err.classList.remove('hidden'); return; }
+      btn.disabled = true; btn.textContent = 'Verifying...'; err.classList.add('hidden');
+
+      try {
+        const users = await sbSelect('customers', `mobile=eq.${encodeURIComponent(mobile)}&pin=eq.${encodeURIComponent(pin)}`);
+        btn.disabled = false; btn.textContent = 'Access Portal';
+        if (!users || !users.length) { err.textContent = 'Invalid Mobile Number or PIN'; err.classList.remove('hidden'); return; }
+        enterPortal(users[0]);
+      } catch (error) {
+        btn.disabled = false; btn.textContent = 'Access Portal';
+        err.textContent = 'Error: ' + error.message; err.classList.remove('hidden');
+      }
+    }
+
+    async function handleSelfRegister() {
+      const name = document.getElementById('regName').value.trim();
+      const mobile = document.getElementById('regMobile').value.trim();
+      const pin = document.getElementById('regPin').value.trim();
+      const category = document.getElementById('regCategory').value;
+      const state = document.getElementById('regState').value.trim();
+      const gstin = document.getElementById('regGst').value.trim();
+      const err = document.getElementById('regError');
+      const btn = document.getElementById('regBtn');
+
+      if (!name || !mobile || !pin || !state) {
+        err.textContent = 'Please fill Company Name, Mobile, PIN, and State.';
         err.classList.remove('hidden');
         return;
       }
 
-      btn.disabled = true;
-      btn.textContent = 'Verifying Account...';
-      err.classList.add('hidden');
-
+      btn.disabled = true; btn.textContent = 'Creating Account...'; err.classList.add('hidden');
       try {
-        const users = await sbSelect('customers', `mobile=eq.${encodeURIComponent(mobile)}&pin=eq.${encodeURIComponent(pin)}`);
-        btn.disabled = false;
-        btn.textContent = 'Access Portal';
-
-        if (!users || !users.length) {
-          err.textContent = 'Invalid Mobile Number or PIN';
+        const existing = await sbSelect('customers', `mobile=eq.${encodeURIComponent(mobile)}`);
+        if (existing && existing.length) {
+          btn.disabled = false; btn.textContent = 'Register & Enter Portal';
+          err.textContent = 'This mobile number is already registered. Please Sign In.';
           err.classList.remove('hidden');
           return;
         }
-
-        CURRENT_USER = users[0];
-        document.getElementById('loginScreen').classList.add('hidden');
-        document.getElementById('appScreen').classList.remove('hidden');
-        document.getElementById('userCompanyHeader').textContent = CURRENT_USER.company_name;
-        document.getElementById('userStateBadge').textContent = CURRENT_USER.category + ' • ' + CURRENT_USER.state;
-
-        if (CURRENT_USER.category === 'Admin') {
-          document.getElementById('adminView').classList.remove('hidden');
-          loadAdminData();
-        } else {
-          document.getElementById('customerView').classList.remove('hidden');
-          document.getElementById('customerNav').classList.remove('hidden');
-          loadCustomerData();
-        }
+        const created = await sbInsert('customers', {
+          customer_id: 'CUST-' + Math.floor(1000 + Math.random() * 9000),
+          company_name: name,
+          mobile: mobile,
+          pin: pin,
+          category: category,
+          state: state,
+          gstin: gstin
+        });
+        btn.disabled = false; btn.textContent = 'Register & Enter Portal';
+        enterPortal(created[0]);
       } catch (error) {
-        btn.disabled = false;
-        btn.textContent = 'Access Portal';
-        err.textContent = 'Error: ' + error.message;
-        err.classList.remove('hidden');
+        btn.disabled = false; btn.textContent = 'Register & Enter Portal';
+        err.textContent = 'Error: ' + error.message; err.classList.remove('hidden');
+      }
+    }
+
+    function enterPortal(user) {
+      CURRENT_USER = user;
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('appScreen').classList.remove('hidden');
+      document.getElementById('userCompanyHeader').textContent = CURRENT_USER.company_name;
+      document.getElementById('userStateBadge').textContent = CURRENT_USER.category + ' • ' + CURRENT_USER.state;
+
+      if (CURRENT_USER.category === 'Admin') {
+        document.getElementById('adminView').classList.remove('hidden');
+        loadAdminData();
+      } else {
+        document.getElementById('customerView').classList.remove('hidden');
+        document.getElementById('customerNav').classList.remove('hidden');
+        loadCustomerData();
+      }
+    }
+
+    function openPinModal() { document.getElementById('pinModal').classList.remove('hidden'); }
+
+    async function saveNewPin() {
+      const newPin = document.getElementById('newPinInput').value.trim();
+      if (newPin.length < 4) { alert('Enter at least 4 digits.'); return; }
+      try {
+        await sbPatch('customers', `customer_id=eq.${encodeURIComponent(CURRENT_USER.customer_id)}`, { pin: newPin });
+        CURRENT_USER.pin = newPin;
+        document.getElementById('newPinInput').value = '';
+        document.getElementById('pinModal').classList.add('hidden');
+        alert('PIN updated successfully!');
+      } catch (err) {
+        alert('Error: ' + err.message);
       }
     }
 
@@ -309,6 +472,10 @@
       ]);
 
       PRODUCTS = prods || [];
+      const myInvoices = invs || [];
+      const unpaid = myInvoices.filter(i => i.payment_status === 'Unpaid' && Number(i.amount) > 0);
+      renderPaymentDueBanner(unpaid);
+
       const myAlerts = (alts || []).filter(a =>
         (a.target_state === 'All' || a.target_state.toLowerCase() === CURRENT_USER.state.toLowerCase()) &&
         (a.target_category === 'All' || a.target_category === CURRENT_USER.category)
@@ -316,8 +483,21 @@
 
       renderAlerts(myAlerts);
       renderProducts();
-      renderInvoices(invs || []);
+      renderInvoices(myInvoices);
       renderOrders(ords || []);
+    }
+
+    function renderPaymentDueBanner(unpaid) {
+      const box = document.getElementById('paymentDueSection');
+      if (!unpaid.length) { box.innerHTML = ''; return; }
+      box.innerHTML = unpaid.map(inv => {
+        const dueDate = new Date(new Date(inv.created_at).getTime() + (Number(inv.credit_days || 15) * 86400000));
+        return `
+          <div class="pay-due-card">
+            <strong style="font-size:12px; color:#92400e; text-transform:uppercase;">Payment Reminder • Invoice #${inv.invoice_no}</strong>
+            <p style="font-size:12px; color:#78350f; margin-top:4px;">Amount Due: <b>₹${inv.amount}</b> (${inv.credit_days || 15} Days Terms • Due: <b>${dueDate.toLocaleDateString('en-IN')}</b>)</p>
+          </div>`;
+      }).join('');
     }
 
     function renderAlerts(list) {
@@ -330,18 +510,14 @@
             ${a.offer_code ? `<span style="background:#1B3686; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:700;">${a.offer_code}</span>` : ''}
           </div>
           <p style="font-size:12px; color:#334155; margin-top:4px;">${a.message}</p>
-        </div>
-      `).join('');
+        </div>`).join('');
     }
 
     function renderProducts() {
       const newOnly = document.getElementById('newOnlyFilter').checked;
       const list = PRODUCTS.filter(p => !newOnly || p.is_new_arrival);
       const box = document.getElementById('productList');
-      if (!list.length) {
-        box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No products available.</p>';
-        return;
-      }
+      if (!list.length) { box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No products available.</p>'; return; }
       box.innerHTML = list.map(p => {
         const price = getUnitPrice(p);
         return `
@@ -357,14 +533,12 @@
               <p style="font-size:12px; color:#64748b; margin-top:4px;">${p.specs || ''}</p>
             </div>
           </div>
-
           <div class="size-grid">
             <div class="size-cell"><label>SIZE S</label><input id="qty_${p.product_id}_S" type="number" min="0" placeholder="0" class="size-input" /></div>
             <div class="size-cell"><label>SIZE M</label><input id="qty_${p.product_id}_M" type="number" min="0" placeholder="0" class="size-input" /></div>
             <div class="size-cell"><label>SIZE L</label><input id="qty_${p.product_id}_L" type="number" min="0" placeholder="0" class="size-input" /></div>
             <div class="size-cell"><label>SIZE XL</label><input id="qty_${p.product_id}_XL" type="number" min="0" placeholder="0" class="size-input" /></div>
           </div>
-
           <div class="prod-footer">
             <div><strong style="color:#1B3686; font-size:16px;">₹${price}</strong> <span style="font-size:11px; color:#94a3b8;">(${CURRENT_USER.category} Rate)</span></div>
             <div style="display:flex; gap:6px;">
@@ -381,7 +555,6 @@
       if (!prod) return;
       const price = getUnitPrice(prod);
       let added = false;
-
       ['S', 'M', 'L', 'XL'].forEach(sz => {
         const input = document.getElementById(`qty_${pid}_${sz}`);
         const qty = parseInt(input.value, 10) || 0;
@@ -393,7 +566,6 @@
           input.value = '';
         }
       });
-
       if (!added) { alert('Enter quantity in S, M, L, or XL first.'); return; }
       renderCart();
       alert('Added to Cart!');
@@ -430,14 +602,10 @@
     async function submitOrder() {
       if (!CART.length) return;
       let total = 0;
-      const lines = CART.map(item => {
-        total += item.price * item.qty;
-        return `${item.name} [${item.size}: ${item.qty}]`;
-      });
+      const lines = CART.map(item => { total += item.price * item.qty; return `${item.name} [${item.size}: ${item.qty}]`; });
       const orderId = 'GM-' + Math.floor(100000 + Math.random() * 900000);
       const btn = document.getElementById('placeOrderBtn');
-      btn.disabled = true;
-      btn.textContent = 'Sending Order...';
+      btn.disabled = true; btn.textContent = 'Sending Order...';
 
       try {
         await sbInsert('orders', {
@@ -449,16 +617,11 @@
           total_amount: total,
           status: 'Pending Dispatch'
         });
-        btn.disabled = false;
-        btn.textContent = 'Confirm & Send Order';
+        btn.disabled = false; btn.textContent = 'Confirm & Send Order';
         alert('Order Confirmed! ID: ' + orderId);
-        CART = [];
-        renderCart();
-        loadCustomerData();
-        switchTab('Orders');
+        CART = []; renderCart(); loadCustomerData(); switchTab('Orders');
       } catch (err) {
-        btn.disabled = false;
-        btn.textContent = 'Confirm & Send Order';
+        btn.disabled = false; btn.textContent = 'Confirm & Send Order';
         alert('Error: ' + err.message);
       }
     }
@@ -470,9 +633,9 @@
         <div class="item-card">
           <div style="display:flex; justify-content:space-between;">
             <strong style="color:#1B3686; font-size:14px;">Invoice #${inv.invoice_no}</strong>
-            <span style="font-size:11px; color:#94a3b8;">${new Date(inv.created_at).toLocaleDateString('en-IN')}</span>
+            <span class="${inv.payment_status === 'Paid' ? 'btn-green' : 'btn-amber'}" style="font-size:10px; font-weight:800; padding:2px 8px; border-radius:99px;">${inv.payment_status || 'Unpaid'}</span>
           </div>
-          <p style="font-size:12px; color:#475569; margin:6px 0;">Transporter: <b>${inv.transporter || 'N/A'}</b> • LR: <b>${inv.lr_no || 'N/A'}</b></p>
+          <p style="font-size:12px; color:#475569; margin:6px 0;">Amount: <b>₹${inv.amount || 0}</b> (${inv.credit_days || 15} Days) • LR: <b>${inv.lr_no || 'N/A'}</b></p>
           <div style="display:flex; gap:8px; margin-top:8px;">
             ${inv.invoice_pdf_url ? `<a href="${inv.invoice_pdf_url}" target="_blank" class="btn-sm" style="flex:1; text-align:center;">View GST Invoice</a>` : ''}
             ${inv.lr_copy_url ? `<a href="${inv.lr_copy_url}" target="_blank" class="btn-sm btn-tint" style="flex:1; text-align:center;">View LR / Docket</a>` : ''}
@@ -497,11 +660,16 @@
         </div>`).join('');
     }
 
+    /* ADMIN PANEL FUNCTIONS */
     async function loadAdminData() {
-      const [ords, custs] = await Promise.all([
+      const [ords, custs, invs] = await Promise.all([
         sbSelect('orders', 'order=created_at.desc'),
-        sbSelect('customers', 'category=neq.Admin&order=company_name.asc')
+        sbSelect('customers', 'category=neq.Admin&order=company_name.asc'),
+        sbSelect('invoices_lr', 'order=created_at.desc')
       ]);
+
+      ADMIN_CUSTOMERS = custs || [];
+      ADMIN_INVOICES = invs || [];
 
       const ordBox = document.getElementById('adminOrdersList');
       ordBox.innerHTML = (ords && ords.length) ? ords.map(o => `
@@ -518,7 +686,87 @@
         </div>`).join('') : '<p style="font-size:12px; color:#94a3b8;">No orders yet.</p>';
 
       const sel = document.getElementById('docCustomerId');
-      sel.innerHTML = (custs || []).map(c => `<option value="${c.customer_id}">${c.company_name} (${c.category} - ${c.state})</option>`).join('');
+      sel.innerHTML = ADMIN_CUSTOMERS.map(c => `<option value="${c.customer_id}">${c.company_name} (${c.category} - ${c.state})</option>`).join('');
+
+      const custListBox = document.getElementById('adminCustomersList');
+      custListBox.innerHTML = ADMIN_CUSTOMERS.length ? ADMIN_CUSTOMERS.map(c => `
+        <div class="item-card" style="padding:10px 14px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <strong style="font-size:13px;">${c.company_name}</strong>
+            <div style="font-size:11px; color:#64748b;">${c.mobile} • ${c.category} • ${c.state}</div>
+          </div>
+          <span style="font-size:10px; font-weight:700; background:#EEF3FF; color:#1B3686; padding:3px 8px; border-radius:8px;">${c.gstin || 'No GST'}</span>
+        </div>`).join('') : '<p style="font-size:12px; color:#94a3b8;">No registered customers yet.</p>';
+
+      renderAdminPayments();
+    }
+
+    function filterPayments(days) {
+      PAY_FILTER = days;
+      ['All', 7, 15, 30].forEach(d => {
+        document.getElementById('payPill' + d).classList.toggle('active', d === days);
+      });
+      renderAdminPayments();
+    }
+
+    function renderAdminPayments() {
+      const box = document.getElementById('adminPaymentsList');
+      const list = ADMIN_INVOICES.filter(inv =>
+        inv.payment_status !== 'Paid' &&
+        (PAY_FILTER === 'All' || Number(inv.credit_days) === Number(PAY_FILTER))
+      );
+
+      if (!list.length) {
+        box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:24px 0;">No pending invoices in this credit bucket.</p>';
+        return;
+      }
+
+      box.innerHTML = list.map(inv => {
+        const cust = ADMIN_CUSTOMERS.find(c => c.customer_id === inv.customer_id) || { company_name: inv.customer_id, mobile: '' };
+        const created = new Date(inv.created_at);
+        const due = new Date(created.getTime() + (Number(inv.credit_days || 15) * 86400000));
+        const daysLeft = Math.ceil((due - new Date()) / 86400000);
+        const statusBadge = daysLeft < 0
+          ? `<span style="background:#fee2e2; color:#b91c1c; font-size:10px; font-weight:800; padding:2px 8px; border-radius:99px;">OVERDUE (${Math.abs(daysLeft)}d)</span>`
+          : `<span style="background:#fef3c7; color:#92400e; font-size:10px; font-weight:800; padding:2px 8px; border-radius:99px;">Due in ${daysLeft}d</span>`;
+
+        return `
+          <div class="item-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong style="font-size:13px; color:#1B3686;">${cust.company_name}</strong>
+              ${statusBadge}
+            </div>
+            <p style="font-size:12px; color:#475569; margin:6px 0;">Invoice <b>#${inv.invoice_no}</b> • Terms: <b>${inv.credit_days || 15} Days</b> • Amount: <b>₹${inv.amount || 0}</b></p>
+            <div style="display:flex; gap:8px; margin-top:8px;">
+              <button type="button" onclick="sendPaymentReminder('${inv.customer_id}', '${inv.invoice_no}', '${inv.amount || 0}', '${due.toLocaleDateString('en-IN')}')" class="btn-sm btn-amber" style="flex:1;">Send Reminder</button>
+              <button type="button" onclick="markInvoicePaid('${inv.id}')" class="btn-sm btn-green" style="flex:1;">Mark Paid</button>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    async function sendPaymentReminder(custId, invNo, amt, dueStr) {
+      try {
+        await sbInsert('alerts', {
+          title: 'Payment Reminder: Invoice #' + invNo,
+          message: `Friendly reminder: ₹${amt} for Invoice #${invNo} is due on ${dueStr}. Kindly remit payment at your earliest convenience.`,
+          target_state: 'All',
+          target_category: 'All',
+          offer_code: 'DUE'
+        });
+        alert('Payment reminder alert published!');
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    }
+
+    async function markInvoicePaid(id) {
+      try {
+        await sbPatch('invoices_lr', `id=eq.${id}`, { payment_status: 'Paid' });
+        loadAdminData();
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
     }
 
     async function uploadFileRest(fileInputId, prefix) {
@@ -527,11 +775,7 @@
       const path = `${prefix}_${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
       const res = await fetch(`${SUPABASE_URL}/storage/v1/object/glovemeds-docs/${path}`, {
         method: "POST",
-        headers: {
-          "apikey": SUPABASE_KEY,
-          "Authorization": "Bearer " + SUPABASE_KEY,
-          "Content-Type": file.type || "application/octet-stream"
-        },
+        headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY, "Content-Type": file.type || "application/octet-stream" },
         body: file
       });
       if (!res.ok) throw new Error(await res.text());
@@ -540,32 +784,37 @@
 
     async function adminUploadDoc() {
       const invNo = document.getElementById('docInvoiceNo').value.trim();
+      const amount = Number(document.getElementById('docAmount').value) || 0;
+      const creditDays = Number(document.getElementById('docCreditDays').value) || 15;
       if (!invNo) { alert('Enter Invoice Number.'); return; }
       const btn = document.getElementById('uploadDocBtn');
-      btn.disabled = true;
-      btn.textContent = 'Uploading Files...';
+      btn.disabled = true; btn.textContent = 'Uploading...';
       try {
         const invUrl = await uploadFileRest('docInvoiceFile', 'INV');
         const lrUrl = await uploadFileRest('docLrFile', 'LR');
         await sbInsert('invoices_lr', {
           customer_id: document.getElementById('docCustomerId').value,
           invoice_no: invNo,
+          amount: amount,
+          credit_days: creditDays,
+          payment_status: 'Unpaid',
           invoice_pdf_url: invUrl,
           transporter: document.getElementById('docTransporter').value.trim(),
           lr_no: document.getElementById('docLrNo').value.trim(),
           lr_copy_url: lrUrl
         });
-        alert('Invoice & Transport Docket uploaded to customer private vault!');
+        alert('Invoice & Transport Docket uploaded!');
         document.getElementById('docInvoiceNo').value = '';
+        document.getElementById('docAmount').value = '';
         document.getElementById('docInvoiceFile').value = '';
         document.getElementById('docTransporter').value = '';
         document.getElementById('docLrNo').value = '';
         document.getElementById('docLrFile').value = '';
+        loadAdminData();
       } catch (err) {
         alert('Upload error: ' + err.message);
       }
-      btn.disabled = false;
-      btn.textContent = 'Upload to Customer Vault';
+      btn.disabled = false; btn.textContent = 'Upload to Customer Vault';
     }
 
     async function adminAddCustomer() {
@@ -625,7 +874,7 @@
     }
 
     function switchAdminTab(name) {
-      ['Orders', 'Upload', 'Customers', 'Alerts'].forEach(t => {
+      ['Orders', 'Upload', 'Payments', 'Customers', 'Alerts'].forEach(t => {
         document.getElementById('admTab' + t).classList.toggle('hidden', t !== name);
         document.getElementById('admBtn' + t).classList.toggle('active', t === name);
       });
@@ -637,8 +886,7 @@
     }
 
     function logout() {
-      CURRENT_USER = null;
-      CART = [];
+      CURRENT_USER = null; CART = [];
       document.getElementById('appScreen').classList.add('hidden');
       document.getElementById('customerView').classList.add('hidden');
       document.getElementById('customerNav').classList.add('hidden');
