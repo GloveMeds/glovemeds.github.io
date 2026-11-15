@@ -44,8 +44,8 @@
     .btn-green { background: #dcfce7; color: #166534; }
     .btn-red { background: #fee2e2; color: #b91c1c; }
     .new-tag { background: #dcfce7; color: #166534; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 99px; }
-    nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 560px; margin: 0 auto; background: #fff; border-top: 1px solid #e2e8f0; display: grid; grid-template-columns: repeat(4, 1fr); padding: 10px 0; text-align: center; z-index: 20; }
-    nav button { background: none; border: none; font-size: 12px; font-weight: 600; color: #64748b; cursor: pointer; }
+    nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 560px; margin: 0 auto; background: #fff; border-top: 1px solid #e2e8f0; display: grid; grid-template-columns: repeat(5, 1fr); padding: 10px 0; text-align: center; z-index: 20; }
+    nav button { background: none; border: none; font-size: 11px; font-weight: 600; color: #64748b; cursor: pointer; padding: 2px; }
     nav button.active { color: #1B3686; font-weight: 800; }
     .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50; }
     .modal-card { background: #fff; border-radius: 20px; padding: 22px; max-width: 360px; width: 100%; }
@@ -108,23 +108,15 @@
         <div class="grid-2">
           <div>
             <label class="field-label">State *</label>
-            <input id="regState" type="text" placeholder="e.g. Maharashtra" class="input-box" />
+            <select id="regState" class="input-box state-dropdown"></select>
           </div>
           <div>
             <label class="field-label">City Name *</label>
             <input id="regCity" type="text" placeholder="e.g. Mumbai" class="input-box" />
           </div>
         </div>
-        <div class="grid-2">
-          <div>
-            <label class="field-label">Transport Name</label>
-            <input id="regTransport" type="text" placeholder="e.g. VRL Logistics" class="input-box" />
-          </div>
-          <div>
-            <label class="field-label">GSTIN (For Billing)</label>
-            <input id="regGst" type="text" placeholder="GST Number" class="input-box" />
-          </div>
-        </div>
+        <label class="field-label">Transport Name</label>
+        <input id="regTransport" type="text" placeholder="e.g. VRL Logistics" class="input-box" />
         <div id="regError" class="err-box hidden"></div>
         <button id="regBtn" type="button" onclick="handleSelfRegister()" class="btn-primary">Register & Enter Portal</button>
         <button type="button" onclick="toggleAuthMode('login')" class="btn-outline">Already Registered? Sign In</button>
@@ -152,16 +144,35 @@
       <div id="paymentDueSection"></div>
       <div id="alertsSection"></div>
 
-      <section id="tabCatalogue">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <strong style="font-size:15px;">Product Catalogue</strong>
+      <!-- TAB 1: BOX RANGE (20 BOXES PER INNER/SIZE) -->
+      <section id="tabBoxRange">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <div>
+            <strong style="font-size:15px;">Box Range</strong>
+            <span style="display:block; font-size:11px; color:#64748b;">1 Inner = 20 Boxes per size</span>
+          </div>
           <label style="font-size:12px; font-weight:700; color:#1B3686; cursor:pointer;">
-            <input type="checkbox" id="newOnlyFilter" onchange="renderProducts()" /> New Arrivals Only
+            <input type="checkbox" id="newOnlyBoxFilter" onchange="renderProducts()" /> New Arrivals
           </label>
         </div>
-        <div id="productList"></div>
+        <div id="boxProductList"></div>
       </section>
 
+      <!-- TAB 2: LOOSE GLOVES -->
+      <section id="tabLooseGloves" class="hidden">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <div>
+            <strong style="font-size:15px;">Loose Gloves</strong>
+            <span style="display:block; font-size:11px; color:#64748b;">Order by individual units / packs per size</span>
+          </div>
+          <label style="font-size:12px; font-weight:700; color:#1B3686; cursor:pointer;">
+            <input type="checkbox" id="newOnlyLooseFilter" onchange="renderProducts()" /> New Arrivals
+          </label>
+        </div>
+        <div id="looseProductList"></div>
+      </section>
+
+      <!-- TAB 3: CART -->
       <section id="tabCart" class="hidden">
         <strong style="font-size:15px; display:block; margin-bottom:12px;">Order Summary</strong>
         <div id="cartItems"></div>
@@ -174,12 +185,14 @@
         </div>
       </section>
 
+      <!-- TAB 4: INVOICES & LR -->
       <section id="tabInvoices" class="hidden">
         <strong style="font-size:15px; display:block;">Invoices & Transport Dockets</strong>
         <p style="font-size:12px; color:#64748b; margin-bottom:12px;">Private vault — visible only to your account</p>
         <div id="invoiceList"></div>
       </section>
 
+      <!-- TAB 5: ORDERS -->
       <section id="tabOrders" class="hidden">
         <strong style="font-size:15px; display:block; margin-bottom:12px;">Order History</strong>
         <div id="orderList"></div>
@@ -203,17 +216,33 @@
         <div id="adminOrdersList"></div>
       </div>
 
-      <!-- ADMIN 2: PRODUCTS MANAGER (ADD IMAGES, SPECS, VIDEOS, RATES) -->
+      <!-- ADMIN 2: PRODUCTS MANAGER -->
       <div id="admTabProducts" class="hidden">
         <div class="item-card">
           <strong style="font-size:15px; color:#1B3686;">Add New Glove Product</strong>
           <div>
             <label class="field-label">Product Name *</label>
-            <input id="prodName" type="text" placeholder="e.g. Nitrile Examination Gloves (Black)" class="input-box" />
+            <input id="prodName" type="text" placeholder="e.g. Nitrile Examination Gloves (Blue)" class="input-box" />
             <div class="grid-2">
               <div>
-                <label class="field-label">Category *</label>
+                <label class="field-label">Section *</label>
+                <select id="prodRangeType" class="input-box">
+                  <option value="Box Range">Box Range (20 Box Inner)</option>
+                  <option value="Loose Gloves">Loose Gloves</option>
+                </select>
+              </div>
+              <div>
+                <label class="field-label">Product Category *</label>
                 <input id="prodCat" type="text" placeholder="e.g. Nitrile Examination" class="input-box" />
+              </div>
+            </div>
+            <div class="grid-2">
+              <div>
+                <label class="field-label">Stock Status *</label>
+                <select id="prodStatus" class="input-box">
+                  <option value="Active">Active (In Stock)</option>
+                  <option value="Inactive">Inactive (Out of Stock)</option>
+                </select>
               </div>
               <div>
                 <label class="field-label">New Arrival Tag</label>
@@ -223,27 +252,19 @@
                 </select>
               </div>
             </div>
-            <label class="field-label">Specifications (AQL, Thickness, Box Packing)</label>
+            <label class="field-label">Specifications (AQL, Thickness, Packing)</label>
             <input id="prodSpecs" type="text" placeholder="e.g. AQL 1.5 • 4.5 Mil • Powder-Free • Box of 100" class="input-box" />
-            <div class="grid-2">
-              <div>
-                <label class="field-label">Base Retail/Hospital Rate (₹) *</label>
-                <input id="prodRetPrice" type="number" placeholder="e.g. 450" class="input-box" />
-              </div>
-              <div>
-                <label class="field-label">Base Distributor/Bulk Rate (₹) *</label>
-                <input id="prodDistPrice" type="number" placeholder="e.g. 380" class="input-box" />
-              </div>
-            </div>
+            <label class="field-label">Product MRP (₹ per Box / Unit) *</label>
+            <input id="prodMrp" type="number" placeholder="e.g. 550" class="input-box" />
             <label class="field-label">Upload Product Photo</label>
             <input id="prodImgFile" type="file" accept="image/*" class="input-box" />
             <label class="field-label">Product Video Link (YouTube / Google Drive)</label>
             <input id="prodVideoUrl" type="url" placeholder="https://youtube.com/..." class="input-box" />
-            <button id="addProdBtn" type="button" onclick="adminAddProduct()" class="btn-primary">Publish Product to Catalogue</button>
+            <button id="addProdBtn" type="button" onclick="adminAddProduct()" class="btn-primary">Publish Product</button>
           </div>
         </div>
 
-        <strong style="font-size:14px; display:block; margin-bottom:8px;">Current Catalogue Items</strong>
+        <strong style="font-size:14px; display:block; margin-bottom:8px;">Manage Catalogue Products</strong>
         <div id="adminProductsList"></div>
       </div>
 
@@ -308,7 +329,7 @@
         <!-- INDIVIDUAL CUSTOMER RATE CARD SETTER -->
         <div class="item-card" style="background:#f0fdf4; border-color:#bbf7d0;">
           <strong style="font-size:14px; color:#166534;">Set Special Rate for Individual Customer</strong>
-          <p style="font-size:11px; color:#15803d; margin-top:3px;">Assign a custom rate for any specific customer. They will see only their rate when ordering.</p>
+          <p style="font-size:11px; color:#15803d; margin-top:3px;">Only customers with an assigned rate here will see their special rate. Others see only MRP.</p>
           <label class="field-label">Select Customer</label>
           <select id="rateCustomerId" onchange="renderCustomerCustomRates()" class="input-box"></select>
           <div class="grid-2">
@@ -317,7 +338,7 @@
               <select id="rateProductId" class="input-box"></select>
             </div>
             <div>
-              <label class="field-label">Special Rate (₹) *</label>
+              <label class="field-label">Customer Rate (₹ / Box) *</label>
               <input id="rateCustomPrice" type="number" placeholder="e.g. 345" class="input-box" />
             </div>
           </div>
@@ -370,23 +391,15 @@
             <div class="grid-2">
               <div>
                 <label class="field-label">State *</label>
-                <input id="custState" type="text" placeholder="e.g. Maharashtra" class="input-box" />
+                <select id="custState" class="input-box state-dropdown"></select>
               </div>
               <div>
                 <label class="field-label">City Name *</label>
                 <input id="custCity" type="text" placeholder="e.g. Pune" class="input-box" />
               </div>
             </div>
-            <div class="grid-2">
-              <div>
-                <label class="field-label">Transport Name</label>
-                <input id="custTransport" type="text" placeholder="e.g. VRL Logistics" class="input-box" />
-              </div>
-              <div>
-                <label class="field-label">GSTIN (For Billing)</label>
-                <input id="custGst" type="text" placeholder="GST Number" class="input-box" />
-              </div>
-            </div>
+            <label class="field-label">Transport Name</label>
+            <input id="custTransport" type="text" placeholder="e.g. VRL Logistics" class="input-box" />
             <label class="field-label">Assign Area Distributor / Dealer (For Retailers)</label>
             <select id="custAssignedPartner" class="input-box"></select>
             <button type="button" onclick="adminAddCustomer()" class="btn-primary">Save Customer Account</button>
@@ -406,8 +419,8 @@
             <input id="alertTitle" type="text" placeholder="e.g. Mumbai Medical Expo Stall #12" class="input-box" />
             <label class="field-label">Message</label>
             <textarea id="alertMsg" rows="3" placeholder="Details about new arrival, offer, or exhibition..." class="input-box"></textarea>
-            <label class="field-label">Target State (Type 'All' or exact State)</label>
-            <input id="alertState" type="text" value="All" class="input-box" />
+            <label class="field-label">Target State</label>
+            <select id="alertState" class="input-box state-dropdown-all"></select>
             <label class="field-label">Target Category</label>
             <select id="alertCat" class="input-box">
               <option value="All">All Categories</option>
@@ -428,8 +441,10 @@
       </div>
     </div>
 
+    <!-- 5-TAB BOTTOM NAVIGATION -->
     <nav id="customerNav" class="hidden">
-      <button type="button" onclick="switchTab('Catalogue')" id="navCatalogue" class="active">Catalogue</button>
+      <button type="button" onclick="switchTab('BoxRange')" id="navBoxRange" class="active">Box Range</button>
+      <button type="button" onclick="switchTab('LooseGloves')" id="navLooseGloves">Loose Gloves</button>
       <button type="button" onclick="switchTab('Cart')" id="navCart">Cart (<span id="cartBadge">0</span>)</button>
       <button type="button" onclick="switchTab('Invoices')" id="navInvoices">Invoices/LR</button>
       <button type="button" onclick="switchTab('Orders')" id="navOrders">Orders</button>
@@ -458,6 +473,24 @@
   </div>
 
   <script>
+    const INDIAN_STATES = [
+      "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat",
+      "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh",
+      "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab",
+      "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh",
+      "Uttarakhand", "West Bengal", "Andaman and Nicobar Islands", "Chandigarh",
+      "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Jammu and Kashmir", "Ladakh",
+      "Lakshadweep", "Puducherry"
+    ];
+
+    function populateStateDropdowns() {
+      const opts = INDIAN_STATES.map(s => `<option value="${s}" ${s === 'Maharashtra' ? 'selected' : ''}>${s}</option>`).join('');
+      document.querySelectorAll('.state-dropdown').forEach(el => el.innerHTML = opts);
+      const allOpts = `<option value="All">All States</option>` + INDIAN_STATES.map(s => `<option value="${s}">${s}</option>`).join('');
+      document.querySelectorAll('.state-dropdown-all').forEach(el => el.innerHTML = allOpts);
+    }
+    populateStateDropdowns();
+
     const SUPABASE_URL = "https://socjwhrkbvdxvvaywoad.supabase.co";
     const SUPABASE_KEY = "sb_publishable_yv3iKTu0etmG5hnsMfwgog_1GgKcReI";
 
@@ -543,10 +576,9 @@
       const mobile = document.getElementById('regMobile').value.trim();
       const pin = document.getElementById('regPin').value.trim();
       const category = document.getElementById('regCategory').value;
-      const state = document.getElementById('regState').value.trim();
+      const state = document.getElementById('regState').value;
       const city = document.getElementById('regCity').value.trim();
       const transport_name = document.getElementById('regTransport').value.trim();
-      const gstin = document.getElementById('regGst').value.trim();
       const err = document.getElementById('regError');
       const btn = document.getElementById('regBtn');
 
@@ -568,7 +600,7 @@
         const created = await sbInsert('customers', {
           customer_id: 'CUST-' + Math.floor(1000 + Math.random() * 9000),
           company_name: name,
-          mobile, pin, category, state, city, transport_name, gstin,
+          mobile, pin, category, state, city, transport_name,
           assigned_partner_id: ''
         });
         btn.disabled = false; btn.textContent = 'Register & Enter Portal';
@@ -607,16 +639,16 @@
         document.getElementById('newPinInput').value = '';
         document.getElementById('pinModal').classList.add('hidden');
         alert('PIN updated successfully!');
-      } catch (err) {
-        alert('Error: ' + err.message);
-      }
+      } catch (err) { alert('Error: ' + err.message); }
     }
 
-    function getUnitPrice(prod) {
+    function getCustomerRateInfo(prod) {
       const custom = MY_CUSTOM_RATES.find(r => r.product_id === prod.product_id);
-      if (custom) return Number(custom.custom_price);
-      const bulkCategories = ['Distributor', 'Wholesaler', 'Dealer', 'Trader'];
-      return bulkCategories.includes(CURRENT_USER.category) ? Number(prod.distributor_price) : Number(prod.retailer_price);
+      const mrp = Number(prod.retailer_price) || 0;
+      if (custom) {
+        return { hasCustomRate: true, rate: Number(custom.custom_price), mrp };
+      }
+      return { hasCustomRate: false, rate: mrp, mrp };
     }
 
     async function loadCustomerData() {
@@ -629,7 +661,7 @@
         CURRENT_USER.assigned_partner_id ? sbSelect('customers', `customer_id=eq.${encodeURIComponent(CURRENT_USER.assigned_partner_id)}`) : Promise.resolve([])
       ]);
 
-      PRODUCTS = prods || [];
+      PRODUCTS = (prods || []).filter(p => (p.status || 'Active') === 'Active');
       MY_CUSTOM_RATES = rates || [];
       renderAssignedPartner(partners && partners[0] ? partners[0] : null);
 
@@ -694,14 +726,19 @@
         </div>`).join('');
     }
 
-    function renderProducts() {
-      const newOnly = document.getElementById('newOnlyFilter').checked;
-      const list = PRODUCTS.filter(p => !newOnly || p.is_new_arrival);
-      const box = document.getElementById('productList');
-      if (!list.length) { box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No products available.</p>'; return; }
-      box.innerHTML = list.map(p => {
-        const price = getUnitPrice(p);
-        return `
+    function buildProductCardHtml(p, isBoxRange) {
+      const info = getCustomerRateInfo(p);
+      const priceDisplay = info.hasCustomRate
+        ? `<strong style="color:#1B3686; font-size:16px;">₹${info.rate}</strong> <span style="font-size:11px; color:#64748b; text-decoration:line-through;">MRP ₹${info.mrp}</span>`
+        : `<strong style="color:#1B3686; font-size:15px;">MRP: ₹${info.mrp}</strong> <span style="font-size:10px; color:#94a3b8;">/ box</span>`;
+
+      const helperText = isBoxRange
+        ? `<div id="calc_${p.product_id}" style="font-size:11px; color:#1B3686; font-weight:700; margin-top:6px;">Enter Inner Qty (1 Inner = 20 Boxes)</div>`
+        : `<div style="font-size:11px; color:#64748b; margin-top:6px;">Enter Loose Quantity per size</div>`;
+
+      const onInputAttr = isBoxRange ? `oninput="updateBoxCalc('${p.product_id}')"` : '';
+
+      return `
         <div class="item-card">
           <div class="prod-row">
             <img src="${p.image_url || 'https://placehold.co/120x120/EEF3FF/1B3686?text=GloveMeds'}" class="prod-img" />
@@ -714,40 +751,89 @@
               <p style="font-size:12px; color:#64748b; margin-top:4px;">${p.specs || ''}</p>
             </div>
           </div>
+
           <div class="size-grid">
-            <div class="size-cell"><label>SIZE S</label><input id="qty_${p.product_id}_S" type="number" min="0" placeholder="0" class="size-input" /></div>
-            <div class="size-cell"><label>SIZE M</label><input id="qty_${p.product_id}_M" type="number" min="0" placeholder="0" class="size-input" /></div>
-            <div class="size-cell"><label>SIZE L</label><input id="qty_${p.product_id}_L" type="number" min="0" placeholder="0" class="size-input" /></div>
-            <div class="size-cell"><label>SIZE XL</label><input id="qty_${p.product_id}_XL" type="number" min="0" placeholder="0" class="size-input" /></div>
+            <div class="size-cell"><label>XS</label><input id="qty_${p.product_id}_XS" type="number" min="0" placeholder="0" ${onInputAttr} class="size-input" /></div>
+            <div class="size-cell"><label>SMALL</label><input id="qty_${p.product_id}_Small" type="number" min="0" placeholder="0" ${onInputAttr} class="size-input" /></div>
+            <div class="size-cell"><label>MEDIUM</label><input id="qty_${p.product_id}_Medium" type="number" min="0" placeholder="0" ${onInputAttr} class="size-input" /></div>
+            <div class="size-cell"><label>LARGE</label><input id="qty_${p.product_id}_Large" type="number" min="0" placeholder="0" ${onInputAttr} class="size-input" /></div>
           </div>
+          ${helperText}
+
           <div class="prod-footer">
-            <div><strong style="color:#1B3686; font-size:16px;">₹${price}</strong> <span style="font-size:11px; color:#94a3b8;">(Your Rate)</span></div>
+            <div>${priceDisplay}</div>
             <div style="display:flex; gap:6px;">
               ${p.video_url ? `<a href="${p.video_url}" target="_blank" class="btn-sm btn-tint">Video</a>` : ''}
-              <button type="button" onclick="addProductSizes('${p.product_id}')" class="btn-sm">+ Add</button>
+              <button type="button" onclick="addProductSizes('${p.product_id}', ${isBoxRange})" class="btn-sm">+ Add</button>
             </div>
           </div>
         </div>`;
-      }).join('');
     }
 
-    function addProductSizes(pid) {
+    function updateBoxCalc(pid) {
+      let totalInners = 0;
+      ['XS', 'Small', 'Medium', 'Large'].forEach(sz => {
+        totalInners += parseInt(document.getElementById(`qty_${pid}_${sz}`).value, 10) || 0;
+      });
+      const el = document.getElementById(`calc_${pid}`);
+      if (el) {
+        el.textContent = totalInners > 0
+          ? `Selected: ${totalInners} Inner(s) × 20 = ${totalInners * 20} Total Boxes`
+          : `Enter Inner Qty (1 Inner = 20 Boxes)`;
+      }
+    }
+
+    function renderProducts() {
+      const newBoxOnly = document.getElementById('newOnlyBoxFilter').checked;
+      const boxProducts = PRODUCTS.filter(p => (p.range_type || 'Box Range') === 'Box Range' && (!newBoxOnly || p.is_new_arrival));
+      const boxContainer = document.getElementById('boxProductList');
+      boxContainer.innerHTML = boxProducts.length
+        ? boxProducts.map(p => buildProductCardHtml(p, true)).join('')
+        : '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No active products in Box Range.</p>';
+
+      const newLooseOnly = document.getElementById('newOnlyLooseFilter').checked;
+      const looseProducts = PRODUCTS.filter(p => p.range_type === 'Loose Gloves' && (!newLooseOnly || p.is_new_arrival));
+      const looseContainer = document.getElementById('looseProductList');
+      looseContainer.innerHTML = looseProducts.length
+        ? looseProducts.map(p => buildProductCardHtml(p, false)).join('')
+        : '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No active products in Loose Gloves.</p>';
+    }
+
+    function addProductSizes(pid, isBoxRange) {
       const prod = PRODUCTS.find(p => p.product_id === pid);
       if (!prod) return;
-      const price = getUnitPrice(prod);
+      const info = getCustomerRateInfo(prod);
       let added = false;
-      ['S', 'M', 'L', 'XL'].forEach(sz => {
+
+      ['XS', 'Small', 'Medium', 'Large'].forEach(sz => {
         const input = document.getElementById(`qty_${pid}_${sz}`);
-        const qty = parseInt(input.value, 10) || 0;
-        if (qty > 0) {
+        const rawQty = parseInt(input.value, 10) || 0;
+        if (rawQty > 0) {
           added = true;
-          const existing = CART.find(item => item.pid === pid && item.size === sz);
-          if (existing) existing.qty += qty;
-          else CART.push({ pid, name: prod.name, size: sz, qty, price });
+          const actualBoxes = isBoxRange ? rawQty * 20 : rawQty;
+          const unitLabel = isBoxRange ? `${rawQty} Inner (${actualBoxes} Boxes)` : `${rawQty} Loose`;
+          const existing = CART.find(item => item.pid === pid && item.size === sz && item.isBoxRange === isBoxRange);
+          if (existing) {
+            existing.rawQty += rawQty;
+            existing.qty += actualBoxes;
+          } else {
+            CART.push({
+              pid,
+              name: prod.name,
+              size: sz,
+              rawQty,
+              qty: actualBoxes,
+              isBoxRange,
+              price: info.rate,
+              hasCustomRate: info.hasCustomRate
+            });
+          }
           input.value = '';
         }
       });
-      if (!added) { alert('Enter quantity in S, M, L, or XL first.'); return; }
+
+      if (!added) { alert('Enter quantity in XS, Small, Medium, or Large first.'); return; }
+      if (isBoxRange) updateBoxCalc(pid);
       renderCart();
       alert('Added to Cart!');
     }
@@ -759,7 +845,7 @@
       const box = document.getElementById('cartItems');
       const summary = document.getElementById('cartSummary');
       if (!CART.length) {
-        box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">Cart is empty. Enter size quantities in Catalogue.</p>';
+        box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">Cart is empty. Enter quantities in Box Range or Loose Gloves.</p>';
         summary.classList.add('hidden');
         return;
       }
@@ -767,11 +853,13 @@
       box.innerHTML = CART.map((item, idx) => {
         const lineTotal = item.price * item.qty;
         total += lineTotal;
+        const qtyLabel = item.isBoxRange ? `${item.rawQty} Inner = ${item.qty} Boxes` : `${item.qty} Loose`;
+        const priceLabel = item.hasCustomRate ? `₹${item.price}` : `MRP ₹${item.price}`;
         return `
           <div class="item-card" style="display:flex; justify-content:space-between; align-items:center;">
             <div>
-              <strong style="font-size:13px;">${item.name} [Size: ${item.size}]</strong>
-              <div style="font-size:12px; color:#64748b;">₹${item.price} × ${item.qty} = <b>₹${lineTotal}</b></div>
+              <strong style="font-size:13px;">${item.name} [${item.size}]</strong>
+              <div style="font-size:12px; color:#64748b;">${qtyLabel} × ${priceLabel} = <b>₹${lineTotal}</b></div>
             </div>
             <button type="button" onclick="removeCartItem(${idx})" class="btn-sm btn-tint" style="color:#dc2626;">Remove</button>
           </div>`;
@@ -783,7 +871,11 @@
     async function submitOrder() {
       if (!CART.length) return;
       let total = 0;
-      const lines = CART.map(item => { total += item.price * item.qty; return `${item.name} [${item.size}: ${item.qty}]`; });
+      const lines = CART.map(item => {
+        total += item.price * item.qty;
+        const detail = item.isBoxRange ? `${item.rawQty} Inner (${item.qty} Boxes)` : `${item.qty} Loose`;
+        return `${item.name} [${item.size}: ${detail}]`;
+      });
       const orderId = 'GM-' + Math.floor(100000 + Math.random() * 900000);
       const btn = document.getElementById('placeOrderBtn');
       btn.disabled = true; btn.textContent = 'Sending Order...';
@@ -878,24 +970,31 @@
         </div>`;
       }).join('') : '<p style="font-size:12px; color:#94a3b8;">No orders yet.</p>';
 
-      // Render Admin Products List
+      // Render Admin Products List with Active/Inactive Toggle
       const admProdBox = document.getElementById('adminProductsList');
-      admProdBox.innerHTML = PRODUCTS.length ? PRODUCTS.map(p => `
-        <div class="item-card" style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+      admProdBox.innerHTML = PRODUCTS.length ? PRODUCTS.map(p => {
+        const isActive = (p.status || 'Active') === 'Active';
+        return `
+        <div class="item-card" style="display:flex; justify-content:space-between; align-items:center; gap:10px; opacity:${isActive ? '1' : '0.65'};">
           <div style="display:flex; gap:10px; align-items:center;">
             <img src="${p.image_url || 'https://placehold.co/80x80/EEF3FF/1B3686?text=GM'}" style="width:52px; height:52px; border-radius:10px; object-fit:cover;" />
             <div>
               <strong style="font-size:13px;">${p.name}</strong>
-              <div style="font-size:11px; color:#64748b;">${p.category} • Retail: ₹${p.retailer_price} | Bulk: ₹${p.distributor_price}</div>
+              <div style="font-size:11px; color:#64748b;">${p.range_type || 'Box Range'} • ${p.category} • MRP: ₹${p.retailer_price}</div>
+              <span class="${isActive ? 'btn-green' : 'btn-red'}" style="font-size:10px; font-weight:800; padding:1px 7px; border-radius:99px;">${isActive ? 'Active' : 'Inactive'}</span>
             </div>
           </div>
-          <button type="button" onclick="adminDeleteProduct('${p.product_id}')" class="btn-sm btn-red">Delete</button>
-        </div>`).join('') : '<p style="font-size:12px; color:#94a3b8;">No products added yet.</p>';
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <button type="button" onclick="toggleProductStatus('${p.product_id}', '${isActive ? 'Inactive' : 'Active'}')" class="btn-sm btn-tint">${isActive ? 'Set Inactive' : 'Set Active'}</button>
+            <button type="button" onclick="adminDeleteProduct('${p.product_id}')" class="btn-sm btn-red">Delete</button>
+          </div>
+        </div>`;
+      }).join('') : '<p style="font-size:12px; color:#94a3b8;">No products added yet.</p>';
 
       const custOpts = ADMIN_CUSTOMERS.map(c => `<option value="${c.customer_id}">${c.company_name} (${c.category} - ${c.city || c.state})</option>`).join('');
       document.getElementById('docCustomerId').innerHTML = custOpts;
       document.getElementById('rateCustomerId').innerHTML = custOpts;
-      document.getElementById('rateProductId').innerHTML = PRODUCTS.map(p => `<option value="${p.product_id}">${p.name}</option>`).join('');
+      document.getElementById('rateProductId').innerHTML = PRODUCTS.map(p => `<option value="${p.product_id}">${p.name} (${p.range_type || 'Box Range'})</option>`).join('');
       autoFillCustomerTransport();
       renderCustomerCustomRates();
 
@@ -926,7 +1025,7 @@
           <div>
             <strong style="font-size:13px;">${c.company_name}</strong>
             <div style="font-size:11px; color:#64748b;">${c.mobile} • <b>${c.category}</b> • ${c.city ? c.city + ', ' : ''}${c.state}</div>
-            <div style="font-size:11px; color:#475569; margin-top:2px;">Transport: <b>${c.transport_name || 'N/A'}</b> • GST: <b>${c.gstin || 'N/A'}</b></div>
+            <div style="font-size:11px; color:#475569; margin-top:2px;">Transport: <b>${c.transport_name || 'N/A'}</b></div>
           </div>
           ${assignDropdown}
         </div>`;
@@ -938,9 +1037,8 @@
     async function adminAddProduct() {
       const name = document.getElementById('prodName').value.trim();
       const category = document.getElementById('prodCat').value.trim();
-      const retailer_price = Number(document.getElementById('prodRetPrice').value) || 0;
-      const distributor_price = Number(document.getElementById('prodDistPrice').value) || 0;
-      if (!name || !category || !retailer_price) { alert('Enter Product Name, Category, and Rate.'); return; }
+      const mrp = Number(document.getElementById('prodMrp').value) || 0;
+      if (!name || !category || !mrp) { alert('Enter Product Name, Category, and MRP.'); return; }
 
       const btn = document.getElementById('addProdBtn');
       btn.disabled = true; btn.textContent = 'Publishing Product...';
@@ -948,27 +1046,34 @@
         const image_url = await uploadFileRest('prodImgFile', 'PROD');
         await sbInsert('products', {
           product_id: 'GM-' + Math.floor(100 + Math.random() * 900),
-          name, category,
+          name,
+          range_type: document.getElementById('prodRangeType').value,
+          category,
+          status: document.getElementById('prodStatus').value,
           is_new_arrival: document.getElementById('prodNew').value === 'true',
           specs: document.getElementById('prodSpecs').value.trim(),
-          retailer_price,
-          distributor_price: distributor_price || retailer_price,
+          retailer_price: mrp,
+          distributor_price: mrp,
           image_url,
           video_url: document.getElementById('prodVideoUrl').value.trim()
         });
-        alert('Product added to GloveMeds catalogue!');
+        alert('Product published!');
         document.getElementById('prodName').value = '';
         document.getElementById('prodCat').value = '';
         document.getElementById('prodSpecs').value = '';
-        document.getElementById('prodRetPrice').value = '';
-        document.getElementById('prodDistPrice').value = '';
+        document.getElementById('prodMrp').value = '';
         document.getElementById('prodImgFile').value = '';
         document.getElementById('prodVideoUrl').value = '';
         loadAdminData();
-      } catch (err) {
-        alert('Error: ' + err.message);
-      }
-      btn.disabled = false; btn.textContent = 'Publish Product to Catalogue';
+      } catch (err) { alert('Error: ' + err.message); }
+      btn.disabled = false; btn.textContent = 'Publish Product';
+    }
+
+    async function toggleProductStatus(pid, newStatus) {
+      try {
+        await sbPatch('products', `product_id=eq.${encodeURIComponent(pid)}`, { status: newStatus });
+        loadAdminData();
+      } catch (err) { alert('Error: ' + err.message); }
     }
 
     async function adminDeleteProduct(pid) {
@@ -976,17 +1081,15 @@
       try {
         await sbDelete('products', `product_id=eq.${encodeURIComponent(pid)}`);
         loadAdminData();
-      } catch (err) {
-        alert('Error: ' + err.message);
-      }
+      } catch (err) { alert('Error: ' + err.message); }
     }
 
     function renderCustomerCustomRates() {
       const cid = document.getElementById('rateCustomerId').value;
       const box = document.getElementById('customerRatesPreview');
       const list = ADMIN_RATES.filter(r => r.customer_id === cid);
-      if (!list.length) { box.innerHTML = '<span style="color:#64748b;">Using default category rates for this customer.</span>'; return; }
-      box.innerHTML = '<b>Active Custom Rates:</b><br/>' + list.map(r => {
+      if (!list.length) { box.innerHTML = '<span style="color:#64748b;">No custom rates set — this customer sees only MRP.</span>'; return; }
+      box.innerHTML = '<b>Assigned Rates:</b><br/>' + list.map(r => {
         const p = PRODUCTS.find(x => x.product_id === r.product_id);
         return `• ${p ? p.name : r.product_id}: <b>₹${r.custom_price}</b>`;
       }).join('<br/>');
@@ -996,15 +1099,13 @@
       const customer_id = document.getElementById('rateCustomerId').value;
       const product_id = document.getElementById('rateProductId').value;
       const custom_price = Number(document.getElementById('rateCustomPrice').value);
-      if (!customer_id || !product_id || !custom_price) { alert('Select Customer, Product, and enter Special Rate.'); return; }
+      if (!customer_id || !product_id || !custom_price) { alert('Select Customer, Product, and enter Rate.'); return; }
       try {
         await sbInsert('customer_rates', { customer_id, product_id, custom_price }, true);
         alert('Custom rate saved for this customer!');
         document.getElementById('rateCustomPrice').value = '';
         loadAdminData();
-      } catch (err) {
-        alert('Error: ' + err.message);
-      }
+      } catch (err) { alert('Error: ' + err.message); }
     }
 
     function autoFillCustomerTransport() {
@@ -1163,7 +1264,7 @@
       const name = document.getElementById('custName').value.trim();
       const mobile = document.getElementById('custMobile').value.trim();
       const pin = document.getElementById('custPin').value.trim();
-      const state = document.getElementById('custState').value.trim();
+      const state = document.getElementById('custState').value;
       const city = document.getElementById('custCity').value.trim();
       if (!name || !mobile || !pin || !state || !city) { alert('Fill Company, Mobile, PIN, State, and City.'); return; }
       try {
@@ -1173,17 +1274,14 @@
           category: document.getElementById('custCategory').value,
           state, city,
           transport_name: document.getElementById('custTransport').value.trim(),
-          gstin: document.getElementById('custGst').value.trim(),
           assigned_partner_id: document.getElementById('custAssignedPartner').value
         });
         alert('Customer account created!');
         document.getElementById('custName').value = '';
         document.getElementById('custMobile').value = '';
         document.getElementById('custPin').value = '';
-        document.getElementById('custState').value = '';
         document.getElementById('custCity').value = '';
         document.getElementById('custTransport').value = '';
-        document.getElementById('custGst').value = '';
         loadAdminData();
       } catch (err) { alert('Error: ' + err.message); }
     }
@@ -1195,7 +1293,7 @@
       try {
         await sbInsert('alerts', {
           title, message: msg,
-          target_state: document.getElementById('alertState').value.trim() || 'All',
+          target_state: document.getElementById('alertState').value,
           target_category: document.getElementById('alertCat').value,
           offer_code: document.getElementById('alertCode').value.trim()
         });
@@ -1207,7 +1305,7 @@
     }
 
     function switchTab(name) {
-      ['Catalogue', 'Cart', 'Invoices', 'Orders'].forEach(t => {
+      ['BoxRange', 'LooseGloves', 'Cart', 'Invoices', 'Orders'].forEach(t => {
         document.getElementById('tab' + t).classList.toggle('hidden', t !== name);
         document.getElementById('nav' + t).classList.toggle('active', t === name);
       });
