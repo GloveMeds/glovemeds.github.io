@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#1B3686" />
   <title>GloveMeds</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background: #f1f5f9; color: #1e293b; }
@@ -12,13 +13,13 @@
     #loginScreen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: linear-gradient(180deg, #1B3686 0%, #12255E 100%); }
     .card-login { background: #fff; width: 100%; max-width: 400px; border-radius: 24px; padding: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); }
     .logo-badge { display: inline-block; background: #1B3686; color: #fff; font-weight: 800; font-size: 26px; padding: 10px 24px; border-radius: 14px; letter-spacing: -0.02em; }
-    .field-label { display: block; font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin: 16px 0 6px; }
-    .input-box { width: 100%; padding: 12px 14px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 16px; outline: none; }
+    .field-label { display: block; font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin: 14px 0 5px; }
+    .input-box { width: 100%; padding: 11px 13px; border: 1px solid #cbd5e1; border-radius: 11px; font-size: 15px; outline: none; background: #fff; }
     .input-box:focus { border-color: #1B3686; }
-    .btn-primary { width: 100%; background: #1B3686; color: #fff; border: none; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 18px; }
+    .btn-primary { width: 100%; background: #1B3686; color: #fff; border: none; padding: 13px; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 16px; }
     .btn-primary:disabled { opacity: 0.6; }
     .err-box { background: #fef2f2; color: #dc2626; font-size: 12px; font-weight: 600; padding: 10px; border-radius: 8px; margin-top: 12px; }
-    #appScreen { max-width: 480px; margin: 0 auto; min-height: 100vh; background: #f8fafc; padding-bottom: 84px; box-shadow: 0 0 20px rgba(0,0,0,0.08); }
+    #appScreen { max-width: 500px; margin: 0 auto; min-height: 100vh; background: #f8fafc; padding-bottom: 84px; box-shadow: 0 0 20px rgba(0,0,0,0.08); }
     header { background: #1B3686; color: #fff; padding: 14px 16px; position: sticky; top: 0; z-index: 20; display: flex; justify-content: space-between; align-items: center; }
     .badge-pill { background: rgba(255,255,255,0.2); font-size: 10px; padding: 2px 8px; border-radius: 99px; font-weight: 700; margin-left: 6px; text-transform: uppercase; }
     .btn-header { background: rgba(255,255,255,0.18); color: #fff; border: none; padding: 7px 11px; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; }
@@ -35,15 +36,19 @@
     .btn-sm { background: #1B3686; color: #fff; border: none; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; }
     .btn-tint { background: #EEF3FF; color: #1B3686; }
     .new-tag { background: #dcfce7; color: #166534; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 99px; }
-    nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; background: #fff; border-top: 1px solid #e2e8f0; display: grid; grid-template-columns: repeat(4, 1fr); padding: 10px 0; text-align: center; z-index: 20; }
+    nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 500px; margin: 0 auto; background: #fff; border-top: 1px solid #e2e8f0; display: grid; grid-template-columns: repeat(4, 1fr); padding: 10px 0; text-align: center; z-index: 20; }
     nav button { background: none; border: none; font-size: 12px; font-weight: 600; color: #64748b; cursor: pointer; }
     nav button.active { color: #1B3686; font-weight: 800; }
     .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50; }
     .modal-card { background: #fff; border-radius: 20px; padding: 24px; max-width: 340px; width: 100%; text-align: center; }
+    .sub-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px; }
+    .sub-tab-btn { padding: 8px 4px; border-radius: 10px; border: 1px solid #cbd5e1; background: #fff; font-size: 11px; font-weight: 700; color: #475569; cursor: pointer; }
+    .sub-tab-btn.active { background: #1B3686; color: #fff; border-color: #1B3686; }
   </style>
 </head>
 <body>
 
+  <!-- LOGIN SCREEN -->
   <div id="loginScreen">
     <div class="card-login">
       <div style="text-align:center; margin-bottom:20px;">
@@ -53,7 +58,7 @@
       <form onsubmit="handleLogin(event)">
         <label class="field-label">Registered Mobile Number</label>
         <input id="loginMobile" type="tel" required placeholder="e.g. 9969353858" class="input-box" />
-        <label class="field-label">Customer PIN</label>
+        <label class="field-label">PIN</label>
         <input id="loginPin" type="password" inputmode="numeric" required placeholder="••••" class="input-box" />
         <div id="loginError" class="err-box hidden"></div>
         <button id="loginBtn" type="submit" class="btn-primary">Access Portal</button>
@@ -61,6 +66,7 @@
     </div>
   </div>
 
+  <!-- MAIN APP SCREEN -->
   <div id="appScreen" class="hidden">
     <header>
       <div>
@@ -73,7 +79,8 @@
       </div>
     </header>
 
-    <div class="container">
+    <!-- CUSTOMER VIEW -->
+    <div id="customerView" class="container hidden">
       <div id="alertsSection"></div>
 
       <section id="tabCatalogue">
@@ -110,7 +117,95 @@
       </section>
     </div>
 
-    <nav>
+    <!-- ADMIN / HEAD OFFICE VIEW -->
+    <div id="adminView" class="container hidden">
+      <div class="sub-tabs">
+        <button onclick="switchAdminTab('Orders')" id="admBtnOrders" class="sub-tab-btn active">All Orders</button>
+        <button onclick="switchAdminTab('Upload')" id="admBtnUpload" class="sub-tab-btn">Invoice/LR</button>
+        <button onclick="switchAdminTab('Customers')" id="admBtnCustomers" class="sub-tab-btn">Customers</button>
+        <button onclick="switchAdminTab('Alerts')" id="admBtnAlerts" class="sub-tab-btn">Send Alert</button>
+      </div>
+
+      <!-- ADMIN 1: ALL ORDERS -->
+      <div id="admTabOrders">
+        <strong style="font-size:15px; display:block; margin-bottom:10px;">Incoming Customer Orders</strong>
+        <div id="adminOrdersList"></div>
+      </div>
+
+      <!-- ADMIN 2: UPLOAD INVOICE & LR -->
+      <div id="admTabUpload" class="hidden">
+        <div class="item-card">
+          <strong style="font-size:15px; color:#1B3686;">Upload Invoice & Transport Docket</strong>
+          <form onsubmit="adminUploadDoc(event)">
+            <label class="field-label">Select Customer</label>
+            <select id="docCustomerId" required class="input-box"></select>
+            <label class="field-label">Invoice Number</label>
+            <input id="docInvoiceNo" type="text" required placeholder="e.g. GM/26-27/045" class="input-box" />
+            <label class="field-label">Invoice PDF / Photo</label>
+            <input id="docInvoiceFile" type="file" accept=".pdf,image/*" class="input-box" />
+            <label class="field-label">Transporter Name</label>
+            <input id="docTransporter" type="text" placeholder="e.g. VRL Logistics" class="input-box" />
+            <label class="field-label">LR / Docket Number</label>
+            <input id="docLrNo" type="text" placeholder="e.g. LR-884920" class="input-box" />
+            <label class="field-label">Transport Docket / LR Photo or PDF</label>
+            <input id="docLrFile" type="file" accept=".pdf,image/*" class="input-box" />
+            <button id="uploadDocBtn" type="submit" class="btn-primary">Upload to Customer Vault</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ADMIN 3: ADD CUSTOMER -->
+      <div id="admTabCustomers" class="hidden">
+        <div class="item-card">
+          <strong style="font-size:15px; color:#1B3686;">Add Retailer / Distributor</strong>
+          <form onsubmit="adminAddCustomer(event)">
+            <label class="field-label">Company / Shop Name</label>
+            <input id="custName" type="text" required placeholder="e.g. MedPlus Pharmacy" class="input-box" />
+            <label class="field-label">Mobile Number (Login ID)</label>
+            <input id="custMobile" type="tel" required placeholder="10-digit mobile" class="input-box" />
+            <label class="field-label">4-Digit PIN</label>
+            <input id="custPin" type="text" required placeholder="e.g. 4321" class="input-box" />
+            <label class="field-label">Category</label>
+            <select id="custCategory" class="input-box">
+              <option value="Retailer">Retailer</option>
+              <option value="Distributor">Distributor</option>
+            </select>
+            <label class="field-label">State</label>
+            <input id="custState" type="text" required placeholder="e.g. Maharashtra" class="input-box" />
+            <label class="field-label">GSTIN (Optional)</label>
+            <input id="custGst" type="text" placeholder="GST Number" class="input-box" />
+            <button type="submit" class="btn-primary">Save Customer Account</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ADMIN 4: STATE & CATEGORY ALERTS -->
+      <div id="admTabAlerts" class="hidden">
+        <div class="item-card">
+          <strong style="font-size:15px; color:#1B3686;">Send State / Category Notification</strong>
+          <form onsubmit="adminSendAlert(event)">
+            <label class="field-label">Title</label>
+            <input id="alertTitle" type="text" required placeholder="e.g. Mumbai Medical Expo Stall #12" class="input-box" />
+            <label class="field-label">Message</label>
+            <textarea id="alertMsg" required rows="3" placeholder="Details about new arrival, offer, or exhibition..." class="input-box"></textarea>
+            <label class="field-label">Target State (Type 'All' or exact State)</label>
+            <input id="alertState" type="text" value="All" required class="input-box" />
+            <label class="field-label">Target Category</label>
+            <select id="alertCat" class="input-box">
+              <option value="All">All (Retailers & Distributors)</option>
+              <option value="Retailer">Retailers Only</option>
+              <option value="Distributor">Distributors Only</option>
+            </select>
+            <label class="field-label">Offer Code (Optional)</label>
+            <input id="alertCode" type="text" placeholder="e.g. EXPO10" class="input-box" />
+            <button type="submit" class="btn-primary">Publish Notification</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM NAV (CUSTOMER ONLY) -->
+    <nav id="customerNav" class="hidden">
       <button onclick="switchTab('Catalogue')" id="navCatalogue" class="active">Catalogue</button>
       <button onclick="switchTab('Cart')" id="navCart">Cart (<span id="cartBadge">0</span>)</button>
       <button onclick="switchTab('Invoices')" id="navInvoices">Invoices/LR</button>
@@ -118,6 +213,7 @@
     </nav>
   </div>
 
+  <!-- QR MODAL -->
   <div id="qrModal" class="modal-bg hidden">
     <div class="modal-card">
       <strong style="color:#1B3686; font-size:17px;">GloveMeds 1-Time Scan</strong>
@@ -128,298 +224,130 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbwtRh59ujz0PniVOaFR8pe1jVl3bCcQ0YCGdF4jlnuCGwSn7fODFofAtdNCgerqMnrb/exec";
-    let APP_DATA = { user: null, products: [], orders: [], invoices: [], alerts: [] };
+    const SUPABASE_URL = "https://socjwhrkbvdxvvaywoad.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_yv3iKTu0etmG5hnsMfwgog_1GgKcReI";
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let CURRENT_USER = null;
+    let PRODUCTS = [];
     let CART = [];
-
-    function callApiJsonp(params) {
-      return new Promise((resolve, reject) => {
-        const cbName = 'gm_cb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
-        const script = document.createElement('script');
-        const timeout = setTimeout(() => {
-          cleanup();
-          reject(new Error('Request timed out. Check internet or Apps Script deployment.'));
-        }, 15000);
-
-        function cleanup() {
-          clearTimeout(timeout);
-          delete window[cbName];
-          if (script.parentNode) script.parentNode.removeChild(script);
-        }
-
-        window[cbName] = (data) => {
-          cleanup();
-          resolve(data);
-        };
-
-        params.callback = cbName;
-        script.src = API_URL + '?' + new URLSearchParams(params).toString();
-        script.onerror = () => {
-          cleanup();
-          reject(new Error('Could not reach Google Sheet server.'));
-        };
-        document.body.appendChild(script);
-      });
-    }
 
     async function handleLogin(e) {
       e.preventDefault();
-      const mobile = document.getElementById('loginMobile').value;
-      const pin = document.getElementById('loginPin').value;
+      const mobile = document.getElementById('loginMobile').value.trim();
+      const pin = document.getElementById('loginPin').value.trim();
       const btn = document.getElementById('loginBtn');
       const err = document.getElementById('loginError');
       btn.disabled = true;
       btn.textContent = 'Verifying Account...';
       err.classList.add('hidden');
 
-      try {
-        const res = await callApiJsonp({ action: 'login', mobile, pin });
-        btn.disabled = false;
-        btn.textContent = 'Access Portal';
-        if (!res || !res.success) {
-          err.textContent = (res && res.message) ? res.message : 'Invalid Mobile Number or PIN';
-          err.classList.remove('hidden');
-          return;
-        }
-        APP_DATA = res;
-        document.getElementById('loginScreen').classList.add('hidden');
-        document.getElementById('appScreen').classList.remove('hidden');
-        document.getElementById('userCompanyHeader').textContent = res.user.Company_Name;
-        document.getElementById('userStateBadge').textContent = res.user.Category + ' • ' + res.user.State;
-        renderAll();
-      } catch (error) {
-        btn.disabled = false;
-        btn.textContent = 'Access Portal';
-        err.textContent = error.message;
+      const { data: users, error } = await db
+        .from('customers')
+        .select('*')
+        .eq('mobile', mobile)
+        .eq('pin', pin);
+
+      btn.disabled = false;
+      btn.textContent = 'Access Portal';
+
+      if (error) {
+        err.textContent = 'Database error: ' + error.message;
         err.classList.remove('hidden');
+        return;
+      }
+      if (!users || !users.length) {
+        err.textContent = 'Invalid Mobile Number or PIN';
+        err.classList.remove('hidden');
+        return;
+      }
+
+      CURRENT_USER = users[0];
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('appScreen').classList.remove('hidden');
+      document.getElementById('userCompanyHeader').textContent = CURRENT_USER.company_name;
+      document.getElementById('userStateBadge').textContent = CURRENT_USER.category + ' • ' + CURRENT_USER.state;
+
+      if (CURRENT_USER.category === 'Admin') {
+        document.getElementById('adminView').classList.remove('hidden');
+        loadAdminData();
+      } else {
+        document.getElementById('customerView').classList.remove('hidden');
+        document.getElementById('customerNav').classList.remove('hidden');
+        loadCustomerData();
       }
     }
 
-    function renderAll() {
-      renderAlerts(); renderProducts(); renderInvoices(); renderOrders(); renderCart();
+    function getUnitPrice(prod) {
+      return CURRENT_USER.category === 'Distributor' ? Number(prod.distributor_price) : Number(prod.retailer_price);
     }
 
-    function renderAlerts() {
+    async function loadCustomerData() {
+      const [{ data: prods }, { data: ords }, { data: invs }, { data: alts }] = await Promise.all([
+        db.from('products').select('*').order('created_at', { ascending: false }),
+        db.from('orders').select('*').eq('customer_id', CURRENT_USER.customer_id).order('created_at', { ascending: false }),
+        db.from('invoices_lr').select('*').eq('customer_id', CURRENT_USER.customer_id).order('created_at', { ascending: false }),
+        db.from('alerts').select('*').order('created_at', { ascending: false })
+      ]);
+
+      PRODUCTS = prods || [];
+      const myAlerts = (alts || []).filter(a =>
+        (a.target_state === 'All' || a.target_state.toLowerCase() === CURRENT_USER.state.toLowerCase()) &&
+        (a.target_category === 'All' || a.target_category === CURRENT_USER.category)
+      );
+
+      renderAlerts(myAlerts);
+      renderProducts();
+      renderInvoices(invs || []);
+      renderOrders(ords || []);
+    }
+
+    function renderAlerts(list) {
       const box = document.getElementById('alertsSection');
-      if (!APP_DATA.alerts.length) { box.innerHTML = ''; return; }
-      box.innerHTML = APP_DATA.alerts.map(a => `
+      if (!list.length) { box.innerHTML = ''; return; }
+      box.innerHTML = list.map(a => `
         <div class="alert-card">
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <strong style="font-size:12px; color:#1B3686; text-transform:uppercase;">${a.Title}</strong>
-            ${a.Offer_Code ? `<span style="background:#1B3686; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:700;">${a.Offer_Code}</span>` : ''}
+            <strong style="font-size:12px; color:#1B3686; text-transform:uppercase;">${a.title}</strong>${a.offer_code ? `<span style="background:#1B3686; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:700;">${a.offer_code}</span>` : ''}
           </div>
-          <p style="font-size:12px; color:#334155; margin-top:4px;">${a.Message}</p>
+          <p style="font-size:12px; color:#334155; margin-top:4px;">${a.message}</p>
         </div>
       `).join('');
     }
 
     function renderProducts() {
       const newOnly = document.getElementById('newOnlyFilter').checked;
-      const list = APP_DATA.products.filter(p => !newOnly || String(p.Is_New_Arrival).toLowerCase() === 'yes');
+      const list = PRODUCTS.filter(p => !newOnly || p.is_new_arrival);
       const box = document.getElementById('productList');
       if (!list.length) {
-        box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No products found in Products tab.</p>';
+        box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No products available.</p>';
         return;
       }
-      box.innerHTML = list.map(p => `
+      box.innerHTML = list.map(p => {
+        const price = getUnitPrice(p);
+        return `
         <div class="item-card">
           <div class="prod-row">
-            <img src="${p.Image_URL || 'https://placehold.co/120x120/EEF3FF/1B3686?text=GloveMeds'}" class="prod-img" />
+            <img src="${p.image_url || 'https://placehold.co/120x120/EEF3FF/1B3686?text=GloveMeds'}" class="prod-img" />
             <div style="flex:1;">
               <div style="display:flex; justify-content:space-between; gap:4px;">
-                <strong style="font-size:14px;">${p.Name}</strong>
-                ${String(p.Is_New_Arrival).toLowerCase() === 'yes' ? '<span class="new-tag">NEW</span>' : ''}
+                <strong style="font-size:14px;">${p.name}</strong>${p.is_new_arrival ? '<span class="new-tag">NEW</span>' : ''}
               </div>
-              <div style="font-size:11px; color:#1B3686; font-weight:700; margin-top:2px;">${p.Category}</div>
-              <p style="font-size:12px; color:#64748b; margin-top:4px;">${p.Specs || ''}</p>
+              <div style="font-size:11px; color:#1B3686; font-weight:700; margin-top:2px;">${p.category}</div>
+              <p style="font-size:12px; color:#64748b; margin-top:4px;">${p.specs || ''}</p>
             </div>
           </div>
 
           <div class="size-grid">
-            <div class="size-cell"><label>SIZE S</label><input id="qty_${p.Product_ID}_S" type="number" min="0" placeholder="0" class="size-input" /></div>
-            <div class="size-cell"><label>SIZE M</label><input id="qty_${p.Product_ID}_M" type="number" min="0" placeholder="0" class="size-input" /></div>
-            <div class="size-cell"><label>SIZE L</label><input id="qty_${p.Product_ID}_L" type="number" min="0" placeholder="0" class="size-input" /></div>
-            <div class="size-cell"><label>SIZE XL</label><input id="qty_${p.Product_ID}_XL" type="number" min="0" placeholder="0" class="size-input" /></div>
+            <div class="size-cell"><label>SIZE S</label><input id="qty_${p.product_id}_S" type="number" min="0" placeholder="0" class="size-input" /></div>
+            <div class="size-cell"><label>SIZE M</label><input id="qty_${p.product_id}_M" type="number" min="0" placeholder="0" class="size-input" /></div>
+            <div class="size-cell"><label>SIZE L</label><input id="qty_${p.product_id}_L" type="number" min="0" placeholder="0" class="size-input" /></div>
+            <div class="size-cell"><label>SIZE XL</label><input id="qty_${p.product_id}_XL" type="number" min="0" placeholder="0" class="size-input" /></div>
           </div>
 
           <div class="prod-footer">
-            <div><strong style="color:#1B3686; font-size:16px;">₹${p.Carton_Price}</strong> <span style="font-size:11px; color:#94a3b8;">/ unit</span></div>
+            <div><strong style="color:#1B3686; font-size:16px;">₹${price}</strong> <span style="font-size:11px; color:#94a3b8;">(${CURRENT_USER.category} Rate)</span></div>
             <div style="display:flex; gap:6px;">
-              ${p.Video_URL ? `<a href="${p.Video_URL}" target="_blank" class="btn-sm btn-tint">Video</a>` : ''}
-              <button onclick="addProductSizes('${p.Product_ID}')" class="btn-sm">+ Add to Order</button>
+              ${p.video_url ? `<a href="${p.video_url}" target="_blank" class="btn-sm btn-tint">Video</a>` : ''}
+              <button onclick="addProductSizes('${p.product_id}')" class="btn-sm">+ Add</button>
             </div>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function addProductSizes(pid) {
-      const prod = APP_DATA.products.find(p => String(p.Product_ID) === String(pid));
-      if (!prod) return;
-      const sizes = ['S', 'M', 'L', 'XL'];
-      let addedAny = false;
-
-      sizes.forEach(sz => {
-        const input = document.getElementById(`qty_${pid}_${sz}`);
-        const qty = parseInt(input.value, 10) || 0;
-        if (qty > 0) {
-          addedAny = true;
-          const existing = CART.find(item => item.pid === pid && item.size === sz);
-          if (existing) {
-            existing.qty += qty;
-          } else {
-            CART.push({ pid, name: prod.Name, size: sz, qty, price: Number(prod.Carton_Price) });
-          }
-          input.value = '';
-        }
-      });
-
-      if (!addedAny) {
-        alert('Please enter quantity for at least one size (S, M, L, or XL).');
-        return;
-      }
-      renderCart();
-      alert('Added to Cart!');
-    }
-
-    function removeCartItem(index) {
-      CART.splice(index, 1);
-      renderCart();
-    }
-
-    function renderCart() {
-      const totalQty = CART.reduce((sum, item) => sum + item.qty, 0);
-      document.getElementById('cartBadge').textContent = totalQty;
-      const box = document.getElementById('cartItems');
-      const summary = document.getElementById('cartSummary');
-
-      if (!CART.length) {
-        box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">Your cart is empty. Enter size quantities in Catalogue.</p>';
-        summary.classList.add('hidden');
-        return;
-      }
-
-      let total = 0;
-      box.innerHTML = CART.map((item, idx) => {
-        const lineTotal = item.price * item.qty;
-        total += lineTotal;
-        return `
-          <div class="item-card" style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <strong style="font-size:13px;">${item.name} [Size: ${item.size}]</strong>
-              <div style="font-size:12px; color:#64748b;">₹${item.price} × ${item.qty} = <b>₹${lineTotal}</b></div>
-            </div>
-            <button onclick="removeCartItem(${idx})" class="btn-sm btn-tint" style="color:#dc2626;">Remove</button>
-          </div>
-        `;
-      }).join('');
-
-      document.getElementById('cartTotal').textContent = '₹' + total;
-      summary.classList.remove('hidden');
-    }
-
-    async function submitOrder() {
-      if (!CART.length) return;
-      let total = 0;
-      const lines = CART.map(item => {
-        total += item.price * item.qty;
-        return `${item.name} [${item.size}: ${item.qty}]`;
-      });
-
-      const btn = document.getElementById('placeOrderBtn');
-      btn.disabled = true;
-      btn.textContent = 'Sending Order...';
-
-      try {
-        const res = await callApiJsonp({
-          action: 'order',
-          customerId: APP_DATA.user.Customer_ID,
-          companyName: APP_DATA.user.Company_Name,
-          customerType: APP_DATA.user.Category,
-          itemsSummary: lines.join(', '),
-          totalAmount: total
-        });
-        btn.disabled = false;
-        btn.textContent = 'Confirm & Send Order';
-        alert('Order Confirmed! ID: ' + res.orderId);
-        APP_DATA.orders.unshift({
-          Order_ID: res.orderId,
-          Date: new Date().toLocaleDateString('en-IN'),
-          Items_Summary: lines.join(', '),
-          Total_Amount: total,
-          Status: 'Pending Dispatch'
-        });
-        CART = [];
-        renderCart();
-        renderOrders();
-        switchTab('Orders');
-      } catch (err) {
-        btn.disabled = false;
-        btn.textContent = 'Confirm & Send Order';
-        alert('Order failed: ' + err.message);
-      }
-    }
-
-    function renderInvoices() {
-      const box = document.getElementById('invoiceList');
-      if (!APP_DATA.invoices.length) {
-        box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No invoices or LR dockets uploaded yet.</p>';
-        return;
-      }
-      box.innerHTML = APP_DATA.invoices.map(inv => `
-        <div class="item-card">
-          <div style="display:flex; justify-content:space-between;">
-            <strong style="color:#1B3686; font-size:14px;">Invoice #${inv.Invoice_No}</strong>
-            <span style="font-size:11px; color:#94a3b8;">${inv.Date}</span>
-          </div>
-          <p style="font-size:12px; color:#475569; margin:6px 0;">Transporter: <b>${inv.Transporter || 'N/A'}</b> • LR: <b>${inv.LR_No || 'N/A'}</b></p>
-          <div style="display:flex; gap:8px; margin-top:8px;">
-            ${inv.Invoice_PDF_Link ? `<a href="${inv.Invoice_PDF_Link}" target="_blank" class="btn-sm" style="flex:1; text-align:center;">View GST Invoice</a>` : ''}
-            ${inv.LR_Copy_Link ? `<a href="${inv.LR_Copy_Link}" target="_blank" class="btn-sm btn-tint" style="flex:1; text-align:center;">View LR / Docket</a>` : ''}
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function renderOrders() {
-      const box = document.getElementById('orderList');
-      if (!APP_DATA.orders.length) {
-        box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No orders placed yet.</p>';
-        return;
-      }
-      box.innerHTML = APP_DATA.orders.map(o => `
-        <div class="item-card">
-          <div style="display:flex; justify-content:space-between;">
-            <strong style="font-size:13px;">${o.Order_ID}</strong>
-            <span style="background:#fef3c7; color:#92400e; font-size:11px; font-weight:700; padding:2px 8px; border-radius:99px;">${o.Status}</span>
-          </div>
-          <p style="font-size:12px; color:#475569; margin:6px 0;">${o.Items_Summary}</p>
-          <div style="display:flex; justify-content:space-between; font-size:12px; padding-top:6px; border-top:1px solid #f1f5f9;">
-            <span style="color:#94a3b8;">${o.Date}</span>
-            <strong style="color:#1B3686;">₹${o.Total_Amount}</strong>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function switchTab(name) {
-      ['Catalogue', 'Cart', 'Invoices', 'Orders'].forEach(t => {
-        document.getElementById('tab' + t).classList.toggle('hidden', t !== name);
-        document.getElementById('nav' + t).classList.toggle('active', t === name);
-      });
-    }
-
-    function openQrModal() {
-      document.getElementById('qrModal').classList.remove('hidden');
-      document.getElementById('qrImg').src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&color=1B3686&data=' + encodeURIComponent(window.location.href);
-    }
-
-    function logout() {
-      APP_DATA = { user: null, products: [], orders: [], invoices: [], alerts: [] };
-      CART = [];
-      document.getElementById('appScreen').classList.add('hidden');
-      document.getElementById('loginScreen').classList.remove('hidden');
-    }
-  </script>
-</body>
-</html>
