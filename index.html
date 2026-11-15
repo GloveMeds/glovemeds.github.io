@@ -10,21 +10,22 @@
     body { background: #f1f5f9; color: #1e293b; }
     .hidden { display: none !important; }
     #loginScreen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: linear-gradient(180deg, #1B3686 0%, #12255E 100%); }
-    .card-login { background: #fff; width: 100%; max-width: 400px; border-radius: 24px; padding: 26px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); }
+    .card-login { background: #fff; width: 100%; max-width: 420px; border-radius: 24px; padding: 26px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); }
     .logo-badge { display: inline-block; background: #1B3686; color: #fff; font-weight: 800; font-size: 26px; padding: 10px 24px; border-radius: 14px; letter-spacing: -0.02em; }
-    .field-label { display: block; font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin: 12px 0 4px; }
-    .input-box { width: 100%; padding: 11px 13px; border: 1px solid #cbd5e1; border-radius: 11px; font-size: 15px; outline: none; background: #fff; }
+    .field-label { display: block; font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin: 11px 0 4px; }
+    .input-box { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 14px; outline: none; background: #fff; }
     .input-box:focus { border-color: #1B3686; }
     .btn-primary { width: 100%; background: #1B3686; color: #fff; border: none; padding: 13px; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 16px; }
     .btn-primary:disabled { opacity: 0.6; }
     .btn-outline { width: 100%; background: #EEF3FF; color: #1B3686; border: 1px solid #c7d2fe; padding: 11px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; margin-top: 10px; }
     .err-box { background: #fef2f2; color: #dc2626; font-size: 12px; font-weight: 600; padding: 10px; border-radius: 8px; margin-top: 12px; }
-    #appScreen { max-width: 520px; margin: 0 auto; min-height: 100vh; background: #f8fafc; padding-bottom: 84px; box-shadow: 0 0 20px rgba(0,0,0,0.08); }
+    #appScreen { max-width: 540px; margin: 0 auto; min-height: 100vh; background: #f8fafc; padding-bottom: 84px; box-shadow: 0 0 20px rgba(0,0,0,0.08); }
     header { background: #1B3686; color: #fff; padding: 14px 16px; position: sticky; top: 0; z-index: 20; display: flex; justify-content: space-between; align-items: center; }
     .badge-pill { background: rgba(255,255,255,0.2); font-size: 10px; padding: 2px 8px; border-radius: 99px; font-weight: 700; margin-left: 6px; text-transform: uppercase; }
     .btn-header { background: rgba(255,255,255,0.18); color: #fff; border: none; padding: 7px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; }
     .container { padding: 16px; }
     .alert-card { background: #EEF3FF; border-left: 4px solid #1B3686; padding: 12px; border-radius: 12px; margin-bottom: 10px; }
+    .partner-card { background: #ecfdf5; border-left: 4px solid #059669; padding: 12px; border-radius: 12px; margin-bottom: 12px; }
     .pay-due-card { background: #fffbeb; border-left: 4px solid #d97706; padding: 12px; border-radius: 12px; margin-bottom: 10px; }
     .item-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 14px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
     .prod-row { display: flex; gap: 12px; }
@@ -39,17 +40,18 @@
     .btn-amber { background: #fef3c7; color: #92400e; }
     .btn-green { background: #dcfce7; color: #166534; }
     .new-tag { background: #dcfce7; color: #166534; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 99px; }
-    nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 520px; margin: 0 auto; background: #fff; border-top: 1px solid #e2e8f0; display: grid; grid-template-columns: repeat(4, 1fr); padding: 10px 0; text-align: center; z-index: 20; }
+    nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 540px; margin: 0 auto; background: #fff; border-top: 1px solid #e2e8f0; display: grid; grid-template-columns: repeat(4, 1fr); padding: 10px 0; text-align: center; z-index: 20; }
     nav button { background: none; border: none; font-size: 12px; font-weight: 600; color: #64748b; cursor: pointer; }
     nav button.active { color: #1B3686; font-weight: 800; }
     .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50; }
-    .modal-card { background: #fff; border-radius: 20px; padding: 22px; max-width: 350px; width: 100%; }
+    .modal-card { background: #fff; border-radius: 20px; padding: 22px; max-width: 360px; width: 100%; }
     .sub-tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-bottom: 14px; }
     .sub-tab-btn { padding: 8px 2px; border-radius: 10px; border: 1px solid #cbd5e1; background: #fff; font-size: 10px; font-weight: 700; color: #475569; cursor: pointer; }
     .sub-tab-btn.active { background: #1B3686; color: #fff; border-color: #1B3686; }
     .filter-pills { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
     .pill-btn { padding: 6px 12px; border-radius: 99px; border: 1px solid #cbd5e1; background: #fff; font-size: 11px; font-weight: 700; cursor: pointer; }
     .pill-btn.active { background: #1B3686; color: #fff; border-color: #1B3686; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   </style>
 </head>
 <body>
@@ -57,9 +59,9 @@
   <!-- LOGIN & SELF-REGISTRATION SCREEN -->
   <div id="loginScreen">
     <div class="card-login">
-      <div style="text-align:center; margin-bottom:16px;">
+      <div style="text-align:center; margin-bottom:14px;">
         <div class="logo-badge">GloveMeds</div>
-        <p style="color:#64748b; font-size:13px; margin-top:8px;">Retailer & Distributor Ordering Portal</p>
+        <p style="color:#64748b; font-size:13px; margin-top:8px;">B2B Medical Gloves Ordering Portal</p>
       </div>
 
       <!-- SIGN IN BOX -->
@@ -70,33 +72,55 @@
         <input id="loginPin" type="password" inputmode="numeric" maxlength="6" placeholder="••••" class="input-box" onkeydown="if(event.key==='Enter') handleLogin()" />
         <div id="loginError" class="err-box hidden"></div>
         <button id="loginBtn" type="button" onclick="handleLogin()" class="btn-primary">Access Portal</button>
-        <button type="button" onclick="toggleAuthMode('register')" class="btn-outline">New Customer? Create Your Own PIN</button>
+        <button type="button" onclick="toggleAuthMode('register')" class="btn-outline">New Customer? Register Here</button>
       </div>
 
-      <!-- SELF-REGISTRATION BOX (CUSTOMER CREATES THEIR OWN ACCOUNT & PIN) -->
+      <!-- SELF-REGISTRATION BOX -->
       <div id="registerBox" class="hidden">
-        <strong style="font-size:14px; color:#1B3686; display:block; text-align:center;">New Customer Self-Registration</strong>
-        <label class="field-label">Company / Pharmacy / Hospital Name *</label>
+        <strong style="font-size:14px; color:#1B3686; display:block; text-align:center;">Customer Registration</strong>
+        <label class="field-label">Company / Firm Name *</label>
         <input id="regName" type="text" placeholder="e.g. City Care Pharmacy" class="input-box" />
-        <label class="field-label">Mobile Number (Your Login ID) *</label>
-        <input id="regMobile" type="tel" placeholder="10-digit mobile" class="input-box" />
-        <label class="field-label">Create Your Own 4-Digit PIN *</label>
-        <input id="regPin" type="text" inputmode="numeric" maxlength="6" placeholder="Choose a 4-digit PIN" class="input-box" />
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+        <div class="grid-2">
           <div>
-            <label class="field-label">Account Type *</label>
-            <select id="regCategory" class="input-box">
-              <option value="Retailer">Retailer</option>
-              <option value="Distributor">Distributor</option>
-            </select>
+            <label class="field-label">Mobile Number *</label>
+            <input id="regMobile" type="tel" placeholder="10-digit mobile" class="input-box" />
           </div>
+          <div>
+            <label class="field-label">Create 4-Digit PIN *</label>
+            <input id="regPin" type="text" inputmode="numeric" maxlength="6" placeholder="e.g. 4829" class="input-box" />
+          </div>
+        </div>
+        <label class="field-label">Customer Category *</label>
+        <select id="regCategory" class="input-box">
+          <option value="Retailer">Retailer</option>
+          <option value="Distributor">Distributor</option>
+          <option value="Trader">Trader</option>
+          <option value="Wholesaler">Wholesaler</option>
+          <option value="Dealer">Dealer</option>
+          <option value="End user">End user</option>
+          <option value="Hospital">Hospital</option>
+          <option value="Pharma">Pharma</option>
+        </select>
+        <div class="grid-2">
           <div>
             <label class="field-label">State *</label>
             <input id="regState" type="text" placeholder="e.g. Maharashtra" class="input-box" />
           </div>
+          <div>
+            <label class="field-label">City Name *</label>
+            <input id="regCity" type="text" placeholder="e.g. Mumbai" class="input-box" />
+          </div>
         </div>
-        <label class="field-label">GSTIN (Optional)</label>
-        <input id="regGst" type="text" placeholder="GST Number" class="input-box" />
+        <div class="grid-2">
+          <div>
+            <label class="field-label">Preferred Transport Name</label>
+            <input id="regTransport" type="text" placeholder="e.g. VRL Logistics" class="input-box" />
+          </div>
+          <div>
+            <label class="field-label">GSTIN (For Billing)</label>
+            <input id="regGst" type="text" placeholder="GST Number" class="input-box" />
+          </div>
+        </div>
         <div id="regError" class="err-box hidden"></div>
         <button id="regBtn" type="button" onclick="handleSelfRegister()" class="btn-primary">Register & Enter Portal</button>
         <button type="button" onclick="toggleAuthMode('login')" class="btn-outline">Already Registered? Sign In</button>
@@ -120,6 +144,7 @@
 
     <!-- CUSTOMER VIEW -->
     <div id="customerView" class="container hidden">
+      <div id="assignedPartnerSection"></div>
       <div id="paymentDueSection"></div>
       <div id="alertsSection"></div>
 
@@ -173,14 +198,14 @@
         <div id="adminOrdersList"></div>
       </div>
 
-      <!-- ADMIN 2: UPLOAD INVOICE & LR WITH CREDIT TERMS -->
+      <!-- ADMIN 2: UPLOAD INVOICE & LR -->
       <div id="admTabUpload" class="hidden">
         <div class="item-card">
           <strong style="font-size:15px; color:#1B3686;">Upload Invoice & Transport Docket</strong>
           <div>
             <label class="field-label">Select Customer</label>
-            <select id="docCustomerId" class="input-box"></select>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <select id="docCustomerId" onchange="autoFillCustomerTransport()" class="input-box"></select>
+            <div class="grid-2">
               <div>
                 <label class="field-label">Invoice Number *</label>
                 <input id="docInvoiceNo" type="text" placeholder="e.g. GM/26/045" class="input-box" />
@@ -192,15 +217,16 @@
             </div>
             <label class="field-label">Payment Credit Terms</label>
             <select id="docCreditDays" class="input-box">
-              <option value="7">7 Days Credit</option>
-              <option value="15" selected>15 Days Credit</option>
-              <option value="30">30 Days Credit</option>
+              <option value="Advance">Advance</option>
+              <option value="7">7 Days</option>
+              <option value="15" selected>15 Days</option>
+              <option value="30">30 Days</option>
             </select>
             <label class="field-label">Invoice PDF / Photo</label>
             <input id="docInvoiceFile" type="file" accept=".pdf,image/*" class="input-box" />
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <div class="grid-2">
               <div>
-                <label class="field-label">Transporter Name</label>
+                <label class="field-label">Transport Name</label>
                 <input id="docTransporter" type="text" placeholder="e.g. VRL Logistics" class="input-box" />
               </div>
               <div>
@@ -215,50 +241,93 @@
         </div>
       </div>
 
-      <!-- ADMIN 3: PAYMENT REMINDERS (7 DAYS / 15 DAYS / 30 DAYS) -->
+      <!-- ADMIN 3: PAYMENT REMINDERS (ADVANCE / 7 / 15 / 30 DAYS) -->
       <div id="admTabPayments" class="hidden">
         <strong style="font-size:15px; display:block; margin-bottom:8px;">Payment Reminder Tracker</strong>
         <div class="filter-pills">
           <button type="button" onclick="filterPayments('All')" id="payPillAll" class="pill-btn active">All Unpaid</button>
-          <button type="button" onclick="filterPayments(7)" id="payPill7" class="pill-btn">7 Days</button>
-          <button type="button" onclick="filterPayments(15)" id="payPill15" class="pill-btn">15 Days</button>
-          <button type="button" onclick="filterPayments(30)" id="payPill30" class="pill-btn">30 Days</button>
+          <button type="button" onclick="filterPayments('Advance')" id="payPillAdvance" class="pill-btn">Advance</button>
+          <button type="button" onclick="filterPayments('7')" id="payPill7" class="pill-btn">7 Days</button>
+          <button type="button" onclick="filterPayments('15')" id="payPill15" class="pill-btn">15 Days</button>
+          <button type="button" onclick="filterPayments('30')" id="payPill30" class="pill-btn">30 Days</button>
         </div>
         <div id="adminPaymentsList"></div>
       </div>
 
-      <!-- ADMIN 4: REGISTERED CUSTOMERS LIST & MANUAL ADD -->
+      <!-- ADMIN 4: CUSTOMERS, RETAILER MAPPING & DISTRIBUTOR HANDOVER -->
       <div id="admTabCustomers" class="hidden">
-        <strong style="font-size:15px; display:block; margin-bottom:8px;">Registered Retailers & Distributors</strong>
-        <div id="adminCustomersList" style="margin-bottom:14px;"></div>
+        <!-- DISTRIBUTOR HANDOVER / RETAILER LIST EXPORT TOOL -->
+        <div class="item-card" style="background:#EEF3FF; border-color:#c7d2fe;">
+          <strong style="font-size:14px; color:#1B3686;">Distributor Area Handover & Retailer List</strong>
+          <p style="font-size:11px; color:#475569; margin-top:3px;">View/copy all retailers under a Distributor or transfer them to a new Distributor in 1 click.</p>
+          <label class="field-label">Select Current Distributor / Dealer</label>
+          <select id="handoverFromPartner" onchange="renderPartnerRetailerList()" class="input-box"></select>
+          <div id="partnerRetailerPreview" style="font-size:12px; color:#1e293b; margin-top:8px; background:#fff; padding:10px; border-radius:10px; border:1px solid #cbd5e1;"></div>
+          <button type="button" onclick="copyRetailerList()" class="btn-sm btn-tint" style="margin-top:8px; width:100%;">Copy Retailer List for Distributor</button>
 
+          <label class="field-label" style="margin-top:12px;">Transfer All Listed Retailers To New Distributor/Dealer</label>
+          <div style="display:flex; gap:6px;">
+            <select id="handoverToPartner" class="input-box"></select>
+            <button type="button" onclick="bulkTransferRetailers()" class="btn-sm" style="white-space:nowrap;">Transfer All</button>
+          </div>
+        </div>
+
+        <!-- ADD NEW CUSTOMER FORM -->
         <div class="item-card">
-          <strong style="font-size:14px; color:#1B3686;">Manually Add Customer (Optional)</strong>
+          <strong style="font-size:14px; color:#1B3686;">Add New Customer</strong>
           <div>
-            <label class="field-label">Company / Shop Name</label>
+            <label class="field-label">Company / Firm Name *</label>
             <input id="custName" type="text" placeholder="e.g. MedPlus Pharmacy" class="input-box" />
-            <label class="field-label">Mobile Number</label>
-            <input id="custMobile" type="tel" placeholder="10-digit mobile" class="input-box" />
-            <label class="field-label">Initial 4-Digit PIN</label>
-            <input id="custPin" type="text" placeholder="e.g. 4321" class="input-box" />
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <div class="grid-2">
               <div>
-                <label class="field-label">Category</label>
-                <select id="custCategory" class="input-box">
-                  <option value="Retailer">Retailer</option>
-                  <option value="Distributor">Distributor</option>
-                </select>
+                <label class="field-label">Mobile Number *</label>
+                <input id="custMobile" type="tel" placeholder="10-digit mobile" class="input-box" />
               </div>
               <div>
-                <label class="field-label">State</label>
-                <input id="custState" type="text" placeholder="e.g. Maharashtra" class="input-box" />
+                <label class="field-label">4-Digit PIN *</label>
+                <input id="custPin" type="text" placeholder="e.g. 4321" class="input-box" />
               </div>
             </div>
-            <label class="field-label">GSTIN (Optional)</label>
-            <input id="custGst" type="text" placeholder="GST Number" class="input-box" />
+            <label class="field-label">Customer Category *</label>
+            <select id="custCategory" class="input-box">
+              <option value="Retailer">Retailer</option>
+              <option value="Distributor">Distributor</option>
+              <option value="Trader">Trader</option>
+              <option value="Wholesaler">Wholesaler</option>
+              <option value="Dealer">Dealer</option>
+              <option value="End user">End user</option>
+              <option value="Hospital">Hospital</option>
+              <option value="Pharma">Pharma</option>
+            </select>
+            <div class="grid-2">
+              <div>
+                <label class="field-label">State *</label>
+                <input id="custState" type="text" placeholder="e.g. Maharashtra" class="input-box" />
+              </div>
+              <div>
+                <label class="field-label">City Name *</label>
+                <input id="custCity" type="text" placeholder="e.g. Pune" class="input-box" />
+              </div>
+            </div>
+            <div class="grid-2">
+              <div>
+                <label class="field-label">Transport Name</label>
+                <input id="custTransport" type="text" placeholder="e.g. VRL Logistics" class="input-box" />
+              </div>
+              <div>
+                <label class="field-label">GSTIN (For Billing)</label>
+                <input id="custGst" type="text" placeholder="GST Number" class="input-box" />
+              </div>
+            </div>
+            <label class="field-label">Assign Area Distributor / Dealer (For Retailers)</label>
+            <select id="custAssignedPartner" class="input-box"></select>
             <button type="button" onclick="adminAddCustomer()" class="btn-primary">Save Customer Account</button>
           </div>
         </div>
+
+        <!-- ALL REGISTERED CUSTOMERS WITH QUICK REASSIGN -->
+        <strong style="font-size:14px; display:block; margin-bottom:8px;">All Registered Customers</strong>
+        <div id="adminCustomersList"></div>
       </div>
 
       <!-- ADMIN 5: STATE & CATEGORY ALERTS -->
@@ -274,9 +343,15 @@
             <input id="alertState" type="text" value="All" class="input-box" />
             <label class="field-label">Target Category</label>
             <select id="alertCat" class="input-box">
-              <option value="All">All (Retailers & Distributors)</option>
-              <option value="Retailer">Retailers Only</option>
-              <option value="Distributor">Distributors Only</option>
+              <option value="All">All Categories</option>
+              <option value="Retailer">Retailer</option>
+              <option value="Distributor">Distributor</option>
+              <option value="Trader">Trader</option>
+              <option value="Wholesaler">Wholesaler</option>
+              <option value="Dealer">Dealer</option>
+              <option value="End user">End user</option>
+              <option value="Hospital">Hospital</option>
+              <option value="Pharma">Pharma</option>
             </select>
             <label class="field-label">Offer Code (Optional)</label>
             <input id="alertCode" type="text" placeholder="e.g. EXPO10" class="input-box" />
@@ -304,7 +379,7 @@
     </div>
   </div>
 
-  <!-- CHANGE PIN MODAL (CUSTOMER SELF-SERVICE) -->
+  <!-- CHANGE PIN MODAL -->
   <div id="pinModal" class="modal-bg hidden">
     <div class="modal-card">
       <strong style="color:#1B3686; font-size:16px;">Change Your 4-Digit PIN</strong>
@@ -390,12 +465,14 @@
       const pin = document.getElementById('regPin').value.trim();
       const category = document.getElementById('regCategory').value;
       const state = document.getElementById('regState').value.trim();
+      const city = document.getElementById('regCity').value.trim();
+      const transport_name = document.getElementById('regTransport').value.trim();
       const gstin = document.getElementById('regGst').value.trim();
       const err = document.getElementById('regError');
       const btn = document.getElementById('regBtn');
 
-      if (!name || !mobile || !pin || !state) {
-        err.textContent = 'Please fill Company Name, Mobile, PIN, and State.';
+      if (!name || !mobile || !pin || !state || !city) {
+        err.textContent = 'Please fill Company Name, Mobile, PIN, State, and City.';
         err.classList.remove('hidden');
         return;
       }
@@ -405,18 +482,15 @@
         const existing = await sbSelect('customers', `mobile=eq.${encodeURIComponent(mobile)}`);
         if (existing && existing.length) {
           btn.disabled = false; btn.textContent = 'Register & Enter Portal';
-          err.textContent = 'This mobile number is already registered. Please Sign In.';
+          err.textContent = 'Mobile number already registered. Please Sign In.';
           err.classList.remove('hidden');
           return;
         }
         const created = await sbInsert('customers', {
           customer_id: 'CUST-' + Math.floor(1000 + Math.random() * 9000),
           company_name: name,
-          mobile: mobile,
-          pin: pin,
-          category: category,
-          state: state,
-          gstin: gstin
+          mobile, pin, category, state, city, transport_name, gstin,
+          assigned_partner_id: ''
         });
         btn.disabled = false; btn.textContent = 'Register & Enter Portal';
         enterPortal(created[0]);
@@ -430,7 +504,7 @@
       CURRENT_USER = user;
       document.getElementById('loginScreen').classList.add('hidden');
       document.getElementById('appScreen').classList.remove('hidden');
-      document.getElementById('userCompanyHeader').textContent = CURRENT_USER.company_name;
+      document.getElementById('userCompanyHeader').textContent = CURRENT_USER.company_name + (CURRENT_USER.city ? ` (${CURRENT_USER.city})` : '');
       document.getElementById('userStateBadge').textContent = CURRENT_USER.category + ' • ' + CURRENT_USER.state;
 
       if (CURRENT_USER.category === 'Admin') {
@@ -460,18 +534,22 @@
     }
 
     function getUnitPrice(prod) {
-      return CURRENT_USER.category === 'Distributor' ? Number(prod.distributor_price) : Number(prod.retailer_price);
+      const bulkCategories = ['Distributor', 'Wholesaler', 'Dealer', 'Trader'];
+      return bulkCategories.includes(CURRENT_USER.category) ? Number(prod.distributor_price) : Number(prod.retailer_price);
     }
 
     async function loadCustomerData() {
-      const [prods, ords, invs, alts] = await Promise.all([
+      const [prods, ords, invs, alts, partners] = await Promise.all([
         sbSelect('products', 'order=created_at.desc'),
         sbSelect('orders', `customer_id=eq.${encodeURIComponent(CURRENT_USER.customer_id)}&order=created_at.desc`),
         sbSelect('invoices_lr', `customer_id=eq.${encodeURIComponent(CURRENT_USER.customer_id)}&order=created_at.desc`),
-        sbSelect('alerts', 'order=created_at.desc')
+        sbSelect('alerts', 'order=created_at.desc'),
+        CURRENT_USER.assigned_partner_id ? sbSelect('customers', `customer_id=eq.${encodeURIComponent(CURRENT_USER.assigned_partner_id)}`) : Promise.resolve([])
       ]);
 
       PRODUCTS = prods || [];
+      renderAssignedPartner(partners && partners[0] ? partners[0] : null);
+
       const myInvoices = invs || [];
       const unpaid = myInvoices.filter(i => i.payment_status === 'Unpaid' && Number(i.amount) > 0);
       renderPaymentDueBanner(unpaid);
@@ -487,15 +565,35 @@
       renderOrders(ords || []);
     }
 
+    function renderAssignedPartner(partner) {
+      const box = document.getElementById('assignedPartnerSection');
+      if (CURRENT_USER.category !== 'Retailer') { box.innerHTML = ''; return; }
+      if (partner) {
+        box.innerHTML = `
+          <div class="partner-card">
+            <strong style="font-size:12px; color:#065f46; text-transform:uppercase;">Your Area ${partner.category} for Supply</strong>
+            <p style="font-size:13px; color:#064e3b; margin-top:4px;"><b>${partner.company_name}</b> (${partner.city || partner.state})</p>
+            <p style="font-size:12px; color:#047857; margin-top:2px;">Contact: <b>${partner.mobile}</b> — Retailer orders placed here are routed to your assigned ${partner.category}.</p>
+          </div>`;
+      } else {
+        box.innerHTML = `
+          <div class="partner-card" style="background:#f8fafc; border-color:#64748b;">
+            <strong style="font-size:12px; color:#334155; text-transform:uppercase;">Retailer Order Routing</strong>
+            <p style="font-size:12px; color:#475569; margin-top:3px;">Submit your requirement below — GloveMeds Head Office will connect you with your nearest area Distributor/Dealer.</p>
+          </div>`;
+      }
+    }
+
     function renderPaymentDueBanner(unpaid) {
       const box = document.getElementById('paymentDueSection');
       if (!unpaid.length) { box.innerHTML = ''; return; }
       box.innerHTML = unpaid.map(inv => {
-        const dueDate = new Date(new Date(inv.created_at).getTime() + (Number(inv.credit_days || 15) * 86400000));
+        const terms = String(inv.credit_days || '15');
+        const termText = terms === 'Advance' ? 'Advance Payment' : `${terms} Days Terms`;
         return `
           <div class="pay-due-card">
             <strong style="font-size:12px; color:#92400e; text-transform:uppercase;">Payment Reminder • Invoice #${inv.invoice_no}</strong>
-            <p style="font-size:12px; color:#78350f; margin-top:4px;">Amount Due: <b>₹${inv.amount}</b> (${inv.credit_days || 15} Days Terms • Due: <b>${dueDate.toLocaleDateString('en-IN')}</b>)</p>
+            <p style="font-size:12px; color:#78350f; margin-top:4px;">Amount Due: <b>₹${inv.amount}</b> (${termText})</p>
           </div>`;
       }).join('');
     }
@@ -611,11 +709,11 @@
         await sbInsert('orders', {
           order_id: orderId,
           customer_id: CURRENT_USER.customer_id,
-          company_name: CURRENT_USER.company_name,
+          company_name: CURRENT_USER.company_name + (CURRENT_USER.city ? ` (${CURRENT_USER.city})` : ''),
           customer_type: CURRENT_USER.category,
           items_summary: lines.join(', '),
           total_amount: total,
-          status: 'Pending Dispatch'
+          status: CURRENT_USER.category === 'Retailer' ? 'Route to Area Distributor' : 'Pending Dispatch'
         });
         btn.disabled = false; btn.textContent = 'Confirm & Send Order';
         alert('Order Confirmed! ID: ' + orderId);
@@ -635,7 +733,7 @@
             <strong style="color:#1B3686; font-size:14px;">Invoice #${inv.invoice_no}</strong>
             <span class="${inv.payment_status === 'Paid' ? 'btn-green' : 'btn-amber'}" style="font-size:10px; font-weight:800; padding:2px 8px; border-radius:99px;">${inv.payment_status || 'Unpaid'}</span>
           </div>
-          <p style="font-size:12px; color:#475569; margin:6px 0;">Amount: <b>₹${inv.amount || 0}</b> (${inv.credit_days || 15} Days) • LR: <b>${inv.lr_no || 'N/A'}</b></p>
+          <p style="font-size:12px; color:#475569; margin:6px 0;">Amount: <b>₹${inv.amount || 0}</b> (${inv.credit_days === 'Advance' ? 'Advance' : (inv.credit_days || 15) + ' Days'}) • Transport: <b>${inv.transporter || 'N/A'}</b> • LR: <b>${inv.lr_no || 'N/A'}</b></p>
           <div style="display:flex; gap:8px; margin-top:8px;">
             ${inv.invoice_pdf_url ? `<a href="${inv.invoice_pdf_url}" target="_blank" class="btn-sm" style="flex:1; text-align:center;">View GST Invoice</a>` : ''}
             ${inv.lr_copy_url ? `<a href="${inv.lr_copy_url}" target="_blank" class="btn-sm btn-tint" style="flex:1; text-align:center;">View LR / Docket</a>` : ''}
@@ -672,39 +770,130 @@
       ADMIN_INVOICES = invs || [];
 
       const ordBox = document.getElementById('adminOrdersList');
-      ordBox.innerHTML = (ords && ords.length) ? ords.map(o => `
+      ordBox.innerHTML = (ords && ords.length) ? ords.map(o => {
+        const custObj = ADMIN_CUSTOMERS.find(c => c.customer_id === o.customer_id);
+        const partnerObj = (custObj && custObj.assigned_partner_id) ? ADMIN_CUSTOMERS.find(p => p.customer_id === custObj.assigned_partner_id) : null;
+        const routeNote = partnerObj
+          ? `<div style="background:#ecfdf5; color:#065f46; font-size:11px; padding:5px 8px; border-radius:8px; margin-top:6px;">Assigned Area ${partnerObj.category}: <b>${partnerObj.company_name}</b> (${partnerObj.mobile})</div>`
+          : '';
+        return `
         <div class="item-card">
           <div style="display:flex; justify-content:space-between;">
-            <strong style="font-size:13px; color:#1B3686;">${o.company_name} (${o.customer_type})</strong>
+            <strong style="font-size:13px; color:#1B3686;">${o.company_name} [${o.customer_type}]</strong>
             <span style="font-size:11px; font-weight:700;">${o.order_id}</span>
           </div>
           <p style="font-size:12px; color:#334155; margin:6px 0;">${o.items_summary}</p>
-          <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; padding-top:6px; border-top:1px solid #f1f5f9;">
+          ${routeNote}
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; padding-top:6px; margin-top:6px; border-top:1px solid #f1f5f9;">
             <strong style="color:#1B3686;">Total: ₹${o.total_amount}</strong>
             <span style="background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:99px; font-weight:700;">${o.status}</span>
           </div>
-        </div>`).join('') : '<p style="font-size:12px; color:#94a3b8;">No orders yet.</p>';
+        </div>`;
+      }).join('') : '<p style="font-size:12px; color:#94a3b8;">No orders yet.</p>';
 
       const sel = document.getElementById('docCustomerId');
-      sel.innerHTML = ADMIN_CUSTOMERS.map(c => `<option value="${c.customer_id}">${c.company_name} (${c.category} - ${c.state})</option>`).join('');
+      sel.innerHTML = ADMIN_CUSTOMERS.map(c => `<option value="${c.customer_id}">${c.company_name} (${c.category} - ${c.city || c.state})</option>`).join('');
+      autoFillCustomerTransport();
+
+      const partners = ADMIN_CUSTOMERS.filter(c => c.category === 'Distributor' || c.category === 'Dealer');
+      const partnerOpts = `<option value="">-- Direct / Unassigned --</option>` + partners.map(p => `<option value="${p.customer_id}">${p.company_name} (${p.category} • ${p.city || p.state})</option>`).join('');
+      document.getElementById('custAssignedPartner').innerHTML = partnerOpts;
+
+      const partnerOnlyOpts = partners.length
+        ? partners.map(p => `<option value="${p.customer_id}">${p.company_name} (${p.category} • ${p.city || p.state})</option>`).join('')
+        : `<option value="">No Distributors/Dealers added yet</option>`;
+      document.getElementById('handoverFromPartner').innerHTML = partnerOnlyOpts;
+      document.getElementById('handoverToPartner').innerHTML = partnerOnlyOpts;
+      renderPartnerRetailerList();
 
       const custListBox = document.getElementById('adminCustomersList');
-      custListBox.innerHTML = ADMIN_CUSTOMERS.length ? ADMIN_CUSTOMERS.map(c => `
-        <div class="item-card" style="padding:10px 14px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-          <div>
-            <strong style="font-size:13px;">${c.company_name}</strong>
-            <div style="font-size:11px; color:#64748b;">${c.mobile} • ${c.category} • ${c.state}</div>
+      custListBox.innerHTML = ADMIN_CUSTOMERS.length ? ADMIN_CUSTOMERS.map(c => {
+        const assignDropdown = c.category === 'Retailer' ? `
+          <div style="margin-top:8px; padding-top:8px; border-top:1px solid #f1f5f9; display:flex; align-items:center; gap:6px;">
+            <span style="font-size:11px; font-weight:700; color:#475569;">Assigned:</span>
+            <select onchange="reassignSingleRetailer('${c.customer_id}', this.value)" class="input-box" style="padding:5px 8px; font-size:12px;">
+              <option value="">-- Unassigned --</option>
+              ${partners.map(p => `<option value="${p.customer_id}" ${c.assigned_partner_id === p.customer_id ? 'selected' : ''}>${p.company_name} (${p.city || p.state})</option>`).join('')}
+            </select>
+          </div>` : '';
+
+        return `
+        <div class="item-card" style="padding:12px 14px; margin-bottom:8px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div>
+              <strong style="font-size:13px;">${c.company_name}</strong>
+              <div style="font-size:11px; color:#64748b;">${c.mobile} • <b>${c.category}</b> • ${c.city ? c.city + ', ' : ''}${c.state}</div>
+              <div style="font-size:11px; color:#475569; margin-top:2px;">Transport: <b>${c.transport_name || 'N/A'}</b> • GST: <b>${c.gstin || 'N/A'}</b></div>
+            </div>
           </div>
-          <span style="font-size:10px; font-weight:700; background:#EEF3FF; color:#1B3686; padding:3px 8px; border-radius:8px;">${c.gstin || 'No GST'}</span>
-        </div>`).join('') : '<p style="font-size:12px; color:#94a3b8;">No registered customers yet.</p>';
+          ${assignDropdown}
+        </div>`;
+      }).join('') : '<p style="font-size:12px; color:#94a3b8;">No registered customers yet.</p>';
 
       renderAdminPayments();
     }
 
-    function filterPayments(days) {
-      PAY_FILTER = days;
-      ['All', 7, 15, 30].forEach(d => {
-        document.getElementById('payPill' + d).classList.toggle('active', d === days);
+    function autoFillCustomerTransport() {
+      const cid = document.getElementById('docCustomerId').value;
+      const cust = ADMIN_CUSTOMERS.find(c => c.customer_id === cid);
+      if (cust && cust.transport_name) {
+        document.getElementById('docTransporter').value = cust.transport_name;
+      }
+    }
+
+    async function reassignSingleRetailer(retailerId, partnerId) {
+      try {
+        await sbPatch('customers', `customer_id=eq.${encodeURIComponent(retailerId)}`, { assigned_partner_id: partnerId });
+        loadAdminData();
+      } catch (err) {
+        alert('Error updating assignment: ' + err.message);
+      }
+    }
+
+    function renderPartnerRetailerList() {
+      const partnerId = document.getElementById('handoverFromPartner').value;
+      const box = document.getElementById('partnerRetailerPreview');
+      if (!partnerId) { box.innerHTML = 'No distributor selected.'; return; }
+      const retailers = ADMIN_CUSTOMERS.filter(c => c.category === 'Retailer' && c.assigned_partner_id === partnerId);
+      if (!retailers.length) {
+        box.innerHTML = '0 retailers currently mapped to this Distributor/Dealer.';
+        return;
+      }
+      box.innerHTML = `<b>${retailers.length} Mapped Retailer(s):</b><br/>` + retailers.map((r, i) =>
+        `${i + 1}. ${r.company_name} — ${r.city || r.state} (Mob: ${r.mobile})`
+      ).join('<br/>');
+    }
+
+    function copyRetailerList() {
+      const partnerId = document.getElementById('handoverFromPartner').value;
+      const partner = ADMIN_CUSTOMERS.find(c => c.customer_id === partnerId);
+      const retailers = ADMIN_CUSTOMERS.filter(c => c.category === 'Retailer' && c.assigned_partner_id === partnerId);
+      if (!retailers.length) { alert('No retailers mapped to copy.'); return; }
+      const text = `GloveMeds Area Retailer List (${partner ? partner.company_name : ''}):\n` +
+        retailers.map((r, i) => `${i + 1}. ${r.company_name} | ${r.city || ''}, ${r.state} | Mob: ${r.mobile}`).join('\n');
+      navigator.clipboard.writeText(text);
+      alert('Retailer list copied! You can paste and share it with your distributor anytime.');
+    }
+
+    async function bulkTransferRetailers() {
+      const fromId = document.getElementById('handoverFromPartner').value;
+      const toId = document.getElementById('handoverToPartner').value;
+      if (!fromId || !toId || fromId === toId) { alert('Select two different Distributors/Dealers to transfer.'); return; }
+      const retailers = ADMIN_CUSTOMERS.filter(c => c.category === 'Retailer' && c.assigned_partner_id === fromId);
+      if (!retailers.length) { alert('No retailers under the selected distributor.'); return; }
+      try {
+        await sbPatch('customers', `assigned_partner_id=eq.${encodeURIComponent(fromId)}`, { assigned_partner_id: toId });
+        alert(`Transferred ${retailers.length} retailer(s) to the new Distributor!`);
+        loadAdminData();
+      } catch (err) {
+        alert('Transfer error: ' + err.message);
+      }
+    }
+
+    function filterPayments(term) {
+      PAY_FILTER = term;
+      ['All', 'Advance', '7', '15', '30'].forEach(d => {
+        document.getElementById('payPill' + d).classList.toggle('active', d === term);
       });
       renderAdminPayments();
     }
@@ -713,43 +902,48 @@
       const box = document.getElementById('adminPaymentsList');
       const list = ADMIN_INVOICES.filter(inv =>
         inv.payment_status !== 'Paid' &&
-        (PAY_FILTER === 'All' || Number(inv.credit_days) === Number(PAY_FILTER))
+        (PAY_FILTER === 'All' || String(inv.credit_days) === String(PAY_FILTER))
       );
 
       if (!list.length) {
-        box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:24px 0;">No pending invoices in this credit bucket.</p>';
+        box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:24px 0;">No pending invoices in this bucket.</p>';
         return;
       }
 
       box.innerHTML = list.map(inv => {
-        const cust = ADMIN_CUSTOMERS.find(c => c.customer_id === inv.customer_id) || { company_name: inv.customer_id, mobile: '' };
-        const created = new Date(inv.created_at);
-        const due = new Date(created.getTime() + (Number(inv.credit_days || 15) * 86400000));
-        const daysLeft = Math.ceil((due - new Date()) / 86400000);
-        const statusBadge = daysLeft < 0
-          ? `<span style="background:#fee2e2; color:#b91c1c; font-size:10px; font-weight:800; padding:2px 8px; border-radius:99px;">OVERDUE (${Math.abs(daysLeft)}d)</span>`
-          : `<span style="background:#fef3c7; color:#92400e; font-size:10px; font-weight:800; padding:2px 8px; border-radius:99px;">Due in ${daysLeft}d</span>`;
+        const cust = ADMIN_CUSTOMERS.find(c => c.customer_id === inv.customer_id) || { company_name: inv.customer_id };
+        const term = String(inv.credit_days || '15');
+        let badge = '';
+        if (term === 'Advance') {
+          badge = `<span style="background:#fee2e2; color:#b91c1c; font-size:10px; font-weight:800; padding:2px 8px; border-radius:99px;">ADVANCE DUE</span>`;
+        } else {
+          const due = new Date(new Date(inv.created_at).getTime() + (Number(term) * 86400000));
+          const daysLeft = Math.ceil((due - new Date()) / 86400000);
+          badge = daysLeft < 0
+            ? `<span style="background:#fee2e2; color:#b91c1c; font-size:10px; font-weight:800; padding:2px 8px; border-radius:99px;">OVERDUE (${Math.abs(daysLeft)}d)</span>`
+            : `<span style="background:#fef3c7; color:#92400e; font-size:10px; font-weight:800; padding:2px 8px; border-radius:99px;">Due in ${daysLeft}d</span>`;
+        }
 
         return `
           <div class="item-card">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <strong style="font-size:13px; color:#1B3686;">${cust.company_name}</strong>
-              ${statusBadge}
+              ${badge}
             </div>
-            <p style="font-size:12px; color:#475569; margin:6px 0;">Invoice <b>#${inv.invoice_no}</b> • Terms: <b>${inv.credit_days || 15} Days</b> • Amount: <b>₹${inv.amount || 0}</b></p>
+            <p style="font-size:12px; color:#475569; margin:6px 0;">Invoice <b>#${inv.invoice_no}</b> • Terms: <b>${term === 'Advance' ? 'Advance' : term + ' Days'}</b> • Amount: <b>₹${inv.amount || 0}</b></p>
             <div style="display:flex; gap:8px; margin-top:8px;">
-              <button type="button" onclick="sendPaymentReminder('${inv.customer_id}', '${inv.invoice_no}', '${inv.amount || 0}', '${due.toLocaleDateString('en-IN')}')" class="btn-sm btn-amber" style="flex:1;">Send Reminder</button>
+              <button type="button" onclick="sendPaymentReminder('${inv.invoice_no}', '${inv.amount || 0}', '${term}')" class="btn-sm btn-amber" style="flex:1;">Send Reminder</button>
               <button type="button" onclick="markInvoicePaid('${inv.id}')" class="btn-sm btn-green" style="flex:1;">Mark Paid</button>
             </div>
           </div>`;
       }).join('');
     }
 
-    async function sendPaymentReminder(custId, invNo, amt, dueStr) {
+    async function sendPaymentReminder(invNo, amt, term) {
       try {
         await sbInsert('alerts', {
           title: 'Payment Reminder: Invoice #' + invNo,
-          message: `Friendly reminder: ₹${amt} for Invoice #${invNo} is due on ${dueStr}. Kindly remit payment at your earliest convenience.`,
+          message: `Friendly reminder: ₹${amt} for Invoice #${invNo} (${term === 'Advance' ? 'Advance' : term + ' Days'} terms) is pending. Kindly remit payment at your earliest convenience.`,
           target_state: 'All',
           target_category: 'All',
           offer_code: 'DUE'
@@ -775,124 +969,4 @@
       const path = `${prefix}_${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
       const res = await fetch(`${SUPABASE_URL}/storage/v1/object/glovemeds-docs/${path}`, {
         method: "POST",
-        headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY, "Content-Type": file.type || "application/octet-stream" },
-        body: file
-      });
-      if (!res.ok) throw new Error(await res.text());
-      return `${SUPABASE_URL}/storage/v1/object/public/glovemeds-docs/${path}`;
-    }
-
-    async function adminUploadDoc() {
-      const invNo = document.getElementById('docInvoiceNo').value.trim();
-      const amount = Number(document.getElementById('docAmount').value) || 0;
-      const creditDays = Number(document.getElementById('docCreditDays').value) || 15;
-      if (!invNo) { alert('Enter Invoice Number.'); return; }
-      const btn = document.getElementById('uploadDocBtn');
-      btn.disabled = true; btn.textContent = 'Uploading...';
-      try {
-        const invUrl = await uploadFileRest('docInvoiceFile', 'INV');
-        const lrUrl = await uploadFileRest('docLrFile', 'LR');
-        await sbInsert('invoices_lr', {
-          customer_id: document.getElementById('docCustomerId').value,
-          invoice_no: invNo,
-          amount: amount,
-          credit_days: creditDays,
-          payment_status: 'Unpaid',
-          invoice_pdf_url: invUrl,
-          transporter: document.getElementById('docTransporter').value.trim(),
-          lr_no: document.getElementById('docLrNo').value.trim(),
-          lr_copy_url: lrUrl
-        });
-        alert('Invoice & Transport Docket uploaded!');
-        document.getElementById('docInvoiceNo').value = '';
-        document.getElementById('docAmount').value = '';
-        document.getElementById('docInvoiceFile').value = '';
-        document.getElementById('docTransporter').value = '';
-        document.getElementById('docLrNo').value = '';
-        document.getElementById('docLrFile').value = '';
-        loadAdminData();
-      } catch (err) {
-        alert('Upload error: ' + err.message);
-      }
-      btn.disabled = false; btn.textContent = 'Upload to Customer Vault';
-    }
-
-    async function adminAddCustomer() {
-      const name = document.getElementById('custName').value.trim();
-      const mobile = document.getElementById('custMobile').value.trim();
-      const pin = document.getElementById('custPin').value.trim();
-      const state = document.getElementById('custState').value.trim();
-      if (!name || !mobile || !pin || !state) { alert('Fill all required customer fields.'); return; }
-      try {
-        await sbInsert('customers', {
-          customer_id: 'CUST-' + Math.floor(1000 + Math.random() * 9000),
-          company_name: name,
-          mobile: mobile,
-          pin: pin,
-          category: document.getElementById('custCategory').value,
-          state: state,
-          gstin: document.getElementById('custGst').value.trim()
-        });
-        alert('Customer account created!');
-        document.getElementById('custName').value = '';
-        document.getElementById('custMobile').value = '';
-        document.getElementById('custPin').value = '';
-        document.getElementById('custState').value = '';
-        document.getElementById('custGst').value = '';
-        loadAdminData();
-      } catch (err) {
-        alert('Error: ' + err.message);
-      }
-    }
-
-    async function adminSendAlert() {
-      const title = document.getElementById('alertTitle').value.trim();
-      const msg = document.getElementById('alertMsg').value.trim();
-      if (!title || !msg) { alert('Enter Title and Message.'); return; }
-      try {
-        await sbInsert('alerts', {
-          title: title,
-          message: msg,
-          target_state: document.getElementById('alertState').value.trim() || 'All',
-          target_category: document.getElementById('alertCat').value,
-          offer_code: document.getElementById('alertCode').value.trim()
-        });
-        alert('Notification published!');
-        document.getElementById('alertTitle').value = '';
-        document.getElementById('alertMsg').value = '';
-        document.getElementById('alertCode').value = '';
-      } catch (err) {
-        alert('Error: ' + err.message);
-      }
-    }
-
-    function switchTab(name) {
-      ['Catalogue', 'Cart', 'Invoices', 'Orders'].forEach(t => {
-        document.getElementById('tab' + t).classList.toggle('hidden', t !== name);
-        document.getElementById('nav' + t).classList.toggle('active', t === name);
-      });
-    }
-
-    function switchAdminTab(name) {
-      ['Orders', 'Upload', 'Payments', 'Customers', 'Alerts'].forEach(t => {
-        document.getElementById('admTab' + t).classList.toggle('hidden', t !== name);
-        document.getElementById('admBtn' + t).classList.toggle('active', t === name);
-      });
-    }
-
-    function openQrModal() {
-      document.getElementById('qrModal').classList.remove('hidden');
-      document.getElementById('qrImg').src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&color=1B3686&data=' + encodeURIComponent(window.location.origin + window.location.pathname);
-    }
-
-    function logout() {
-      CURRENT_USER = null; CART = [];
-      document.getElementById('appScreen').classList.add('hidden');
-      document.getElementById('customerView').classList.add('hidden');
-      document.getElementById('customerNav').classList.add('hidden');
-      document.getElementById('adminView').classList.add('hidden');
-      document.getElementById('loginScreen').classList.remove('hidden');
-    }
-  </script>
-</body>
-</html>
+        headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUP
