@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="GloveMeds" />
   <title>GloveMeds</title>
-  <link rel="manifest" href="data:application/manifest+json,{&quot;name&quot;:&quot;GloveMeds&quot;,&quot;short_name&quot;:&quot;GloveMeds&quot;,&quot;start_url&quot;:&quot;.&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%231B3686&quot;,&quot;theme_color&quot;:&quot;%231B3686&quot;}" />
+  <link rel="manifest" href="data:application/manifest+json,{"name":"GloveMeds","short_name":"GloveMeds","start_url":".","display":"standalone","background_color":"%231B3686","theme_color":"%231B3686"}" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background: #f1f5f9; color: #1e293b; }
@@ -30,6 +30,7 @@
     .alert-card { background: #EEF3FF; border-left: 4px solid #1B3686; padding: 12px; border-radius: 12px; margin-bottom: 10px; }
     .partner-card { background: #ecfdf5; border-left: 4px solid #059669; padding: 12px; border-radius: 12px; margin-bottom: 12px; }
     .pay-due-card { background: #fffbeb; border-left: 4px solid #d97706; padding: 12px; border-radius: 12px; margin-bottom: 10px; }
+    .new-order-banner { background: #fef2f2; border: 1px solid #fecaca; border-left: 4px solid #dc2626; padding: 12px; border-radius: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
     .item-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 14px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
     .prod-row { display: flex; gap: 12px; }
     .prod-img { width: 76px; height: 76px; border-radius: 12px; object-fit: cover; background: #EEF3FF; flex-shrink: 0; cursor: zoom-in; border: 1px solid #e2e8f0; }
@@ -52,8 +53,9 @@
     .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50; overflow-y: auto; }
     .modal-card { background: #fff; border-radius: 20px; padding: 20px; max-width: 400px; width: 100%; max-height: 90vh; overflow-y: auto; }
     .sub-tabs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 14px; }
-    .sub-tab-btn { padding: 8px 2px; border-radius: 10px; border: 1px solid #cbd5e1; background: #fff; font-size: 10px; font-weight: 700; color: #475569; cursor: pointer; }
+    .sub-tab-btn { padding: 8px 2px; border-radius: 10px; border: 1px solid #cbd5e1; background: #fff; font-size: 10px; font-weight: 700; color: #475569; cursor: pointer; position: relative; }
     .sub-tab-btn.active { background: #1B3686; color: #fff; border-color: #1B3686; }
+    .notif-dot { background: #dc2626; color: #fff; font-size: 9px; font-weight: 800; padding: 1px 5px; border-radius: 99px; margin-left: 2px; }
     .filter-pills { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
     .pill-btn { padding: 6px 12px; border-radius: 99px; border: 1px solid #cbd5e1; background: #fff; font-size: 11px; font-weight: 700; cursor: pointer; }
     .pill-btn.active { background: #1B3686; color: #fff; border-color: #1B3686; }
@@ -78,7 +80,15 @@
         <input id="loginPin" type="password" inputmode="numeric" maxlength="6" placeholder="••••" class="input-box" onkeydown="if(event.key==='Enter') handleLogin()" />
         <div id="loginError" class="err-box hidden"></div>
         <button id="loginBtn" type="button" onclick="handleLogin()" class="btn-primary">Access Portal</button>
-        <button type="button" onclick="toggleAuthMode('register')" class="btn-outline">New Customer? Register Here</button>
+        <button type="button" onclick="toggleAuthMode('register')" class="btn-outline">New Customer / Add Another Firm</button>
+      </div>
+
+      <!-- MULTI-COMPANY PICKER (IF SAME MOBILE HAS MULTIPLE FIRMS) -->
+      <div id="companyPickerBox" class="hidden">
+        <strong style="font-size:14px; color:#1B3686; display:block; text-align:center; margin-bottom:8px;">Select Company Account</strong>
+        <p style="font-size:12px; color:#64748b; text-align:center; margin-bottom:10px;">Multiple firms are linked to this mobile number:</p>
+        <div id="companyPickerList" style="space-y:8px;"></div>
+        <button type="button" onclick="toggleAuthMode('login')" class="btn-outline">Back to Sign In</button>
       </div>
 
       <!-- SELF-REGISTRATION BOX -->
@@ -88,7 +98,7 @@
         <input id="regName" type="text" placeholder="e.g. City Care Pharmacy" class="input-box" />
         <div class="grid-2">
           <div>
-            <label class="field-label">Mobile Number *</label>
+            <label class="field-label">Primary Mobile *</label>
             <input id="regMobile" type="tel" placeholder="10-digit mobile" class="input-box" />
           </div>
           <div>
@@ -96,6 +106,8 @@
             <input id="regPin" type="text" inputmode="numeric" maxlength="6" placeholder="e.g. 4829" class="input-box" />
           </div>
         </div>
+        <label class="field-label">Additional Mobile Numbers (Comma separated)</label>
+        <input id="regExtraMobiles" type="text" placeholder="e.g. 9820011111, 9820022222" class="input-box" />
         <label class="field-label">Customer Category *</label>
         <select id="regCategory" class="input-box">
           <option value="Retailer">Retailer</option>
@@ -121,7 +133,7 @@
         <label class="field-label">Transport Name</label>
         <input id="regTransport" type="text" placeholder="e.g. VRL Logistics" class="input-box" />
         <div id="regError" class="err-box hidden"></div>
-        <button id="regBtn" type="button" onclick="handleSelfRegister()" class="btn-primary">Register &amp; Enter Portal</button>
+        <button id="regBtn" type="button" onclick="handleSelfRegister()" class="btn-primary">Register & Enter Portal</button>
         <button type="button" onclick="toggleAuthMode('login')" class="btn-outline">Already Registered? Sign In</button>
       </div>
     </div>
@@ -135,6 +147,7 @@
         <div id="userCompanyHeader" style="font-size:12px; color:#dbeafe; margin-top:2px;"></div>
       </div>
       <div style="display:flex; gap:5px;">
+        <button id="switchFirmBtn" type="button" onclick="openSwitchFirmModal()" class="btn-header hidden">Firms</button>
         <button type="button" onclick="openPinModal()" class="btn-header">PIN</button>
         <button type="button" onclick="openQrModal()" class="btn-header">QR</button>
         <button type="button" onclick="logout()" class="btn-header">Exit</button>
@@ -147,7 +160,7 @@
       <div id="paymentDueSection"></div>
       <div id="alertsSection"></div>
 
-      <!-- TAB 1: BOX RANGE (20 BOXES PER CARTON/SIZE) -->
+      <!-- TAB 1: BOX RANGE -->
       <section id="tabBoxRange">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
           <div>
@@ -184,13 +197,13 @@
             <span>Estimated Total:</span>
             <span id="cartTotal" style="color:#1B3686;">₹0</span>
           </div>
-          <button id="placeOrderBtn" type="button" onclick="submitOrder()" class="btn-primary">Confirm &amp; Send Order</button>
+          <button id="placeOrderBtn" type="button" onclick="submitOrder()" class="btn-primary">Confirm & Send Order</button>
         </div>
       </section>
 
       <!-- TAB 4: INVOICES & LR -->
       <section id="tabInvoices" class="hidden">
-        <strong style="font-size:15px; display:block;">Invoices &amp; Transport Dockets</strong>
+        <strong style="font-size:15px; display:block;">Invoices & Transport Dockets</strong>
         <p style="font-size:12px; color:#64748b; margin-bottom:12px;">Private vault — visible only to your account</p>
         <div id="invoiceList"></div>
       </section>
@@ -204,8 +217,16 @@
 
     <!-- ADMIN / HEAD OFFICE VIEW -->
     <div id="adminView" class="container hidden">
+      <div id="adminNewOrderAlert" class="new-order-banner hidden">
+        <div>
+          <strong style="font-size:12px; color:#b91c1c;">NEW INCOMING ORDER RECEIVED!</strong>
+          <div id="adminNewOrderText" style="font-size:11px; color:#7f1d1d; margin-top:2px;"></div>
+        </div>
+        <button type="button" onclick="markAllOrdersSeen()" class="btn-sm btn-red">Acknowledge</button>
+      </div>
+
       <div class="sub-tabs">
-        <button type="button" onclick="switchAdminTab('Orders')" id="admBtnOrders" class="sub-tab-btn active">Orders</button>
+        <button type="button" onclick="switchAdminTab('Orders')" id="admBtnOrders" class="sub-tab-btn active">Orders <span id="newOrderBadge" class="notif-dot hidden">0</span></button>
         <button type="button" onclick="switchAdminTab('Products')" id="admBtnProducts" class="sub-tab-btn">Products</button>
         <button type="button" onclick="switchAdminTab('Upload')" id="admBtnUpload" class="sub-tab-btn">Invoice/LR</button>
         <button type="button" onclick="switchAdminTab('Payments')" id="admBtnPayments" class="sub-tab-btn">Payments</button>
@@ -215,11 +236,14 @@
 
       <!-- ADMIN 1: ALL ORDERS -->
       <div id="admTabOrders">
-        <strong style="font-size:15px; display:block; margin-bottom:10px;">Incoming Customer Orders</strong>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <strong style="font-size:15px;">Incoming Customer Orders</strong>
+          <button type="button" onclick="loadAdminData()" class="btn-sm btn-tint">Refresh</button>
+        </div>
         <div id="adminOrdersList"></div>
       </div>
 
-      <!-- ADMIN 2: PRODUCTS MANAGER (ADD & EDIT MULTIPLE IMAGES) -->
+      <!-- ADMIN 2: PRODUCTS MANAGER -->
       <div id="admTabProducts" class="hidden">
         <div class="item-card">
           <strong style="font-size:15px; color:#1B3686;">Add New Glove Product</strong>
@@ -281,10 +305,10 @@
         <div id="adminProductsList"></div>
       </div>
 
-      <!-- ADMIN 3: UPLOAD INVOICE & LR (NOTHING COMPULSORY) -->
+      <!-- ADMIN 3: UPLOAD INVOICE & LR -->
       <div id="admTabUpload" class="hidden">
         <div class="item-card">
-          <strong style="font-size:15px; color:#1B3686;">Upload Invoice &amp; Transport Docket</strong>
+          <strong style="font-size:15px; color:#1B3686;">Upload Invoice & Transport Docket</strong>
           <p style="font-size:11px; color:#64748b; margin-top:2px;">All fields are optional — upload invoice, LR docket, or both anytime.</p>
           <div>
             <label class="field-label">Select Customer</label>
@@ -338,8 +362,32 @@
         <div id="adminPaymentsList"></div>
       </div>
 
-      <!-- ADMIN 5: CUSTOMERS, RATES, EDIT & DISPATCH REMARKS -->
+      <!-- ADMIN 5: CUSTOMERS (SEARCH, FILTER, MULTI-COMPANY, RATES, HANDOVER) -->
       <div id="admTabCustomers" class="hidden">
+        <!-- SEARCH & FILTER CUSTOMERS -->
+        <div class="item-card" style="background:#f8fafc;">
+          <strong style="font-size:14px; color:#1B3686;">Search & Filter Customers</strong>
+          <input id="custSearchInput" type="text" oninput="renderAdminCustomersList()" placeholder="Search firm name, mobile, city, or remark..." class="input-box" style="margin-top:8px;" />
+          <div class="grid-2" style="margin-top:8px;">
+            <select id="custFilterState" onchange="renderAdminCustomersList()" class="input-box state-dropdown-all"></select>
+            <select id="custFilterCategory" onchange="renderAdminCustomersList()" class="input-box">
+              <option value="All">All Categories</option>
+              <option value="Retailer">Retailer</option>
+              <option value="Distributor">Distributor</option>
+              <option value="Stockist">Stockist</option>
+              <option value="Trader">Trader</option>
+              <option value="Wholesaler">Wholesaler</option>
+              <option value="Dealer">Dealer</option>
+              <option value="End user">End user</option>
+              <option value="Hospital">Hospital</option>
+              <option value="Pharma">Pharma</option>
+            </select>
+          </div>
+        </div>
+
+        <strong style="font-size:14px; display:block; margin-bottom:8px;">Registered Customers (<span id="filteredCustCount">0</span>)</strong>
+        <div id="adminCustomersList" style="margin-bottom:14px;"></div>
+
         <!-- INDIVIDUAL CUSTOMER RATE CARD SETTER -->
         <div class="item-card" style="background:#f0fdf4; border-color:#bbf7d0;">
           <strong style="font-size:14px; color:#166534;">Set Special Rate for Individual Customer</strong>
@@ -377,13 +425,13 @@
 
         <!-- ADD NEW CUSTOMER FORM -->
         <div class="item-card">
-          <strong style="font-size:14px; color:#1B3686;">Add New Customer</strong>
+          <strong style="font-size:14px; color:#1B3686;">Add New Customer / Additional Firm</strong>
           <div>
             <label class="field-label">Company / Firm Name *</label>
             <input id="custName" type="text" placeholder="e.g. MedPlus Pharmacy" class="input-box" />
             <div class="grid-2">
               <div>
-                <label class="field-label">Mobile Number *</label>
+                <label class="field-label">Primary Mobile *</label>
                 <input id="custMobile" type="tel" placeholder="10-digit mobile" class="input-box" />
               </div>
               <div>
@@ -391,6 +439,8 @@
                 <input id="custPin" type="text" placeholder="e.g. 4321" class="input-box" />
               </div>
             </div>
+            <label class="field-label">Additional Mobile Numbers (Optional)</label>
+            <input id="custExtraMobiles" type="text" placeholder="e.g. 9820011111, 9820022222" class="input-box" />
             <label class="field-label">Customer Category *</label>
             <select id="custCategory" class="input-box">
               <option value="Retailer">Retailer</option>
@@ -416,15 +466,12 @@
             <label class="field-label">Transport Name</label>
             <input id="custTransport" type="text" placeholder="e.g. VRL Logistics" class="input-box" />
             <label class="field-label">Remark / Dispatch Note (Internal)</label>
-            <input id="custRemark" type="text" placeholder="e.g. Always pack in double corrugated box / Door delivery" class="input-box" />
+            <input id="custRemark" type="text" placeholder="e.g. Pack in double corrugated box" class="input-box" />
             <label class="field-label">Assign Area Partner (For Retailers)</label>
             <select id="custAssignedPartner" class="input-box"></select>
             <button type="button" onclick="adminAddCustomer()" class="btn-primary">Save Customer Account</button>
           </div>
         </div>
-
-        <strong style="font-size:14px; display:block; margin-bottom:8px;">All Registered Customers</strong>
-        <div id="adminCustomersList"></div>
       </div>
 
       <!-- ADMIN 6: STATE & CATEGORY ALERTS -->
@@ -467,6 +514,28 @@
       <button type="button" onclick="switchTab('Invoices')" id="navInvoices">Invoices/LR</button>
       <button type="button" onclick="switchTab('Orders')" id="navOrders">Orders</button>
     </nav>
+  </div>
+
+  <!-- BRANDED "YOUR ORDER IS ADDED TO CART" POPUP MODAL -->
+  <div id="cartConfirmModal" class="modal-bg hidden" onclick="if(event.target===this) closeCartConfirmModal()">
+    <div class="modal-card" style="text-align:center;">
+      <div class="logo-badge" style="font-size:18px; padding:6px 16px; margin-bottom:10px;">GloveMeds</div>
+      <strong style="color:#166534; font-size:16px; display:block;">Your order is added to cart</strong>
+      <p id="cartConfirmDetail" style="font-size:12px; color:#475569; margin:8px 0 14px;"></p>
+      <div class="grid-2">
+        <button type="button" onclick="closeCartConfirmModal()" class="btn-outline" style="margin-top:0;">Add More</button>
+        <button type="button" onclick="closeCartConfirmModal(); switchTab('Cart');" class="btn-primary" style="margin-top:0;">Go to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SWITCH FIRM MODAL (FOR CUSTOMERS WITH MULTIPLE COMPANIES) -->
+  <div id="switchFirmModal" class="modal-bg hidden" onclick="if(event.target===this) document.getElementById('switchFirmModal').classList.add('hidden')">
+    <div class="modal-card">
+      <strong style="color:#1B3686; font-size:16px; display:block; margin-bottom:10px;">Switch Company Account</strong>
+      <div id="switchFirmList"></div>
+      <button type="button" onclick="document.getElementById('switchFirmModal').classList.add('hidden')" class="btn-outline">Close</button>
+    </div>
   </div>
 
   <!-- IMAGE ZOOM LIGHTBOX MODAL -->
@@ -538,14 +607,18 @@
     </div>
   </div>
 
-  <!-- EDIT CUSTOMER MODAL (ADMIN: NAME & DISPATCH REMARK) -->
+  <!-- EDIT CUSTOMER MODAL (ADMIN: NAME, EXTRA MOBILES & DISPATCH REMARK) -->
   <div id="editCustomerModal" class="modal-bg hidden">
     <div class="modal-card">
-      <strong style="color:#1B3686; font-size:16px;">Edit Customer &amp; Dispatch Note</strong>
+      <strong style="color:#1B3686; font-size:16px;">Edit Customer & Dispatch Note</strong>
       <input type="hidden" id="editCustId" />
       <label class="field-label">Company / Firm Name</label>
       <input id="editCustName" type="text" class="input-box" />
       <div class="grid-2">
+        <div>
+          <label class="field-label">Primary Mobile</label>
+          <input id="editCustMobile" type="tel" class="input-box" />
+        </div>
         <div>
           <label class="field-label">Category</label>
           <select id="editCustCategory" class="input-box">
@@ -560,15 +633,21 @@
             <option value="Pharma">Pharma</option>
           </select>
         </div>
+      </div>
+      <label class="field-label">Additional Mobile Numbers</label>
+      <input id="editCustExtraMobiles" type="text" placeholder="Comma separated mobiles" class="input-box" />
+      <div class="grid-2">
         <div>
           <label class="field-label">City</label>
           <input id="editCustCity" type="text" class="input-box" />
         </div>
+        <div>
+          <label class="field-label">Transport Name</label>
+          <input id="editCustTransport" type="text" class="input-box" />
+        </div>
       </div>
-      <label class="field-label">Transport Name</label>
-      <input id="editCustTransport" type="text" class="input-box" />
       <label class="field-label">Remark / Note to Remember While Dispatching</label>
-      <textarea id="editCustRemark" rows="3" placeholder="e.g. Send only via VRL / Pack fragile sticker / Call manager before dispatch" class="input-box"></textarea>
+      <textarea id="editCustRemark" rows="3" placeholder="e.g. Send only via VRL / Pack fragile sticker" class="input-box"></textarea>
       <button type="button" onclick="saveEditedCustomer()" class="btn-primary">Save Customer Details</button>
       <button type="button" onclick="document.getElementById('editCustomerModal').classList.add('hidden')" class="btn-outline">Cancel</button>
     </div>
@@ -661,19 +740,25 @@
     }
 
     let CURRENT_USER = null;
+    let LINKED_FIRMS = [];
     let PRODUCTS = [];
     let MY_CUSTOM_RATES = [];
     let CART = [];
     let ADMIN_INVOICES = [];
     let ADMIN_CUSTOMERS = [];
     let ADMIN_RATES = [];
+    let ADMIN_ORDERS = [];
     let PAY_FILTER = 'All';
+    let ADMIN_POLL_TIMER = null;
+    let LAST_UNSEEN_COUNT = 0;
 
     function toggleAuthMode(mode) {
       document.getElementById('signInBox').classList.toggle('hidden', mode !== 'login');
       document.getElementById('registerBox').classList.toggle('hidden', mode !== 'register');
+      document.getElementById('companyPickerBox').classList.toggle('hidden', mode !== 'picker');
     }
 
+    /* SUPPORTS PRIMARY OR EXTRA MOBILES + MULTIPLE COMPANIES */
     async function handleLogin() {
       const mobile = document.getElementById('loginMobile').value.trim();
       const pin = document.getElementById('loginPin').value.trim();
@@ -684,10 +769,34 @@
       btn.disabled = true; btn.textContent = 'Verifying...'; err.classList.add('hidden');
 
       try {
-        const users = await sbSelect('customers', `mobile=eq.${encodeURIComponent(mobile)}&pin=eq.${encodeURIComponent(pin)}`);
+        const allCustomers = await sbSelect('customers', '');
         btn.disabled = false; btn.textContent = 'Access Portal';
-        if (!users || !users.length) { err.textContent = 'Invalid Mobile Number or PIN'; err.classList.remove('hidden'); return; }
-        enterPortal(users[0]);
+
+        const matched = (allCustomers || []).filter(c => {
+          const primaryMatch = String(c.mobile || '').trim() === mobile;
+          const extras = String(c.extra_mobiles || '').split(',').map(m => m.trim()).filter(Boolean);
+          const extraMatch = extras.includes(mobile);
+          return (primaryMatch || extraMatch) && String(c.pin || '').trim() === pin;
+        });
+
+        if (!matched.length) {
+          err.textContent = 'Invalid Mobile Number or PIN';
+          err.classList.remove('hidden');
+          return;
+        }
+
+        LINKED_FIRMS = matched;
+        if (matched.length === 1) {
+          enterPortal(matched[0]);
+        } else {
+          document.getElementById('companyPickerList').innerHTML = matched.map((f, idx) => `
+            <button type="button" onclick="enterPortal(LINKED_FIRMS[${idx}])" class="item-card" style="width:100%; text-align:left; cursor:pointer; display:block; margin-bottom:8px;">
+              <strong style="color:#1B3686; font-size:14px;">${f.company_name}</strong>
+              <div style="font-size:11px; color:#64748b; margin-top:2px;">${f.category} • ${f.city || ''}, ${f.state}</div>
+            </button>
+          `).join('');
+          toggleAuthMode('picker');
+        }
       } catch (error) {
         btn.disabled = false; btn.textContent = 'Access Portal';
         err.textContent = 'Error: ' + error.message; err.classList.remove('hidden');
@@ -698,6 +807,7 @@
       const name = document.getElementById('regName').value.trim();
       const mobile = document.getElementById('regMobile').value.trim();
       const pin = document.getElementById('regPin').value.trim();
+      const extra_mobiles = document.getElementById('regExtraMobiles').value.trim();
       const category = document.getElementById('regCategory').value;
       const state = document.getElementById('regState').value;
       const city = document.getElementById('regCity').value.trim();
@@ -713,20 +823,14 @@
 
       btn.disabled = true; btn.textContent = 'Creating Account...'; err.classList.add('hidden');
       try {
-        const existing = await sbSelect('customers', `mobile=eq.${encodeURIComponent(mobile)}`);
-        if (existing && existing.length) {
-          btn.disabled = false; btn.textContent = 'Register & Enter Portal';
-          err.textContent = 'Mobile number already registered. Please Sign In.';
-          err.classList.remove('hidden');
-          return;
-        }
         const created = await sbInsert('customers', {
           customer_id: 'CUST-' + Math.floor(1000 + Math.random() * 9000),
           company_name: name,
-          mobile, pin, category, state, city, transport_name,
+          mobile, pin, extra_mobiles, category, state, city, transport_name,
           assigned_partner_id: ''
         });
         btn.disabled = false; btn.textContent = 'Register & Enter Portal';
+        LINKED_FIRMS = [created[0]];
         enterPortal(created[0]);
       } catch (error) {
         btn.disabled = false; btn.textContent = 'Register & Enter Portal';
@@ -736,19 +840,37 @@
 
     function enterPortal(user) {
       CURRENT_USER = user;
+      CART = [];
       document.getElementById('loginScreen').classList.add('hidden');
       document.getElementById('appScreen').classList.remove('hidden');
       document.getElementById('userCompanyHeader').textContent = CURRENT_USER.company_name + (CURRENT_USER.city ? ` (${CURRENT_USER.city})` : '');
       document.getElementById('userStateBadge').textContent = CURRENT_USER.category + ' • ' + CURRENT_USER.state;
+      document.getElementById('switchFirmBtn').classList.toggle('hidden', LINKED_FIRMS.length <= 1);
 
       if (CURRENT_USER.category === 'Admin') {
         document.getElementById('adminView').classList.remove('hidden');
+        if ("Notification" in window && Notification.permission === "default") {
+          Notification.requestPermission();
+        }
         loadAdminData();
+        if (ADMIN_POLL_TIMER) clearInterval(ADMIN_POLL_TIMER);
+        ADMIN_POLL_TIMER = setInterval(() => loadAdminData(true), 15000);
       } else {
         document.getElementById('customerView').classList.remove('hidden');
         document.getElementById('customerNav').classList.remove('hidden');
         loadCustomerData();
       }
+    }
+
+    function openSwitchFirmModal() {
+      document.getElementById('switchFirmList').innerHTML = LINKED_FIRMS.map((f, idx) => `
+        <button type="button" onclick="document.getElementById('switchFirmModal').classList.add('hidden'); enterPortal(LINKED_FIRMS[${idx}]);"
+          class="item-card" style="width:100%; text-align:left; cursor:pointer; display:block; margin-bottom:8px; border-color:${f.customer_id === CURRENT_USER.customer_id ? '#1B3686' : '#e2e8f0'};">
+          <strong style="color:#1B3686; font-size:14px;">${f.company_name}</strong>
+          <div style="font-size:11px; color:#64748b;">${f.category} • ${f.city || ''}, ${f.state}</div>
+        </button>
+      `).join('');
+      document.getElementById('switchFirmModal').classList.remove('hidden');
     }
 
     function openPinModal() { document.getElementById('pinModal').classList.remove('hidden'); }
@@ -847,7 +969,6 @@
         </div>`).join('');
     }
 
-    /* ZOOM LIGHTBOX FOR MULTIPLE IMAGES */
     function openZoomGallery(pid, startIndex = 0) {
       const prod = PRODUCTS.find(p => p.product_id === pid);
       if (!prod) return;
@@ -954,6 +1075,7 @@
       if (!prod) return;
       const info = getCustomerRateInfo(prod);
       let added = false;
+      let addedParts = [];
 
       ['XS', 'Small', 'Medium', 'Large'].forEach(sz => {
         const input = document.getElementById(`qty_${pid}_${sz}`);
@@ -961,6 +1083,7 @@
         if (rawQty > 0) {
           added = true;
           const actualBoxes = isBoxRange ? rawQty * 20 : rawQty;
+          addedParts.push(isBoxRange ? `${sz}: ${rawQty} Carton (${actualBoxes} Boxes)` : `${sz}: ${rawQty}`);
           const existing = CART.find(item => item.pid === pid && item.size === sz && item.isBoxRange === isBoxRange);
           if (existing) {
             existing.rawQty += rawQty;
@@ -978,7 +1101,13 @@
       if (!added) { alert('Enter quantity in XS, Small, Medium, or Large first.'); return; }
       if (isBoxRange) updateBoxCalc(pid);
       renderCart();
-      alert('Added to Cart!');
+
+      document.getElementById('cartConfirmDetail').textContent = `${prod.name} (${addedParts.join(', ')})`;
+      document.getElementById('cartConfirmModal').classList.remove('hidden');
+    }
+
+    function closeCartConfirmModal() {
+      document.getElementById('cartConfirmModal').classList.add('hidden');
     }
 
     function removeCartItem(i) { CART.splice(i, 1); renderCart(); }
@@ -1031,7 +1160,8 @@
           customer_type: CURRENT_USER.category,
           items_summary: lines.join(', '),
           total_amount: total,
-          status: CURRENT_USER.category === 'Retailer' ? 'Route to Area Distributor' : 'Pending Dispatch'
+          status: CURRENT_USER.category === 'Retailer' ? 'Route to Area Distributor' : 'Pending Dispatch',
+          admin_seen: false
         });
         btn.disabled = false; btn.textContent = 'Confirm & Send Order';
         alert('Order Confirmed! ID: ' + orderId);
@@ -1076,8 +1206,19 @@
         </div>`).join('');
     }
 
-    /* ADMIN PANEL FUNCTIONS */
-    async function loadAdminData() {
+    /* ADMIN PANEL + REAL-TIME NEW ORDER NOTIFICATIONS */
+    function playOrderChime() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.frequency.value = 880; gain.gain.value = 0.15;
+        osc.start(); setTimeout(() => { osc.stop(); ctx.close(); }, 250);
+      } catch (e) {}
+    }
+
+    async function loadAdminData(isBackgroundPoll = false) {
       const [ords, custs, invs, prods, rates] = await Promise.all([
         sbSelect('orders', 'order=created_at.desc'),
         sbSelect('customers', 'category=neq.Admin&order=company_name.asc'),
@@ -1086,13 +1227,34 @@
         sbSelect('customer_rates', '')
       ]);
 
+      ADMIN_ORDERS = ords || [];
       ADMIN_CUSTOMERS = custs || [];
       ADMIN_INVOICES = invs || [];
       PRODUCTS = prods || [];
       ADMIN_RATES = rates || [];
 
+      const unseen = ADMIN_ORDERS.filter(o => o.admin_seen === false);
+      const badge = document.getElementById('newOrderBadge');
+      const alertBanner = document.getElementById('adminNewOrderAlert');
+      if (unseen.length > 0) {
+        badge.textContent = unseen.length;
+        badge.classList.remove('hidden');
+        alertBanner.classList.remove('hidden');
+        document.getElementById('adminNewOrderText').textContent = `${unseen.length} new order(s) — Latest from ${unseen[0].company_name} (₹${unseen[0].total_amount})`;
+        if (isBackgroundPoll && unseen.length > LAST_UNSEEN_COUNT) {
+          playOrderChime();
+          if ("Notification" in window && Notification.permission === "granted") {
+            new Notification("GloveMeds New Order!", { body: `${unseen[0].company_name} placed an order of ₹${unseen[0].total_amount}` });
+          }
+        }
+      } else {
+        badge.classList.add('hidden');
+        alertBanner.classList.add('hidden');
+      }
+      LAST_UNSEEN_COUNT = unseen.length;
+
       const ordBox = document.getElementById('adminOrdersList');
-      ordBox.innerHTML = (ords && ords.length) ? ords.map(o => {
+      ordBox.innerHTML = ADMIN_ORDERS.length ? ADMIN_ORDERS.map(o => {
         const custObj = ADMIN_CUSTOMERS.find(c => c.customer_id === o.customer_id);
         const partnerObj = (custObj && custObj.assigned_partner_id) ? ADMIN_CUSTOMERS.find(p => p.customer_id === custObj.assigned_partner_id) : null;
         const routeNote = partnerObj
@@ -1101,10 +1263,13 @@
         const remarkNote = (custObj && custObj.dispatch_remark)
           ? `<div style="background:#fffbeb; color:#92400e; font-size:11px; padding:5px 8px; border-radius:8px; margin-top:6px;"><b>Dispatch Note:</b> ${custObj.dispatch_remark}</div>`
           : '';
+        const newOrderBadge = o.admin_seen === false
+          ? `<span style="background:#dc2626; color:#fff; font-size:9px; font-weight:800; padding:2px 6px; border-radius:99px; margin-left:5px;">NEW</span>`
+          : '';
         return `
-        <div class="item-card">
+        <div class="item-card" style="border-color:${o.admin_seen === false ? '#fca5a5' : '#e2e8f0'};">
           <div style="display:flex; justify-content:space-between;">
-            <strong style="font-size:13px; color:#1B3686;">${o.company_name} [${o.customer_type}]</strong>
+            <strong style="font-size:13px; color:#1B3686;">${o.company_name} [${o.customer_type}]${newOrderBadge}</strong>
             <span style="font-size:11px; font-weight:700;">${o.order_id}</span>
           </div>
           <p style="font-size:12px; color:#334155; margin:6px 0;">${o.items_summary}</p>
@@ -1117,7 +1282,9 @@
         </div>`;
       }).join('') : '<p style="font-size:12px; color:#94a3b8;">No orders yet.</p>';
 
-      // Render Admin Products List with Edit + Active/Inactive + Delete
+      if (isBackgroundPoll) return;
+
+      // Render Admin Products List
       const admProdBox = document.getElementById('adminProductsList');
       admProdBox.innerHTML = PRODUCTS.length ? PRODUCTS.map(p => {
         const isActive = (p.status || 'Active') === 'Active';
@@ -1157,8 +1324,34 @@
       document.getElementById('handoverToPartner').innerHTML = partnerOnlyOpts;
       renderPartnerRetailerList();
 
+      renderAdminCustomersList();
+      renderAdminPayments();
+    }
+
+    async function markAllOrdersSeen() {
+      try {
+        await sbPatch('orders', 'admin_seen=eq.false', { admin_seen: true });
+        loadAdminData();
+      } catch (err) { alert('Error: ' + err.message); }
+    }
+
+    function renderAdminCustomersList() {
+      const q = (document.getElementById('custSearchInput').value || '').toLowerCase().trim();
+      const fState = document.getElementById('custFilterState').value;
+      const fCat = document.getElementById('custFilterCategory').value;
+      const partners = ADMIN_CUSTOMERS.filter(c => ['Distributor', 'Stockist', 'Dealer'].includes(c.category));
+
+      const filtered = ADMIN_CUSTOMERS.filter(c => {
+        const matchState = fState === 'All' || c.state === fState;
+        const matchCat = fCat === 'All' || c.category === fCat;
+        const hay = `${c.company_name} ${c.mobile} ${c.extra_mobiles || ''} ${c.city || ''} ${c.state} ${c.dispatch_remark || ''}`.toLowerCase();
+        const matchQ = !q || hay.includes(q);
+        return matchState && matchCat && matchQ;
+      });
+
+      document.getElementById('filteredCustCount').textContent = filtered.length;
       const custListBox = document.getElementById('adminCustomersList');
-      custListBox.innerHTML = ADMIN_CUSTOMERS.length ? ADMIN_CUSTOMERS.map(c => {
+      custListBox.innerHTML = filtered.length ? filtered.map(c => {
         const assignDropdown = c.category === 'Retailer' ? `
           <div style="margin-top:8px; padding-top:8px; border-top:1px solid #f1f5f9; display:flex; align-items:center; gap:6px;">
             <span style="font-size:11px; font-weight:700; color:#475569;">Assigned:</span>
@@ -1173,7 +1366,7 @@
           <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
             <div>
               <strong style="font-size:13px;">${c.company_name}</strong>
-              <div style="font-size:11px; color:#64748b;">${c.mobile} • <b>${c.category}</b> • ${c.city ? c.city + ', ' : ''}${c.state}</div>
+              <div style="font-size:11px; color:#64748b;">Mob: ${c.mobile}${c.extra_mobiles ? ' / ' + c.extra_mobiles : ''} • <b>${c.category}</b> • ${c.city ? c.city + ', ' : ''}${c.state}</div>
               <div style="font-size:11px; color:#475569; margin-top:2px;">Transport: <b>${c.transport_name || 'N/A'}</b></div>
               ${c.dispatch_remark ? `<div style="font-size:11px; color:#92400e; background:#fffbeb; padding:3px 7px; border-radius:6px; margin-top:4px;"><b>Note:</b> ${c.dispatch_remark}</div>` : ''}
             </div>
@@ -1181,9 +1374,7 @@
           </div>
           ${assignDropdown}
         </div>`;
-      }).join('') : '<p style="font-size:12px; color:#94a3b8;">No registered customers yet.</p>';
-
-      renderAdminPayments();
+      }).join('') : '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:16px 0;">No matching customers found.</p>';
     }
 
     async function adminAddProduct() {
@@ -1220,7 +1411,6 @@
       btn.disabled = false; btn.textContent = 'Publish Product';
     }
 
-    /* EDIT PRODUCT MODAL */
     function openEditProductModal(pid) {
       const p = PRODUCTS.find(x => x.product_id === pid);
       if (!p) return;
@@ -1271,12 +1461,13 @@
       btn.disabled = false; btn.textContent = 'Save Changes';
     }
 
-    /* EDIT CUSTOMER MODAL */
     function openEditCustomerModal(cid) {
       const c = ADMIN_CUSTOMERS.find(x => x.customer_id === cid);
       if (!c) return;
       document.getElementById('editCustId').value = c.customer_id;
       document.getElementById('editCustName').value = c.company_name;
+      document.getElementById('editCustMobile').value = c.mobile;
+      document.getElementById('editCustExtraMobiles').value = c.extra_mobiles || '';
       document.getElementById('editCustCategory').value = c.category;
       document.getElementById('editCustCity').value = c.city || '';
       document.getElementById('editCustTransport').value = c.transport_name || '';
@@ -1289,6 +1480,8 @@
       try {
         await sbPatch('customers', `customer_id=eq.${encodeURIComponent(cid)}`, {
           company_name: document.getElementById('editCustName').value.trim(),
+          mobile: document.getElementById('editCustMobile').value.trim(),
+          extra_mobiles: document.getElementById('editCustExtraMobiles').value.trim(),
           category: document.getElementById('editCustCategory').value,
           city: document.getElementById('editCustCity').value.trim(),
           transport_name: document.getElementById('editCustTransport').value.trim(),
@@ -1461,7 +1654,6 @@
       return `${SUPABASE_URL}/storage/v1/object/public/glovemeds-docs/${path}`;
     }
 
-    /* NOTHING COMPULSORY IN INVOICE/LR UPLOAD */
     async function adminUploadDoc() {
       const customer_id = document.getElementById('docCustomerId').value;
       if (!customer_id) { alert('Please select a customer.'); return; }
@@ -1499,6 +1691,7 @@
         await sbInsert('customers', {
           customer_id: 'CUST-' + Math.floor(1000 + Math.random() * 9000),
           company_name: name, mobile, pin,
+          extra_mobiles: document.getElementById('custExtraMobiles').value.trim(),
           category: document.getElementById('custCategory').value,
           state, city,
           transport_name: document.getElementById('custTransport').value.trim(),
@@ -1506,7 +1699,7 @@
           assigned_partner_id: document.getElementById('custAssignedPartner').value
         });
         alert('Customer account created!');
-        ['custName', 'custMobile', 'custPin', 'custCity', 'custTransport', 'custRemark'].forEach(id => document.getElementById(id).value = '');
+        ['custName', 'custMobile', 'custExtraMobiles', 'custPin', 'custCity', 'custTransport', 'custRemark'].forEach(id => document.getElementById(id).value = '');
         loadAdminData();
       } catch (err) { alert('Error: ' + err.message); }
     }
@@ -1547,12 +1740,14 @@
     }
 
     function logout() {
+      if (ADMIN_POLL_TIMER) clearInterval(ADMIN_POLL_TIMER);
       CURRENT_USER = null; CART = [];
       document.getElementById('appScreen').classList.add('hidden');
       document.getElementById('customerView').classList.add('hidden');
       document.getElementById('customerNav').classList.add('hidden');
       document.getElementById('adminView').classList.add('hidden');
       document.getElementById('loginScreen').classList.remove('hidden');
+      toggleAuthMode('login');
     }
   </script>
 </body>
