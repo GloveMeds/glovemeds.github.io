@@ -7,9 +7,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="GloveMeds" />
   <title>GloveMeds</title>
-  <link rel="manifest" href="data:application/manifest+json,{"name":"GloveMeds","short_name":"GloveMeds","start_url":".","display":"standalone","background_color":"%231B3686","theme_color":"%231B3686"}" />
+  <link rel="manifest" href="data:application/manifest+json,{&quot;name&quot;:&quot;GloveMeds&quot;,&quot;short_name&quot;:&quot;GloveMeds&quot;,&quot;start_url&quot;:&quot;.&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%231B3686&quot;,&quot;theme_color&quot;:&quot;%231B3686&quot;}" />
   <style>
-- { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background: #f1f5f9; color: #1e293b; }
     .hidden { display: none !important; }
     #loginScreen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: linear-gradient(180deg, #1B3686 0%, #12255E 100%); }
@@ -36,9 +36,9 @@
     .prod-img { width: 76px; height: 76px; border-radius: 12px; object-fit: cover; background: #EEF3FF; flex-shrink: 0; cursor: zoom-in; border: 1px solid #e2e8f0; }
     .thumb-strip { display: flex; gap: 6px; margin-top: 6px; }
     .thumb-mini { width: 38px; height: 38px; border-radius: 8px; object-fit: cover; border: 1px solid #cbd5e1; cursor: zoom-in; }
-    .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 10px; background: #f8fafc; padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; }
+    .size-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 6px; margin-top: 10px; background: #f8fafc; padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; }
     .size-cell { text-align: center; }
-    .size-cell label { display: block; font-size: 10px; font-weight: 800; color: #1B3686; margin-bottom: 3px; }
+    .size-cell label { display: block; font-size: 10px; font-weight: 800; color: #1B3686; margin-bottom: 3px; text-transform: uppercase; }
     .size-input { width: 100%; text-align: center; padding: 6px 2px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; font-weight: 700; background: #fff; }
     .prod-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f1f5f9; }
     .btn-sm { background: #1B3686; color: #fff; border: none; padding: 7px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; }
@@ -60,6 +60,8 @@
     .pill-btn { padding: 6px 12px; border-radius: 99px; border: 1px solid #cbd5e1; background: #fff; font-size: 11px; font-weight: 700; cursor: pointer; }
     .pill-btn.active { background: #1B3686; color: #fff; border-color: #1B3686; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .size-cb-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; background: #f8fafc; padding: 8px 10px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 12px; font-weight: 600; }
+    .size-cb-row label { display: flex; align-items: center; gap: 4px; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -87,7 +89,7 @@
       <div id="companyPickerBox" class="hidden">
         <strong style="font-size:14px; color:#1B3686; display:block; text-align:center; margin-bottom:8px;">Select Company Account</strong>
         <p style="font-size:12px; color:#64748b; text-align:center; margin-bottom:10px;">Multiple firms are linked to this mobile number:</p>
-        <div id="companyPickerList" style="space-y:8px;"></div>
+        <div id="companyPickerList"></div>
         <button type="button" onclick="toggleAuthMode('login')" class="btn-outline">Back to Sign In</button>
       </div>
 
@@ -133,7 +135,7 @@
         <label class="field-label">Transport Name</label>
         <input id="regTransport" type="text" placeholder="e.g. VRL Logistics" class="input-box" />
         <div id="regError" class="err-box hidden"></div>
-        <button id="regBtn" type="button" onclick="handleSelfRegister()" class="btn-primary">Register & Enter Portal</button>
+        <button id="regBtn" type="button" onclick="handleSelfRegister()" class="btn-primary">Register &amp; Enter Portal</button>
         <button type="button" onclick="toggleAuthMode('login')" class="btn-outline">Already Registered? Sign In</button>
       </div>
     </div>
@@ -197,13 +199,13 @@
             <span>Estimated Total:</span>
             <span id="cartTotal" style="color:#1B3686;">₹0</span>
           </div>
-          <button id="placeOrderBtn" type="button" onclick="submitOrder()" class="btn-primary">Confirm & Send Order</button>
+          <button id="placeOrderBtn" type="button" onclick="submitOrder()" class="btn-primary">Confirm &amp; Send Order</button>
         </div>
       </section>
 
       <!-- TAB 4: INVOICES & LR -->
       <section id="tabInvoices" class="hidden">
-        <strong style="font-size:15px; display:block;">Invoices & Transport Dockets</strong>
+        <strong style="font-size:15px; display:block;">Invoices &amp; Transport Dockets</strong>
         <p style="font-size:12px; color:#64748b; margin-bottom:12px;">Private vault — visible only to your account</p>
         <div id="invoiceList"></div>
       </section>
@@ -246,21 +248,21 @@
       <!-- ADMIN 2: PRODUCTS MANAGER -->
       <div id="admTabProducts" class="hidden">
         <div class="item-card">
-          <strong style="font-size:15px; color:#1B3686;">Add New Glove Product</strong>
+          <strong style="font-size:15px; color:#1B3686;">Add New Product (Gloves / Masks)</strong>
           <div>
             <label class="field-label">Product Name *</label>
-            <input id="prodName" type="text" placeholder="e.g. Nitrile Examination Gloves (Blue)" class="input-box" />
+            <input id="prodName" type="text" placeholder="e.g. Nitrile Examination Gloves / 3-Ply Face Mask" class="input-box" />
             <div class="grid-2">
               <div>
                 <label class="field-label">Section *</label>
                 <select id="prodRangeType" class="input-box">
                   <option value="Box Range">Box Range (20 Box Carton)</option>
-                  <option value="Loose Gloves">Loose Gloves</option>
+                  <option value="Loose Gloves">Loose Gloves / Packs</option>
                 </select>
               </div>
               <div>
                 <label class="field-label">Product Category *</label>
-                <input id="prodCat" type="text" placeholder="e.g. Nitrile Examination" class="input-box" />
+                <input id="prodCat" type="text" placeholder="e.g. Nitrile Gloves / Face Masks" class="input-box" />
               </div>
             </div>
             <div class="grid-2">
@@ -279,7 +281,21 @@
                 </select>
               </div>
             </div>
-            <label class="field-label">Specifications (AQL, Thickness, Packing)</label>
+
+            <!-- TICKABLE AVAILABLE SIZES FOR GLOVES, MASKS, OR LARGE-ONLY ITEMS -->
+            <label class="field-label">Available Sizes (Tick only sizes available in this product) *</label>
+            <div class="size-cb-row">
+              <label><input type="checkbox" class="add-prod-size-cb" value="Free Size" /> Free Size (Masks)</label>
+              <label><input type="checkbox" class="add-prod-size-cb" value="XS" checked /> XS</label>
+              <label><input type="checkbox" class="add-prod-size-cb" value="Small" checked /> Small</label>
+              <label><input type="checkbox" class="add-prod-size-cb" value="Medium" checked /> Medium</label>
+              <label><input type="checkbox" class="add-prod-size-cb" value="Large" checked /> Large</label>
+            </div>
+
+            <label class="field-label">Size / Fit Note for Customer (Optional)</label>
+            <input id="prodSizeNote" type="text" placeholder="e.g. Universal Fit (Masks) OR Manufactured in Large Size Only" class="input-box" />
+
+            <label class="field-label">Specifications (AQL, Thickness, Ply, Packing)</label>
             <input id="prodSpecs" type="text" placeholder="e.g. AQL 1.5 • 4.5 Mil • Powder-Free • Box of 100" class="input-box" />
             <label class="field-label">Product MRP (₹ per Box / Unit) *</label>
             <input id="prodMrp" type="number" placeholder="e.g. 550" class="input-box" />
@@ -295,8 +311,8 @@
             </div>
             <label class="field-label">Extra / Box Detail Photo (Optional)</label>
             <input id="prodExtraImgFile" type="file" accept="image/*" class="input-box" />
-            <label class="field-label">Product Video Link (YouTube / Google Drive)</label>
-            <input id="prodVideoUrl" type="url" placeholder="https://youtube.com/..." class="input-box" />
+            <label class="field-label">Product Video Link (YouTube Unlisted / Google Drive Single File)</label>
+            <input id="prodVideoUrl" type="url" placeholder="https://youtube.com/... or https://drive.google.com/file/d/..." class="input-box" />
             <button id="addProdBtn" type="button" onclick="adminAddProduct()" class="btn-primary">Publish Product</button>
           </div>
         </div>
@@ -308,7 +324,7 @@
       <!-- ADMIN 3: UPLOAD INVOICE & LR -->
       <div id="admTabUpload" class="hidden">
         <div class="item-card">
-          <strong style="font-size:15px; color:#1B3686;">Upload Invoice & Transport Docket</strong>
+          <strong style="font-size:15px; color:#1B3686;">Upload Invoice &amp; Transport Docket</strong>
           <p style="font-size:11px; color:#64748b; margin-top:2px;">All fields are optional — upload invoice, LR docket, or both anytime.</p>
           <div>
             <label class="field-label">Select Customer</label>
@@ -362,11 +378,11 @@
         <div id="adminPaymentsList"></div>
       </div>
 
-      <!-- ADMIN 5: CUSTOMERS (SEARCH, FILTER, MULTI-COMPANY, RATES, HANDOVER) -->
+      <!-- ADMIN 5: CUSTOMERS (SEARCH, FILTER, MULTI-COMPANY, BULK RATES, HANDOVER) -->
       <div id="admTabCustomers" class="hidden">
         <!-- SEARCH & FILTER CUSTOMERS -->
         <div class="item-card" style="background:#f8fafc;">
-          <strong style="font-size:14px; color:#1B3686;">Search & Filter Customers</strong>
+          <strong style="font-size:14px; color:#1B3686;">Search &amp; Filter Customers</strong>
           <input id="custSearchInput" type="text" oninput="renderAdminCustomersList()" placeholder="Search firm name, mobile, city, or remark..." class="input-box" style="margin-top:8px;" />
           <div class="grid-2" style="margin-top:8px;">
             <select id="custFilterState" onchange="renderAdminCustomersList()" class="input-box state-dropdown-all"></select>
@@ -388,24 +404,14 @@
         <strong style="font-size:14px; display:block; margin-bottom:8px;">Registered Customers (<span id="filteredCustCount">0</span>)</strong>
         <div id="adminCustomersList" style="margin-bottom:14px;"></div>
 
-        <!-- INDIVIDUAL CUSTOMER RATE CARD SETTER -->
+        <!-- BULK CUSTOMER RATE SHEET (UPDATE ALL PRODUCTS AT 1 TIME) -->
         <div class="item-card" style="background:#f0fdf4; border-color:#bbf7d0;">
-          <strong style="font-size:14px; color:#166534;">Set Special Rate for Individual Customer</strong>
-          <p style="font-size:11px; color:#15803d; margin-top:3px;">Only customers with an assigned rate here will see their special rate. Others see only MRP.</p>
+          <strong style="font-size:14px; color:#166534;">Customer Rate Sheet (Update All Products at 1 Time)</strong>
+          <p style="font-size:11px; color:#15803d; margin-top:3px;">Select a customer, enter rates for all products together, and click Save All Rates. Leave blank to show only MRP.</p>
           <label class="field-label">Select Customer</label>
-          <select id="rateCustomerId" onchange="renderCustomerCustomRates()" class="input-box"></select>
-          <div class="grid-2">
-            <div>
-              <label class="field-label">Select Product</label>
-              <select id="rateProductId" class="input-box"></select>
-            </div>
-            <div>
-              <label class="field-label">Customer Rate (₹ / Box) *</label>
-              <input id="rateCustomPrice" type="number" placeholder="e.g. 345" class="input-box" />
-            </div>
-          </div>
-          <button type="button" onclick="saveCustomerCustomRate()" class="btn-primary" style="background:#15803d;">Save Customer Rate</button>
-          <div id="customerRatesPreview" style="font-size:12px; color:#1e293b; margin-top:8px;"></div>
+          <select id="rateCustomerId" onchange="renderCustomerBulkRateGrid()" class="input-box"></select>
+          <div id="bulkCustomerRateGrid" style="margin-top:10px; background:#fff; border-radius:12px; padding:8px 10px; border:1px solid #bbf7d0;"></div>
+          <button id="saveBulkRatesBtn" type="button" onclick="saveAllCustomerRates()" class="btn-primary" style="background:#15803d;">Save All Rates for Customer</button>
         </div>
 
         <!-- DISTRIBUTOR HANDOVER / RETAILER LIST -->
@@ -516,6 +522,23 @@
     </nav>
   </div>
 
+  <!-- NEW CUSTOMER SIGN-UP: SAVE TO HOME SCREEN POPUP MODAL -->
+  <div id="installGuideModal" class="modal-bg hidden" onclick="if(event.target===this) closeInstallGuideModal()">
+    <div class="modal-card">
+      <div style="text-align:center; margin-bottom:12px;">
+        <div class="logo-badge" style="font-size:18px; padding:6px 16px; margin-bottom:8px;">GloveMeds</div>
+        <strong style="color:#1B3686; font-size:16px; display:block;">Save GloveMeds on Your Home Screen</strong>
+        <p style="font-size:12px; color:#475569; margin-top:4px;">Save this portal as an app icon on your phone so you never need to search for the link again:</p>
+      </div>
+      <div style="background:#EEF3FF; padding:12px; border-radius:12px; font-size:12px; color:#1e293b; line-height:1.6;">
+        <div><b>1. Android (Chrome):</b> Tap the <b>3 dots (⋮)</b> at the top-right corner &rarr; tap <b>Add to Home screen</b> &rarr; tap <b>Install / Add</b>.</div>
+        <hr style="border:none; border-top:1px solid #cbd5e1; margin:8px 0;" />
+        <div><b>2. iPhone (Safari):</b> Tap the <b>Share icon (&#9109;)</b> at the bottom &rarr; scroll down &amp; tap <b>Add to Home Screen</b> &rarr; tap <b>Add</b>.</div>
+      </div>
+      <button type="button" onclick="closeInstallGuideModal()" class="btn-primary">Got It, Continue to Portal</button>
+    </div>
+  </div>
+
   <!-- BRANDED "YOUR ORDER IS ADDED TO CART" POPUP MODAL -->
   <div id="cartConfirmModal" class="modal-bg hidden" onclick="if(event.target===this) closeCartConfirmModal()">
     <div class="modal-card" style="text-align:center;">
@@ -584,6 +607,20 @@
           </select>
         </div>
       </div>
+
+      <!-- TICKABLE AVAILABLE SIZES IN EDIT MODAL -->
+      <label class="field-label">Available Sizes (Tick applicable)</label>
+      <div class="size-cb-row">
+        <label><input type="checkbox" class="edit-prod-size-cb" value="Free Size" /> Free Size (Masks)</label>
+        <label><input type="checkbox" class="edit-prod-size-cb" value="XS" /> XS</label>
+        <label><input type="checkbox" class="edit-prod-size-cb" value="Small" /> Small</label>
+        <label><input type="checkbox" class="edit-prod-size-cb" value="Medium" /> Medium</label>
+        <label><input type="checkbox" class="edit-prod-size-cb" value="Large" /> Large</label>
+      </div>
+
+      <label class="field-label">Size / Fit Note for Customer (Optional)</label>
+      <input id="editProdSizeNote" type="text" placeholder="e.g. Universal Fit / Large Only" class="input-box" />
+
       <label class="field-label">Specifications</label>
       <input id="editProdSpecs" type="text" class="input-box" />
       <label class="field-label">MRP (₹)</label>
@@ -610,7 +647,7 @@
   <!-- EDIT CUSTOMER MODAL (ADMIN: NAME, EXTRA MOBILES & DISPATCH REMARK) -->
   <div id="editCustomerModal" class="modal-bg hidden">
     <div class="modal-card">
-      <strong style="color:#1B3686; font-size:16px;">Edit Customer & Dispatch Note</strong>
+      <strong style="color:#1B3686; font-size:16px;">Edit Customer &amp; Dispatch Note</strong>
       <input type="hidden" id="editCustId" />
       <label class="field-label">Company / Firm Name</label>
       <input id="editCustName" type="text" class="input-box" />
@@ -709,10 +746,11 @@
       return await res.json();
     }
 
-    async function sbInsert(table, payload, upsert = false) {
+    async function sbInsert(table, payload, upsert = false, onConflict = "") {
       const h = { ...HEADERS };
       if (upsert) h["Prefer"] = "resolution=merge-duplicates,return=representation";
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+      const url = onConflict ? `${SUPABASE_URL}/rest/v1/${table}?on_conflict=${encodeURIComponent(onConflict)}` : `${SUPABASE_URL}/rest/v1/${table}`;
+      const res = await fetch(url, {
         method: "POST",
         headers: h,
         body: JSON.stringify(payload)
@@ -752,6 +790,17 @@
     let ADMIN_POLL_TIMER = null;
     let LAST_UNSEEN_COUNT = 0;
 
+    function getProductSizes(prod) {
+      if (Array.isArray(prod.available_sizes) && prod.available_sizes.length > 0) {
+        return prod.available_sizes;
+      }
+      return ['XS', 'Small', 'Medium', 'Large'];
+    }
+
+    function sizeKey(sz) {
+      return String(sz).replace(/\s+/g, '_');
+    }
+
     function toggleAuthMode(mode) {
       document.getElementById('signInBox').classList.toggle('hidden', mode !== 'login');
       document.getElementById('registerBox').classList.toggle('hidden', mode !== 'register');
@@ -787,10 +836,10 @@
 
         LINKED_FIRMS = matched;
         if (matched.length === 1) {
-          enterPortal(matched[0]);
+          enterPortal(matched[0], false);
         } else {
           document.getElementById('companyPickerList').innerHTML = matched.map((f, idx) => `
-            <button type="button" onclick="enterPortal(LINKED_FIRMS[${idx}])" class="item-card" style="width:100%; text-align:left; cursor:pointer; display:block; margin-bottom:8px;">
+            <button type="button" onclick="enterPortal(LINKED_FIRMS[${idx}], false)" class="item-card" style="width:100%; text-align:left; cursor:pointer; display:block; margin-bottom:8px;">
               <strong style="color:#1B3686; font-size:14px;">${f.company_name}</strong>
               <div style="font-size:11px; color:#64748b; margin-top:2px;">${f.category} • ${f.city || ''}, ${f.state}</div>
             </button>
@@ -831,14 +880,18 @@
         });
         btn.disabled = false; btn.textContent = 'Register & Enter Portal';
         LINKED_FIRMS = [created[0]];
-        enterPortal(created[0]);
+        enterPortal(created[0], true);
       } catch (error) {
         btn.disabled = false; btn.textContent = 'Register & Enter Portal';
         err.textContent = 'Error: ' + error.message; err.classList.remove('hidden');
       }
     }
 
-    function enterPortal(user) {
+    function closeInstallGuideModal() {
+      document.getElementById('installGuideModal').classList.add('hidden');
+    }
+
+    function enterPortal(user, isNewSignup = false) {
       CURRENT_USER = user;
       CART = [];
       document.getElementById('loginScreen').classList.add('hidden');
@@ -859,12 +912,15 @@
         document.getElementById('customerView').classList.remove('hidden');
         document.getElementById('customerNav').classList.remove('hidden');
         loadCustomerData();
+        if (isNewSignup) {
+          document.getElementById('installGuideModal').classList.remove('hidden');
+        }
       }
     }
 
     function openSwitchFirmModal() {
       document.getElementById('switchFirmList').innerHTML = LINKED_FIRMS.map((f, idx) => `
-        <button type="button" onclick="document.getElementById('switchFirmModal').classList.add('hidden'); enterPortal(LINKED_FIRMS[${idx}]);"
+        <button type="button" onclick="document.getElementById('switchFirmModal').classList.add('hidden'); enterPortal(LINKED_FIRMS[${idx}], false);"
           class="item-card" style="width:100%; text-align:left; cursor:pointer; display:block; margin-bottom:8px; border-color:${f.customer_id === CURRENT_USER.customer_id ? '#1B3686' : '#e2e8f0'};">
           <strong style="color:#1B3686; font-size:14px;">${f.company_name}</strong>
           <div style="font-size:11px; color:#64748b;">${f.category} • ${f.city || ''}, ${f.state}</div>
@@ -990,6 +1046,7 @@
 
     function buildProductCardHtml(p, isBoxRange) {
       const info = getCustomerRateInfo(p);
+      const sizes = getProductSizes(p);
       const priceDisplay = info.hasCustomRate
         ? `<strong style="color:#1B3686; font-size:16px;">₹${info.rate}</strong> <span style="font-size:11px; color:#64748b; text-decoration:line-through;">MRP ₹${info.mrp}</span>`
         : `<strong style="color:#1B3686; font-size:15px;">MRP: ₹${info.mrp}</strong> <span style="font-size:10px; color:#94a3b8;">/ box</span>`;
@@ -1008,6 +1065,17 @@
           ${p.image_extra_url ? `<img src="${p.image_extra_url}" onclick="openZoomGallery('${p.product_id}', 2)" class="thumb-mini" title="Detail" />` : ''}
         </div>` : '';
 
+      const sizeNoteHtml = p.size_note
+        ? `<div style="font-size:11px; color:#92400e; background:#fffbeb; border:1px solid #fde68a; padding:5px 8px; border-radius:8px; margin-top:8px; font-weight:600;">Note: ${p.size_note}</div>`
+        : '';
+
+      const sizeCellsHtml = sizes.map(sz => `
+        <div class="size-cell">
+          <label>${sz}</label>
+          <input id="qty_${p.product_id}_${sizeKey(sz)}" type="number" min="0" placeholder="0" ${onInputAttr} class="size-input" />
+        </div>
+      `).join('');
+
       return `
         <div class="item-card">
           <div class="prod-row">
@@ -1025,11 +1093,9 @@
             </div>
           </div>
 
+          ${sizeNoteHtml}
           <div class="size-grid">
-            <div class="size-cell"><label>XS</label><input id="qty_${p.product_id}_XS" type="number" min="0" placeholder="0" ${onInputAttr} class="size-input" /></div>
-            <div class="size-cell"><label>SMALL</label><input id="qty_${p.product_id}_Small" type="number" min="0" placeholder="0" ${onInputAttr} class="size-input" /></div>
-            <div class="size-cell"><label>MEDIUM</label><input id="qty_${p.product_id}_Medium" type="number" min="0" placeholder="0" ${onInputAttr} class="size-input" /></div>
-            <div class="size-cell"><label>LARGE</label><input id="qty_${p.product_id}_Large" type="number" min="0" placeholder="0" ${onInputAttr} class="size-input" /></div>
+            ${sizeCellsHtml}
           </div>
           ${helperText}
 
@@ -1044,9 +1110,12 @@
     }
 
     function updateBoxCalc(pid) {
+      const prod = PRODUCTS.find(p => p.product_id === pid);
+      const sizes = prod ? getProductSizes(prod) : ['XS', 'Small', 'Medium', 'Large'];
       let totalCartons = 0;
-      ['XS', 'Small', 'Medium', 'Large'].forEach(sz => {
-        totalCartons += parseInt(document.getElementById(`qty_${pid}_${sz}`).value, 10) || 0;
+      sizes.forEach(sz => {
+        const elInput = document.getElementById(`qty_${pid}_${sizeKey(sz)}`);
+        if (elInput) totalCartons += parseInt(elInput.value, 10) || 0;
       });
       const el = document.getElementById(`calc_${pid}`);
       if (el) {
@@ -1074,11 +1143,13 @@
       const prod = PRODUCTS.find(p => p.product_id === pid);
       if (!prod) return;
       const info = getCustomerRateInfo(prod);
+      const sizes = getProductSizes(prod);
       let added = false;
       let addedParts = [];
 
-      ['XS', 'Small', 'Medium', 'Large'].forEach(sz => {
-        const input = document.getElementById(`qty_${pid}_${sz}`);
+      sizes.forEach(sz => {
+        const input = document.getElementById(`qty_${pid}_${sizeKey(sz)}`);
+        if (!input) return;
         const rawQty = parseInt(input.value, 10) || 0;
         if (rawQty > 0) {
           added = true;
@@ -1098,7 +1169,7 @@
         }
       });
 
-      if (!added) { alert('Enter quantity in XS, Small, Medium, or Large first.'); return; }
+      if (!added) { alert('Enter quantity in an available size first.'); return; }
       if (isBoxRange) updateBoxCalc(pid);
       renderCart();
 
@@ -1288,6 +1359,7 @@
       const admProdBox = document.getElementById('adminProductsList');
       admProdBox.innerHTML = PRODUCTS.length ? PRODUCTS.map(p => {
         const isActive = (p.status || 'Active') === 'Active';
+        const sizesLabel = getProductSizes(p).join(', ');
         return `
         <div class="item-card" style="display:flex; justify-content:space-between; align-items:center; gap:10px; opacity:${isActive ? '1' : '0.68'};">
           <div style="display:flex; gap:10px; align-items:center;">
@@ -1295,7 +1367,8 @@
             <div>
               <strong style="font-size:13px;">${p.name}</strong>
               <div style="font-size:11px; color:#64748b;">${p.range_type || 'Box Range'} • ${p.category} • MRP: ₹${p.retailer_price}</div>
-              <span class="${isActive ? 'btn-green' : 'btn-red'}" style="font-size:10px; font-weight:800; padding:1px 7px; border-radius:99px;">${isActive ? 'Active' : 'Inactive'}</span>
+              <div style="font-size:10px; color:#1B3686; font-weight:700; margin-top:2px;">Sizes: ${sizesLabel}</div>
+              <span class="${isActive ? 'btn-green' : 'btn-red'}" style="font-size:10px; font-weight:800; padding:1px 7px; border-radius:99px; display:inline-block; margin-top:2px;">${isActive ? 'Active' : 'Inactive'}</span>
             </div>
           </div>
           <div style="display:flex; flex-direction:column; gap:4px;">
@@ -1309,9 +1382,8 @@
       const custOpts = ADMIN_CUSTOMERS.map(c => `<option value="${c.customer_id}">${c.company_name} (${c.category} - ${c.city || c.state})</option>`).join('');
       document.getElementById('docCustomerId').innerHTML = custOpts;
       document.getElementById('rateCustomerId').innerHTML = custOpts;
-      document.getElementById('rateProductId').innerHTML = PRODUCTS.map(p => `<option value="${p.product_id}">${p.name} (${p.range_type || 'Box Range'})</option>`).join('');
       autoFillCustomerTransport();
-      renderCustomerCustomRates();
+      renderCustomerBulkRateGrid();
 
       const partners = ADMIN_CUSTOMERS.filter(c => ['Distributor', 'Stockist', 'Dealer'].includes(c.category));
       const partnerOpts = `<option value="">-- Direct / Unassigned --</option>` + partners.map(p => `<option value="${p.customer_id}">${p.company_name} (${p.category} • ${p.city || p.state})</option>`).join('');
@@ -1381,7 +1453,10 @@
       const name = document.getElementById('prodName').value.trim();
       const category = document.getElementById('prodCat').value.trim();
       const mrp = Number(document.getElementById('prodMrp').value) || 0;
+      const selectedSizes = Array.from(document.querySelectorAll('.add-prod-size-cb:checked')).map(cb => cb.value);
+
       if (!name || !category || !mrp) { alert('Enter Product Name, Category, and MRP.'); return; }
+      if (!selectedSizes.length) { alert('Please tick at least one available size (e.g. Free Size, Small, Large).'); return; }
 
       const btn = document.getElementById('addProdBtn');
       btn.disabled = true; btn.textContent = 'Publishing Product...';
@@ -1398,6 +1473,8 @@
           category,
           status: document.getElementById('prodStatus').value,
           is_new_arrival: document.getElementById('prodNew').value === 'true',
+          available_sizes: selectedSizes,
+          size_note: document.getElementById('prodSizeNote').value.trim(),
           specs: document.getElementById('prodSpecs').value.trim(),
           retailer_price: mrp,
           distributor_price: mrp,
@@ -1405,7 +1482,7 @@
           video_url: document.getElementById('prodVideoUrl').value.trim()
         });
         alert('Product published!');
-        ['prodName', 'prodCat', 'prodSpecs', 'prodMrp', 'prodImgFile', 'prodBackImgFile', 'prodExtraImgFile', 'prodVideoUrl'].forEach(id => document.getElementById(id).value = '');
+        ['prodName', 'prodCat', 'prodSizeNote', 'prodSpecs', 'prodMrp', 'prodImgFile', 'prodBackImgFile', 'prodExtraImgFile', 'prodVideoUrl'].forEach(id => document.getElementById(id).value = '');
         loadAdminData();
       } catch (err) { alert('Error: ' + err.message); }
       btn.disabled = false; btn.textContent = 'Publish Product';
@@ -1420,15 +1497,25 @@
       document.getElementById('editProdCat').value = p.category;
       document.getElementById('editProdStatus').value = p.status || 'Active';
       document.getElementById('editProdNew').value = String(!!p.is_new_arrival);
+      document.getElementById('editProdSizeNote').value = p.size_note || '';
       document.getElementById('editProdSpecs').value = p.specs || '';
       document.getElementById('editProdMrp').value = p.retailer_price || 0;
       document.getElementById('editProdVideo').value = p.video_url || '';
+
+      const activeSizes = getProductSizes(p);
+      document.querySelectorAll('.edit-prod-size-cb').forEach(cb => {
+        cb.checked = activeSizes.includes(cb.value);
+      });
+
       ['editProdImgFile', 'editProdBackFile', 'editProdExtraFile'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('editProductModal').classList.remove('hidden');
     }
 
     async function saveEditedProduct() {
       const pid = document.getElementById('editProdId').value;
+      const selectedSizes = Array.from(document.querySelectorAll('.edit-prod-size-cb:checked')).map(cb => cb.value);
+      if (!selectedSizes.length) { alert('Please tick at least one available size.'); return; }
+
       const btn = document.getElementById('saveEditProdBtn');
       btn.disabled = true; btn.textContent = 'Saving...';
       try {
@@ -1439,6 +1526,8 @@
           category: document.getElementById('editProdCat').value.trim(),
           status: document.getElementById('editProdStatus').value,
           is_new_arrival: document.getElementById('editProdNew').value === 'true',
+          available_sizes: selectedSizes,
+          size_note: document.getElementById('editProdSizeNote').value.trim(),
           specs: document.getElementById('editProdSpecs').value.trim(),
           retailer_price: mrp,
           distributor_price: mrp,
@@ -1508,28 +1597,65 @@
       } catch (err) { alert('Error: ' + err.message); }
     }
 
-    function renderCustomerCustomRates() {
+    /* BULK CUSTOMER RATE SHEET: RENDER ALL PRODUCTS AT ONCE & SAVE ALL IN 1 CLICK */
+    function renderCustomerBulkRateGrid() {
       const cid = document.getElementById('rateCustomerId').value;
-      const box = document.getElementById('customerRatesPreview');
-      const list = ADMIN_RATES.filter(r => r.customer_id === cid);
-      if (!list.length) { box.innerHTML = '<span style="color:#64748b;">No custom rates set — this customer sees only MRP.</span>'; return; }
-      box.innerHTML = '<b>Assigned Rates:</b><br/>' + list.map(r => {
-        const p = PRODUCTS.find(x => x.product_id === r.product_id);
-        return `• ${p ? p.name : r.product_id}: <b>₹${r.custom_price}</b>`;
-      }).join('<br/>');
+      const box = document.getElementById('bulkCustomerRateGrid');
+      if (!cid || !PRODUCTS.length) {
+        box.innerHTML = '<span style="color:#64748b; font-size:12px;">No products or customer selected.</span>';
+        return;
+      }
+      box.innerHTML = PRODUCTS.map(p => {
+        const existing = ADMIN_RATES.find(r => r.customer_id === cid && r.product_id === p.product_id);
+        return `
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid #f1f5f9; gap:8px;">
+            <div style="font-size:12px; flex:1;">
+              <strong style="color:#1e293b;">${p.name}</strong>
+              <div style="font-size:10px; color:#64748b;">${p.range_type || 'Box Range'} • MRP: ₹${p.retailer_price || 0}</div>
+            </div>
+            <input type="number" data-pid="${p.product_id}" class="bulk-cust-rate-inp input-box"
+              style="width:105px; padding:7px 8px; font-size:13px;" placeholder="Rate ₹"
+              value="${existing ? existing.custom_price : ''}" />
+          </div>`;
+      }).join('');
     }
 
-    async function saveCustomerCustomRate() {
+    async function saveAllCustomerRates() {
       const customer_id = document.getElementById('rateCustomerId').value;
-      const product_id = document.getElementById('rateProductId').value;
-      const custom_price = Number(document.getElementById('rateCustomPrice').value);
-      if (!customer_id || !product_id || !custom_price) { alert('Select Customer, Product, and enter Rate.'); return; }
+      if (!customer_id) { alert('Please select a customer.'); return; }
+
+      const inputs = document.querySelectorAll('.bulk-cust-rate-inp');
+      const toUpsert = [];
+      const toDeletePids = [];
+
+      inputs.forEach(inp => {
+        const val = inp.value.trim();
+        const pid = inp.dataset.pid;
+        if (val !== '' && Number(val) > 0) {
+          toUpsert.push({ customer_id, product_id: pid, custom_price: Number(val) });
+        } else {
+          toDeletePids.push(pid);
+        }
+      });
+
+      const btn = document.getElementById('saveBulkRatesBtn');
+      btn.disabled = true; btn.textContent = 'Saving All Rates...';
       try {
-        await sbInsert('customer_rates', { customer_id, product_id, custom_price }, true);
-        alert('Custom rate saved for this customer!');
-        document.getElementById('rateCustomPrice').value = '';
+        if (toUpsert.length > 0) {
+          await sbInsert('customer_rates', toUpsert, true, 'customer_id,product_id');
+        }
+        for (const pid of toDeletePids) {
+          const hadOld = ADMIN_RATES.some(r => r.customer_id === customer_id && r.product_id === pid);
+          if (hadOld) {
+            await sbDelete('customer_rates', `customer_id=eq.${encodeURIComponent(customer_id)}&product_id=eq.${encodeURIComponent(pid)}`);
+          }
+        }
+        alert('All product rates updated for this customer!');
         loadAdminData();
-      } catch (err) { alert('Error: ' + err.message); }
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+      btn.disabled = false; btn.textContent = 'Save All Rates for Customer';
     }
 
     function autoFillCustomerTransport() {
