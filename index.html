@@ -7,14 +7,16 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="GloveMeds" />
   <title>GloveMeds</title>
-  <link rel="manifest" href="data:application/manifest+json,{&quot;name&quot;:&quot;GloveMeds&quot;,&quot;short_name&quot;:&quot;GloveMeds&quot;,&quot;start_url&quot;:&quot;.&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%231B3686&quot;,&quot;theme_color&quot;:&quot;%231B3686&quot;}" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%231B3686'/%3E%3Cpath d='M330 130c-12 0-22 10-22 22v85h-10V114c0-13-11-24-24-24s-24 11-24 24v123h-10V104c0-13-11-24-24-24s-24 11-24 24v133h-10V132c0-13-11-24-24-24s-24 11-24 24v166l-26-26c-10-10-26-10-36 0s-10 26 0 36l76 78c18 18 42 28 68 28h72c52 0 94-42 94-94V152c0-12-10-22-22-22z' fill='%2338BDF8'/%3E%3Cpath d='M218 398h76c38 0 68-30 68-68v-14H182v14c0 38 30 68 36 68z' fill='%230284C7'/%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%231B3686'/%3E%3Cpath d='M330 130c-12 0-22 10-22 22v85h-10V114c0-13-11-24-24-24s-24 11-24 24v123h-10V104c0-13-11-24-24-24s-24 11-24 24v133h-10V132c0-13-11-24-24-24s-24 11-24 24v166l-26-26c-10-10-26-10-36 0s-10 26 0 36l76 78c18 18 42 28 68 28h72c52 0 94-42 94-94V152c0-12-10-22-22-22z' fill='%2338BDF8'/%3E%3C/svg%3E" />
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22GloveMeds%22%2C%22short_name%22%3A%22GloveMeds%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%231B3686%22%2C%22theme_color%22%3A%22%231B3686%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%2520viewBox%3D%270%25200%2520512%2520512%27%253E%253Crect%2520width%3D%27512%27%2520height%3D%27512%27%2520rx%3D%27112%27%2520fill%3D%27%25231B3686%27%2F%253E%253Cpath%2520d%3D%27M330%2520130c-12%25200-22%252010-22%252022v85h-10V114c0-13-11-24-24-24s-24%252011-24%252024v123h-10V104c0-13-11-24-24-24s-24%252011-24%252024v133h-10V132c0-13-11-24-24-24s-24%252011-24%252024v166l-26-26c-10-10-26-10-36%25200s-10%252026%25200%252036l76%252078c18%252018%252042%252028%252068%252028h72c52%25200%252094-42%252094-94V152c0-12-10-22-22-22z%27%2520fill%3D%27%252338BDF8%27%2F%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background: #f1f5f9; color: #1e293b; }
     .hidden { display: none !important; }
     #loginScreen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: linear-gradient(180deg, #1B3686 0%, #12255E 100%); }
     .card-login { background: #fff; width: 100%; max-width: 420px; border-radius: 24px; padding: 26px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); }
-    .logo-badge { display: inline-block; background: #1B3686; color: #fff; font-weight: 800; font-size: 26px; padding: 10px 24px; border-radius: 14px; letter-spacing: -0.02em; }
+    .logo-badge { display: inline-flex; align-items: center; gap: 8px; background: #1B3686; color: #fff; font-weight: 800; font-size: 25px; padding: 10px 22px; border-radius: 14px; letter-spacing: -0.02em; }
     .field-label { display: block; font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin: 11px 0 4px; }
     .input-box { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 14px; outline: none; background: #fff; }
     .input-box:focus { border-color: #1B3686; }
@@ -36,7 +38,7 @@
     .prod-img { width: 76px; height: 76px; border-radius: 12px; object-fit: cover; background: #EEF3FF; flex-shrink: 0; cursor: zoom-in; border: 1px solid #e2e8f0; }
     .thumb-strip { display: flex; gap: 6px; margin-top: 6px; }
     .thumb-mini { width: 38px; height: 38px; border-radius: 8px; object-fit: cover; border: 1px solid #cbd5e1; cursor: zoom-in; }
-    .size-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 6px; margin-top: 10px; background: #f8fafc; padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; }
+    .size-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 6px; margin-top: 10px; background: #f8fafc; padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; }
     .size-cell { text-align: center; }
     .size-cell label { display: block; font-size: 10px; font-weight: 800; color: #1B3686; margin-bottom: 3px; text-transform: uppercase; }
     .size-input { width: 100%; text-align: center; padding: 6px 2px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; font-weight: 700; background: #fff; }
@@ -47,11 +49,12 @@
     .btn-green { background: #dcfce7; color: #166534; }
     .btn-red { background: #fee2e2; color: #b91c1c; }
     .new-tag { background: #dcfce7; color: #166534; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 99px; }
+    .pack-tag { background: #EEF3FF; color: #1B3686; font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 7px; display: inline-block; margin-top: 5px; border: 1px solid #c7d2fe; }
     nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 560px; margin: 0 auto; background: #fff; border-top: 1px solid #e2e8f0; display: grid; grid-template-columns: repeat(5, 1fr); padding: 10px 0; text-align: center; z-index: 20; }
     nav button { background: none; border: none; font-size: 11px; font-weight: 600; color: #64748b; cursor: pointer; padding: 2px; }
     nav button.active { color: #1B3686; font-weight: 800; }
     .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50; overflow-y: auto; }
-    .modal-card { background: #fff; border-radius: 20px; padding: 20px; max-width: 400px; width: 100%; max-height: 90vh; overflow-y: auto; }
+    .modal-card { background: #fff; border-radius: 20px; padding: 20px; max-width: 410px; width: 100%; max-height: 90vh; overflow-y: auto; }
     .sub-tabs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 14px; }
     .sub-tab-btn { padding: 8px 2px; border-radius: 10px; border: 1px solid #cbd5e1; background: #fff; font-size: 10px; font-weight: 700; color: #475569; cursor: pointer; position: relative; }
     .sub-tab-btn.active { background: #1B3686; color: #fff; border-color: #1B3686; }
@@ -60,7 +63,9 @@
     .pill-btn { padding: 6px 12px; border-radius: 99px; border: 1px solid #cbd5e1; background: #fff; font-size: 11px; font-weight: 700; cursor: pointer; }
     .pill-btn.active { background: #1B3686; color: #fff; border-color: #1B3686; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .size-cb-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; background: #f8fafc; padding: 8px 10px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 12px; font-weight: 600; }
+    .size-cb-group { background: #f8fafc; padding: 8px 10px; border-radius: 10px; border: 1px solid #cbd5e1; margin-top: 6px; }
+    .size-cb-title { font-size: 10px; font-weight: 800; color: #1B3686; text-transform: uppercase; margin-bottom: 5px; }
+    .size-cb-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; font-weight: 600; }
     .size-cb-row label { display: flex; align-items: center; gap: 4px; cursor: pointer; }
   </style>
 </head>
@@ -70,8 +75,13 @@
   <div id="loginScreen">
     <div class="card-login">
       <div style="text-align:center; margin-bottom:14px;">
-        <div class="logo-badge">GloveMeds</div>
-        <p style="color:#64748b; font-size:13px; margin-top:8px;">B2B Gloves ordering portal</p>
+        <div class="logo-badge">
+          <svg width="26" height="26" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M330 130c-12 0-22 10-22 22v85h-10V114c0-13-11-24-24-24s-24 11-24 24v123h-10V104c0-13-11-24-24-24s-24 11-24 24v133h-10V132c0-13-11-24-24-24s-24 11-24 24v166l-26-26c-10-10-26-10-36 0s-10 26 0 36l76 78c18 18 42 28 68 28h72c52 0 94-42 94-94V152c0-12-10-22-22-22z" fill="#38BDF8"/>
+          </svg>
+          <span>GloveMeds</span>
+        </div>
+        <p style="color:#64748b; font-size:13px; margin-top:8px;">B2B Gloves &amp; Masks Ordering Portal</p>
       </div>
 
       <!-- SIGN IN BOX -->
@@ -111,17 +121,7 @@
         <label class="field-label">Additional Mobile Numbers (Comma separated)</label>
         <input id="regExtraMobiles" type="text" placeholder="e.g. 9820011111, 9820022222" class="input-box" />
         <label class="field-label">Customer Category *</label>
-        <select id="regCategory" class="input-box">
-          <option value="Retailer">Retailer</option>
-          <option value="Distributor">Distributor</option>
-          <option value="Stockist">Stockist</option>
-          <option value="Trader">Trader</option>
-          <option value="Wholesaler">Wholesaler</option>
-          <option value="Dealer">Dealer</option>
-          <option value="End user">End user</option>
-          <option value="Hospital">Hospital</option>
-          <option value="Pharma">Pharma</option>
-        </select>
+        <select id="regCategory" class="input-box category-dropdown"></select>
         <div class="grid-2">
           <div>
             <label class="field-label">State *</label>
@@ -144,9 +144,16 @@
   <!-- MAIN APP SCREEN -->
   <div id="appScreen" class="hidden">
     <header>
-      <div>
-        <div><strong style="font-size:18px;">GloveMeds</strong><span id="userStateBadge" class="badge-pill"></span></div>
-        <div id="userCompanyHeader" style="font-size:12px; color:#dbeafe; margin-top:2px;"></div>
+      <div style="display:flex; align-items:center; gap:9px;">
+        <div style="background:rgba(255,255,255,0.14); padding:6px; border-radius:10px; display:flex;">
+          <svg width="22" height="22" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M330 130c-12 0-22 10-22 22v85h-10V114c0-13-11-24-24-24s-24 11-24 24v123h-10V104c0-13-11-24-24-24s-24 11-24 24v133h-10V132c0-13-11-24-24-24s-24 11-24 24v166l-26-26c-10-10-26-10-36 0s-10 26 0 36l76 78c18 18 42 28 68 28h72c52 0 94-42 94-94V152c0-12-10-22-22-22z" fill="#38BDF8"/>
+          </svg>
+        </div>
+        <div>
+          <div><strong style="font-size:18px;">GloveMeds</strong><span id="userStateBadge" class="badge-pill"></span></div>
+          <div id="userCompanyHeader" style="font-size:12px; color:#dbeafe; margin-top:2px;"></div>
+        </div>
       </div>
       <div style="display:flex; gap:5px;">
         <button id="switchFirmBtn" type="button" onclick="openSwitchFirmModal()" class="btn-header hidden">Firms</button>
@@ -176,12 +183,12 @@
         <div id="boxProductList"></div>
       </section>
 
-      <!-- TAB 2: LOOSE GLOVES -->
+      <!-- TAB 2: LOOSE GLOVES & MASKS -->
       <section id="tabLooseGloves" class="hidden">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
           <div>
-            <strong style="font-size:15px;">Loose Gloves</strong>
-            <span style="display:block; font-size:11px; color:#64748b;">Order by individual units / packs per size</span>
+            <strong style="font-size:15px;">Loose Gloves &amp; Masks</strong>
+            <span style="display:block; font-size:11px; color:#64748b;">Order by Handle Bag / Gunny Bag / Packs per size</span>
           </div>
           <label style="font-size:12px; font-weight:700; color:#1B3686; cursor:pointer;">
             <input type="checkbox" id="newOnlyLooseFilter" onchange="renderProducts()" /> New Arrivals
@@ -248,21 +255,21 @@
       <!-- ADMIN 2: PRODUCTS MANAGER -->
       <div id="admTabProducts" class="hidden">
         <div class="item-card">
-          <strong style="font-size:15px; color:#1B3686;">Add New Product (Gloves / Masks)</strong>
+          <strong style="font-size:15px; color:#1B3686;">Add New Product (Gloves / Surgical / Masks)</strong>
           <div>
             <label class="field-label">Product Name *</label>
-            <input id="prodName" type="text" placeholder="e.g. Nitrile Examination Gloves / 3-Ply Face Mask" class="input-box" />
+            <input id="prodName" type="text" placeholder="e.g. Latex Surgical Gloves / 3-Ply Face Mask" class="input-box" />
             <div class="grid-2">
               <div>
                 <label class="field-label">Section *</label>
                 <select id="prodRangeType" class="input-box">
                   <option value="Box Range">Box Range (20 Box Carton)</option>
-                  <option value="Loose Gloves">Loose Gloves / Packs</option>
+                  <option value="Loose Gloves">Loose Gloves / Masks (Gunny / Bag)</option>
                 </select>
               </div>
               <div>
                 <label class="field-label">Product Category *</label>
-                <input id="prodCat" type="text" placeholder="e.g. Nitrile Gloves / Face Masks" class="input-box" />
+                <input id="prodCat" type="text" placeholder="e.g. Surgical Gloves / Masks" class="input-box" />
               </div>
             </div>
             <div class="grid-2">
@@ -282,22 +289,41 @@
               </div>
             </div>
 
-            <!-- TICKABLE AVAILABLE SIZES FOR GLOVES, MASKS, OR LARGE-ONLY ITEMS -->
-            <label class="field-label">Available Sizes (Tick only sizes available in this product) *</label>
-            <div class="size-cb-row">
-              <label><input type="checkbox" class="add-prod-size-cb" value="Free Size" /> Free Size (Masks)</label>
-              <label><input type="checkbox" class="add-prod-size-cb" value="XS" checked /> XS</label>
-              <label><input type="checkbox" class="add-prod-size-cb" value="Small" checked /> Small</label>
-              <label><input type="checkbox" class="add-prod-size-cb" value="Medium" checked /> Medium</label>
-              <label><input type="checkbox" class="add-prod-size-cb" value="Large" checked /> Large</label>
+            <!-- PACKING OPTION FOR MASKS, LOOSE GLOVES (GUNNY), & BOX RANGE -->
+            <label class="field-label">Packing Option (Select or Type Custom Packing) *</label>
+            <select id="prodPackingPreset" onchange="applyPackingPreset('prodPackingPreset', 'prodPackingCustom')" class="input-box">
+              <option value="Box Range: 1 Carton = 20 Boxes">Box Range: 1 Carton = 20 Boxes</option>
+              <option value="Mask Packing: 100 pc in 1 Handle Bag • 10,000 pc in 1 Master Gunny Bag">Mask Packing: 100 pc in 1 Handle Bag • 10,000 pc in 1 Master Gunny Bag</option>
+              <option value="Loose Gloves Packing: Packed in Master Gunny Bag">Loose Gloves Packing: Packed in Master Gunny Bag</option>
+              <option value="CUSTOM">Other / Custom Packing...</option>
+            </select>
+            <input id="prodPackingCustom" type="text" class="input-box hidden" style="margin-top:6px;" placeholder="Enter custom packing details..." />
+
+            <!-- TICKABLE AVAILABLE SIZES: EXAMINATION, SURGICAL (6 to 8), & FREE SIZE -->
+            <label class="field-label">Available Sizes (Tick applicable sizes) *</label>
+            <div class="size-cb-group">
+              <div class="size-cb-title">Examination Gloves / Free Size</div>
+              <div class="size-cb-row">
+                <label><input type="checkbox" class="add-prod-size-cb" value="Free Size" /> Free Size (Masks)</label>
+                <label><input type="checkbox" class="add-prod-size-cb" value="XS" checked /> XS</label>
+                <label><input type="checkbox" class="add-prod-size-cb" value="Small" checked /> Small</label>
+                <label><input type="checkbox" class="add-prod-size-cb" value="Medium" checked /> Medium</label>
+                <label><input type="checkbox" class="add-prod-size-cb" value="Large" checked /> Large</label>
+                <label><input type="checkbox" class="add-prod-size-cb" value="XL" /> XL</label>
+              </div>
+              <div class="size-cb-title" style="margin-top:8px;">Surgical Gloves Sizes</div>
+              <div class="size-cb-row">
+                <label><input type="checkbox" class="add-prod-size-cb" value="6" /> 6</label>
+                <label><input type="checkbox" class="add-prod-size-cb" value="6.5" /> 6.5</label>
+                <label><input type="checkbox" class="add-prod-size-cb" value="7" /> 7</label>
+                <label><input type="checkbox" class="add-prod-size-cb" value="7.5" /> 7.5</label>
+                <label><input type="checkbox" class="add-prod-size-cb" value="8" /> 8</label>
+              </div>
             </div>
 
-            <label class="field-label">Size / Fit Note for Customer (Optional)</label>
-            <input id="prodSizeNote" type="text" placeholder="e.g. Universal Fit (Masks) OR Manufactured in Large Size Only" class="input-box" />
-
-            <label class="field-label">Specifications (AQL, Thickness, Ply, Packing)</label>
-            <input id="prodSpecs" type="text" placeholder="e.g. AQL 1.5 • 4.5 Mil • Powder-Free • Box of 100" class="input-box" />
-            <label class="field-label">Product MRP (₹ per Box / Unit) *</label>
+            <label class="field-label">Specifications (AQL, Thickness, Ply, Material)</label>
+            <input id="prodSpecs" type="text" placeholder="e.g. AQL 1.5 • Sterile Latex • Powder-Free" class="input-box" />
+            <label class="field-label">Product MRP (₹ per Box / Bag / Unit) *</label>
             <input id="prodMrp" type="number" placeholder="e.g. 550" class="input-box" />
             <div class="grid-2">
               <div>
@@ -386,18 +412,7 @@
           <input id="custSearchInput" type="text" oninput="renderAdminCustomersList()" placeholder="Search firm name, mobile, city, or remark..." class="input-box" style="margin-top:8px;" />
           <div class="grid-2" style="margin-top:8px;">
             <select id="custFilterState" onchange="renderAdminCustomersList()" class="input-box state-dropdown-all"></select>
-            <select id="custFilterCategory" onchange="renderAdminCustomersList()" class="input-box">
-              <option value="All">All Categories</option>
-              <option value="Retailer">Retailer</option>
-              <option value="Distributor">Distributor</option>
-              <option value="Stockist">Stockist</option>
-              <option value="Trader">Trader</option>
-              <option value="Wholesaler">Wholesaler</option>
-              <option value="Dealer">Dealer</option>
-              <option value="End user">End user</option>
-              <option value="Hospital">Hospital</option>
-              <option value="Pharma">Pharma</option>
-            </select>
+            <select id="custFilterCategory" onchange="renderAdminCustomersList()" class="input-box category-dropdown-all"></select>
           </div>
         </div>
 
@@ -448,17 +463,7 @@
             <label class="field-label">Additional Mobile Numbers (Optional)</label>
             <input id="custExtraMobiles" type="text" placeholder="e.g. 9820011111, 9820022222" class="input-box" />
             <label class="field-label">Customer Category *</label>
-            <select id="custCategory" class="input-box">
-              <option value="Retailer">Retailer</option>
-              <option value="Distributor">Distributor</option>
-              <option value="Stockist">Stockist</option>
-              <option value="Trader">Trader</option>
-              <option value="Wholesaler">Wholesaler</option>
-              <option value="Dealer">Dealer</option>
-              <option value="End user">End user</option>
-              <option value="Hospital">Hospital</option>
-              <option value="Pharma">Pharma</option>
-            </select>
+            <select id="custCategory" class="input-box category-dropdown"></select>
             <div class="grid-2">
               <div>
                 <label class="field-label">State *</label>
@@ -492,18 +497,7 @@
             <label class="field-label">Target State</label>
             <select id="alertState" class="input-box state-dropdown-all"></select>
             <label class="field-label">Target Category</label>
-            <select id="alertCat" class="input-box">
-              <option value="All">All Categories</option>
-              <option value="Retailer">Retailer</option>
-              <option value="Distributor">Distributor</option>
-              <option value="Stockist">Stockist</option>
-              <option value="Trader">Trader</option>
-              <option value="Wholesaler">Wholesaler</option>
-              <option value="Dealer">Dealer</option>
-              <option value="End user">End user</option>
-              <option value="Hospital">Hospital</option>
-              <option value="Pharma">Pharma</option>
-            </select>
+            <select id="alertCat" class="input-box category-dropdown-all"></select>
             <label class="field-label">Offer Code (Optional)</label>
             <input id="alertCode" type="text" placeholder="e.g. EXPO10" class="input-box" />
             <button type="button" onclick="adminSendAlert()" class="btn-primary">Publish Notification</button>
@@ -515,7 +509,7 @@
     <!-- 5-TAB BOTTOM NAVIGATION -->
     <nav id="customerNav" class="hidden">
       <button type="button" onclick="switchTab('BoxRange')" id="navBoxRange" class="active">Box Range</button>
-      <button type="button" onclick="switchTab('LooseGloves')" id="navLooseGloves">Loose Gloves</button>
+      <button type="button" onclick="switchTab('LooseGloves')" id="navLooseGloves">Loose / Masks</button>
       <button type="button" onclick="switchTab('Cart')" id="navCart">Cart (<span id="cartBadge">0</span>)</button>
       <button type="button" onclick="switchTab('Invoices')" id="navInvoices">Invoices/LR</button>
       <button type="button" onclick="switchTab('Orders')" id="navOrders">Orders</button>
@@ -526,9 +520,14 @@
   <div id="installGuideModal" class="modal-bg hidden" onclick="if(event.target===this) closeInstallGuideModal()">
     <div class="modal-card">
       <div style="text-align:center; margin-bottom:12px;">
-        <div class="logo-badge" style="font-size:18px; padding:6px 16px; margin-bottom:8px;">GloveMeds</div>
+        <div class="logo-badge" style="font-size:18px; padding:7px 16px; margin-bottom:8px;">
+          <svg width="20" height="20" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M330 130c-12 0-22 10-22 22v85h-10V114c0-13-11-24-24-24s-24 11-24 24v123h-10V104c0-13-11-24-24-24s-24 11-24 24v133h-10V132c0-13-11-24-24-24s-24 11-24 24v166l-26-26c-10-10-26-10-36 0s-10 26 0 36l76 78c18 18 42 28 68 28h72c52 0 94-42 94-94V152c0-12-10-22-22-22z" fill="#38BDF8"/>
+          </svg>
+          <span>GloveMeds</span>
+        </div>
         <strong style="color:#1B3686; font-size:16px; display:block;">Save GloveMeds on Your Home Screen</strong>
-        <p style="font-size:12px; color:#475569; margin-top:4px;">Save this portal as an app icon on your phone so you never need to search for the link again:</p>
+        <p style="font-size:12px; color:#475569; margin-top:4px;">Save this portal as a blue glove icon on your phone so you never need to search for the link again:</p>
       </div>
       <div style="background:#EEF3FF; padding:12px; border-radius:12px; font-size:12px; color:#1e293b; line-height:1.6;">
         <div><b>1. Android (Chrome):</b> Tap the <b>3 dots (⋮)</b> at the top-right corner &rarr; tap <b>Add to Home screen</b> &rarr; tap <b>Install / Add</b>.</div>
@@ -582,8 +581,8 @@
         <div>
           <label class="field-label">Section</label>
           <select id="editProdRangeType" class="input-box">
-            <option value="Box Range">Box Range</option>
-            <option value="Loose Gloves">Loose Gloves</option>
+            <option value="Box Range">Box Range (20 Box Carton)</option>
+            <option value="Loose Gloves">Loose Gloves / Masks (Gunny / Bag)</option>
           </select>
         </div>
         <div>
@@ -608,18 +607,36 @@
         </div>
       </div>
 
+      <label class="field-label">Packing Option</label>
+      <select id="editProdPackingPreset" onchange="applyPackingPreset('editProdPackingPreset', 'editProdPackingCustom')" class="input-box">
+        <option value="Box Range: 1 Carton = 20 Boxes">Box Range: 1 Carton = 20 Boxes</option>
+        <option value="Mask Packing: 100 pc in 1 Handle Bag • 10,000 pc in 1 Master Gunny Bag">Mask Packing: 100 pc in 1 Handle Bag • 10,000 pc in 1 Master Gunny Bag</option>
+        <option value="Loose Gloves Packing: Packed in Master Gunny Bag">Loose Gloves Packing: Packed in Master Gunny Bag</option>
+        <option value="CUSTOM">Other / Custom Packing...</option>
+      </select>
+      <input id="editProdPackingCustom" type="text" class="input-box hidden" style="margin-top:6px;" placeholder="Enter custom packing details..." />
+
       <!-- TICKABLE AVAILABLE SIZES IN EDIT MODAL -->
       <label class="field-label">Available Sizes (Tick applicable)</label>
-      <div class="size-cb-row">
-        <label><input type="checkbox" class="edit-prod-size-cb" value="Free Size" /> Free Size (Masks)</label>
-        <label><input type="checkbox" class="edit-prod-size-cb" value="XS" /> XS</label>
-        <label><input type="checkbox" class="edit-prod-size-cb" value="Small" /> Small</label>
-        <label><input type="checkbox" class="edit-prod-size-cb" value="Medium" /> Medium</label>
-        <label><input type="checkbox" class="edit-prod-size-cb" value="Large" /> Large</label>
+      <div class="size-cb-group">
+        <div class="size-cb-title">Examination Gloves / Free Size</div>
+        <div class="size-cb-row">
+          <label><input type="checkbox" class="edit-prod-size-cb" value="Free Size" /> Free Size (Masks)</label>
+          <label><input type="checkbox" class="edit-prod-size-cb" value="XS" /> XS</label>
+          <label><input type="checkbox" class="edit-prod-size-cb" value="Small" /> Small</label>
+          <label><input type="checkbox" class="edit-prod-size-cb" value="Medium" /> Medium</label>
+          <label><input type="checkbox" class="edit-prod-size-cb" value="Large" /> Large</label>
+          <label><input type="checkbox" class="edit-prod-size-cb" value="XL" /> XL</label>
+        </div>
+        <div class="size-cb-title" style="margin-top:8px;">Surgical Gloves Sizes</div>
+        <div class="size-cb-row">
+          <label><input type="checkbox" class="edit-prod-size-cb" value="6" /> 6</label>
+          <label><input type="checkbox" class="edit-prod-size-cb" value="6.5" /> 6.5</label>
+          <label><input type="checkbox" class="edit-prod-size-cb" value="7" /> 7</label>
+          <label><input type="checkbox" class="edit-prod-size-cb" value="7.5" /> 7.5</label>
+          <label><input type="checkbox" class="edit-prod-size-cb" value="8" /> 8</label>
+        </div>
       </div>
-
-      <label class="field-label">Size / Fit Note for Customer (Optional)</label>
-      <input id="editProdSizeNote" type="text" placeholder="e.g. Universal Fit / Large Only" class="input-box" />
 
       <label class="field-label">Specifications</label>
       <input id="editProdSpecs" type="text" class="input-box" />
@@ -644,7 +661,7 @@
     </div>
   </div>
 
-  <!-- EDIT CUSTOMER MODAL (ADMIN: NAME, EXTRA MOBILES & DISPATCH REMARK) -->
+  <!-- EDIT CUSTOMER MODAL (ADMIN) -->
   <div id="editCustomerModal" class="modal-bg hidden">
     <div class="modal-card">
       <strong style="color:#1B3686; font-size:16px;">Edit Customer &amp; Dispatch Note</strong>
@@ -658,17 +675,7 @@
         </div>
         <div>
           <label class="field-label">Category</label>
-          <select id="editCustCategory" class="input-box">
-            <option value="Retailer">Retailer</option>
-            <option value="Distributor">Distributor</option>
-            <option value="Stockist">Stockist</option>
-            <option value="Trader">Trader</option>
-            <option value="Wholesaler">Wholesaler</option>
-            <option value="Dealer">Dealer</option>
-            <option value="End user">End user</option>
-            <option value="Hospital">Hospital</option>
-            <option value="Pharma">Pharma</option>
-          </select>
+          <select id="editCustCategory" class="input-box category-dropdown"></select>
         </div>
       </div>
       <label class="field-label">Additional Mobile Numbers</label>
@@ -694,7 +701,7 @@
   <div id="qrModal" class="modal-bg hidden">
     <div class="modal-card" style="text-align:center;">
       <strong style="color:#1B3686; font-size:17px;">GloveMeds 1-Time Scan</strong>
-      <p style="font-size:12px; color:#475569; margin:10px 0;">Scan once, then tap <b>Add to Home Screen</b> in your browser — it saves as <b>GloveMeds</b> on your phone.</p>
+      <p style="font-size:12px; color:#475569; margin:10px 0;">Scan once, then tap <b>Add to Home Screen</b> in your browser — it saves with the blue GloveMeds icon on your phone.</p>
       <img id="qrImg" style="width:180px; height:180px; margin:10px auto; display:block;" />
       <button type="button" onclick="document.getElementById('qrModal').classList.add('hidden')" class="btn-primary" style="background:#334155;">Close</button>
     </div>
@@ -722,13 +729,52 @@
       "Lakshadweep", "Puducherry"
     ];
 
-    function populateStateDropdowns() {
-      const opts = INDIAN_STATES.map(s => `<option value="${s}" ${s === 'Maharashtra' ? 'selected' : ''}>${s}</option>`).join('');
-      document.querySelectorAll('.state-dropdown').forEach(el => el.innerHTML = opts);
-      const allOpts = `<option value="All">All States</option>` + INDIAN_STATES.map(s => `<option value="${s}">${s}</option>`).join('');
-      document.querySelectorAll('.state-dropdown-all').forEach(el => el.innerHTML = allOpts);
+    const CUSTOMER_CATEGORIES = [
+      "Retailer",
+      "Distributor",
+      "Stockist",
+      "Trader",
+      "Wholesaler",
+      "Dealer",
+      "Dental Supplier",
+      "Tattoo Studio",
+      "Salon & Cosmetics",
+      "Doctor usage",
+      "House-keeping",
+      "Diagnostics",
+      "Hotel & Restaurant",
+      "Any type of Manufacturing facility",
+      "End user",
+      "Hospital",
+      "Pharma"
+    ];
+
+    function populateDropdowns() {
+      const stateOpts = INDIAN_STATES.map(s => `<option value="${s}" ${s === 'Maharashtra' ? 'selected' : ''}>${s}</option>`).join('');
+      document.querySelectorAll('.state-dropdown').forEach(el => el.innerHTML = stateOpts);
+      const allStateOpts = `<option value="All">All States</option>` + INDIAN_STATES.map(s => `<option value="${s}">${s}</option>`).join('');
+      document.querySelectorAll('.state-dropdown-all').forEach(el => el.innerHTML = allStateOpts);
+
+      const catOpts = CUSTOMER_CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('');
+      document.querySelectorAll('.category-dropdown').forEach(el => el.innerHTML = catOpts);
+      const allCatOpts = `<option value="All">All Categories</option>` + CUSTOMER_CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('');
+      document.querySelectorAll('.category-dropdown-all').forEach(el => el.innerHTML = allCatOpts);
     }
-    populateStateDropdowns();
+    populateDropdowns();
+
+    function applyPackingPreset(selectId, customInputId) {
+      const sel = document.getElementById(selectId);
+      const customInp = document.getElementById(customInputId);
+      customInp.classList.toggle('hidden', sel.value !== 'CUSTOM');
+    }
+
+    function getSelectedPacking(selectId, customInputId) {
+      const sel = document.getElementById(selectId);
+      if (sel.value === 'CUSTOM') {
+        return document.getElementById(customInputId).value.trim();
+      }
+      return sel.value;
+    }
 
     const SUPABASE_URL = "https://socjwhrkbvdxvvaywoad.supabase.co";
     const SUPABASE_KEY = "sb_publishable_yv3iKTu0etmG5hnsMfwgog_1GgKcReI";
@@ -798,7 +844,7 @@
     }
 
     function sizeKey(sz) {
-      return String(sz).replace(/\s+/g, '_');
+      return String(sz).replace(/[^a-zA-Z0-9]/g, '_');
     }
 
     function toggleAuthMode(mode) {
@@ -1049,11 +1095,15 @@
       const sizes = getProductSizes(p);
       const priceDisplay = info.hasCustomRate
         ? `<strong style="color:#1B3686; font-size:16px;">₹${info.rate}</strong> <span style="font-size:11px; color:#64748b; text-decoration:line-through;">MRP ₹${info.mrp}</span>`
-        : `<strong style="color:#1B3686; font-size:15px;">MRP: ₹${info.mrp}</strong> <span style="font-size:10px; color:#94a3b8;">/ box</span>`;
+        : `<strong style="color:#1B3686; font-size:15px;">MRP: ₹${info.mrp}</strong> <span style="font-size:10px; color:#94a3b8;">/ unit</span>`;
+
+      const packingText = p.packing_details
+        ? `<div class="pack-tag">Packing: ${p.packing_details}</div>`
+        : (isBoxRange ? `<div class="pack-tag">Packing: 1 Carton = 20 Boxes</div>` : `<div class="pack-tag">Packing: Loose / Master Gunny Bag</div>`);
 
       const helperText = isBoxRange
         ? `<div id="calc_${p.product_id}" style="font-size:11px; color:#1B3686; font-weight:700; margin-top:6px;">Enter Carton Qty (1 Carton = 20 Boxes)</div>`
-        : `<div style="font-size:11px; color:#64748b; margin-top:6px;">Enter Loose Quantity per size</div>`;
+        : `<div style="font-size:11px; color:#64748b; margin-top:6px;">Enter Bag / Gunny / Pack Quantity per size</div>`;
 
       const onInputAttr = isBoxRange ? `oninput="updateBoxCalc('${p.product_id}')"` : '';
 
@@ -1064,10 +1114,6 @@
           ${p.image_back_url ? `<img src="${p.image_back_url}" onclick="openZoomGallery('${p.product_id}', 1)" class="thumb-mini" title="Back" />` : ''}
           ${p.image_extra_url ? `<img src="${p.image_extra_url}" onclick="openZoomGallery('${p.product_id}', 2)" class="thumb-mini" title="Detail" />` : ''}
         </div>` : '';
-
-      const sizeNoteHtml = p.size_note
-        ? `<div style="font-size:11px; color:#92400e; background:#fffbeb; border:1px solid #fde68a; padding:5px 8px; border-radius:8px; margin-top:8px; font-weight:600;">Note: ${p.size_note}</div>`
-        : '';
 
       const sizeCellsHtml = sizes.map(sz => `
         <div class="size-cell">
@@ -1090,10 +1136,10 @@
               </div>
               <div style="font-size:11px; color:#1B3686; font-weight:700; margin-top:2px;">${p.category}</div>
               <p style="font-size:12px; color:#64748b; margin-top:4px;">${p.specs || ''}</p>
+              ${packingText}
             </div>
           </div>
 
-          ${sizeNoteHtml}
           <div class="size-grid">
             ${sizeCellsHtml}
           </div>
@@ -1136,7 +1182,7 @@
       const looseProducts = PRODUCTS.filter(p => p.range_type === 'Loose Gloves' && (!newLooseOnly || p.is_new_arrival));
       document.getElementById('looseProductList').innerHTML = looseProducts.length
         ? looseProducts.map(p => buildProductCardHtml(p, false)).join('')
-        : '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No active products in Loose Gloves.</p>';
+        : '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No active products in Loose Gloves / Masks.</p>';
     }
 
     function addProductSizes(pid, isBoxRange) {
@@ -1188,7 +1234,7 @@
       const box = document.getElementById('cartItems');
       const summary = document.getElementById('cartSummary');
       if (!CART.length) {
-        box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">Cart is empty. Enter quantities in Box Range or Loose Gloves.</p>';
+        box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">Cart is empty. Enter quantities in Box Range or Loose / Masks.</p>';
         summary.classList.add('hidden');
         return;
       }
@@ -1196,7 +1242,7 @@
       box.innerHTML = CART.map((item, idx) => {
         const lineTotal = item.price * item.qty;
         total += lineTotal;
-        const qtyLabel = item.isBoxRange ? `${item.rawQty} Carton = ${item.qty} Boxes` : `${item.qty} Loose`;
+        const qtyLabel = item.isBoxRange ? `${item.rawQty} Carton = ${item.qty} Boxes` : `${item.qty} Bag/Loose`;
         const priceLabel = item.hasCustomRate ? `₹${item.price}` : `MRP ₹${item.price}`;
         return `
           <div class="item-card" style="display:flex; justify-content:space-between; align-items:center;">
@@ -1216,7 +1262,7 @@
       let total = 0;
       const lines = CART.map(item => {
         total += item.price * item.qty;
-        const detail = item.isBoxRange ? `${item.rawQty} Carton (${item.qty} Boxes)` : `${item.qty} Loose`;
+        const detail = item.isBoxRange ? `${item.rawQty} Carton (${item.qty} Boxes)` : `${item.qty} Bag/Loose`;
         return `${item.name} [${item.size}: ${detail}]`;
       });
       const orderId = 'GM-' + Math.floor(100000 + Math.random() * 900000);
@@ -1368,7 +1414,8 @@
               <strong style="font-size:13px;">${p.name}</strong>
               <div style="font-size:11px; color:#64748b;">${p.range_type || 'Box Range'} • ${p.category} • MRP: ₹${p.retailer_price}</div>
               <div style="font-size:10px; color:#1B3686; font-weight:700; margin-top:2px;">Sizes: ${sizesLabel}</div>
-              <span class="${isActive ? 'btn-green' : 'btn-red'}" style="font-size:10px; font-weight:800; padding:1px 7px; border-radius:99px; display:inline-block; margin-top:2px;">${isActive ? 'Active' : 'Inactive'}</span>
+              ${p.packing_details ? `<div style="font-size:10px; color:#475569; margin-top:1px;">Packing: ${p.packing_details}</div>` : ''}
+              <span class="${isActive ? 'btn-green' : 'btn-red'}" style="font-size:10px; font-weight:800; padding:1px 7px; border-radius:99px; display:inline-block; margin-top:3px;">${isActive ? 'Active' : 'Inactive'}</span>
             </div>
           </div>
           <div style="display:flex; flex-direction:column; gap:4px;">
@@ -1454,9 +1501,10 @@
       const category = document.getElementById('prodCat').value.trim();
       const mrp = Number(document.getElementById('prodMrp').value) || 0;
       const selectedSizes = Array.from(document.querySelectorAll('.add-prod-size-cb:checked')).map(cb => cb.value);
+      const packing_details = getSelectedPacking('prodPackingPreset', 'prodPackingCustom');
 
       if (!name || !category || !mrp) { alert('Enter Product Name, Category, and MRP.'); return; }
-      if (!selectedSizes.length) { alert('Please tick at least one available size (e.g. Free Size, Small, Large).'); return; }
+      if (!selectedSizes.length) { alert('Please tick at least one available size.'); return; }
 
       const btn = document.getElementById('addProdBtn');
       btn.disabled = true; btn.textContent = 'Publishing Product...';
@@ -1474,7 +1522,7 @@
           status: document.getElementById('prodStatus').value,
           is_new_arrival: document.getElementById('prodNew').value === 'true',
           available_sizes: selectedSizes,
-          size_note: document.getElementById('prodSizeNote').value.trim(),
+          packing_details,
           specs: document.getElementById('prodSpecs').value.trim(),
           retailer_price: mrp,
           distributor_price: mrp,
@@ -1482,7 +1530,7 @@
           video_url: document.getElementById('prodVideoUrl').value.trim()
         });
         alert('Product published!');
-        ['prodName', 'prodCat', 'prodSizeNote', 'prodSpecs', 'prodMrp', 'prodImgFile', 'prodBackImgFile', 'prodExtraImgFile', 'prodVideoUrl'].forEach(id => document.getElementById(id).value = '');
+        ['prodName', 'prodCat', 'prodSpecs', 'prodMrp', 'prodImgFile', 'prodBackImgFile', 'prodExtraImgFile', 'prodVideoUrl', 'prodPackingCustom'].forEach(id => document.getElementById(id).value = '');
         loadAdminData();
       } catch (err) { alert('Error: ' + err.message); }
       btn.disabled = false; btn.textContent = 'Publish Product';
@@ -1497,10 +1545,23 @@
       document.getElementById('editProdCat').value = p.category;
       document.getElementById('editProdStatus').value = p.status || 'Active';
       document.getElementById('editProdNew').value = String(!!p.is_new_arrival);
-      document.getElementById('editProdSizeNote').value = p.size_note || '';
       document.getElementById('editProdSpecs').value = p.specs || '';
       document.getElementById('editProdMrp').value = p.retailer_price || 0;
       document.getElementById('editProdVideo').value = p.video_url || '';
+
+      const packSel = document.getElementById('editProdPackingPreset');
+      const packCustom = document.getElementById('editProdPackingCustom');
+      const savedPack = p.packing_details || 'Box Range: 1 Carton = 20 Boxes';
+      const hasPreset = Array.from(packSel.options).some(opt => opt.value === savedPack);
+      if (hasPreset) {
+        packSel.value = savedPack;
+        packCustom.classList.add('hidden');
+        packCustom.value = '';
+      } else {
+        packSel.value = 'CUSTOM';
+        packCustom.classList.remove('hidden');
+        packCustom.value = savedPack;
+      }
 
       const activeSizes = getProductSizes(p);
       document.querySelectorAll('.edit-prod-size-cb').forEach(cb => {
@@ -1527,7 +1588,7 @@
           status: document.getElementById('editProdStatus').value,
           is_new_arrival: document.getElementById('editProdNew').value === 'true',
           available_sizes: selectedSizes,
-          size_note: document.getElementById('editProdSizeNote').value.trim(),
+          packing_details: getSelectedPacking('editProdPackingPreset', 'editProdPackingCustom'),
           specs: document.getElementById('editProdSpecs').value.trim(),
           retailer_price: mrp,
           distributor_price: mrp,
