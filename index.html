@@ -352,8 +352,16 @@
             </div>
             <label class="field-label">Extra / Box Detail Photo (Optional)</label>
             <input id="prodExtraImgFile" type="file" accept="image/*" class="input-box" />
-            <label class="field-label">Product Video Link (YouTube Unlisted / Google Drive Single File)</label>
-            <input id="prodVideoUrl" type="url" placeholder="https://youtube.com/... or https://drive.google.com/file/d/..." class="input-box" />
+            <div class="grid-2">
+              <div>
+                <label class="field-label">Product Video Link (YouTube / Drive)</label>
+                <input id="prodVideoUrl" type="url" placeholder="https://youtube.com/..." class="input-box" />
+              </div>
+              <div>
+                <label class="field-label">Or Upload Video File (MP4 / MOV)</label>
+                <input id="prodVideoFile" type="file" accept="video/*" class="input-box" />
+              </div>
+            </div>
             <button id="addProdBtn" type="button" onclick="adminAddProduct()" class="btn-primary">Publish Product</button>
           </div>
         </div>
@@ -668,8 +676,16 @@
           </select>
         </div>
       </div>
-      <label class="field-label">Video Link</label>
-      <input id="editProdVideo" type="url" class="input-box" />
+      <div class="grid-2">
+        <div>
+          <label class="field-label">Video Link</label>
+          <input id="editProdVideo" type="url" class="input-box" />
+        </div>
+        <div>
+          <label class="field-label">Or Upload Video File</label>
+          <input id="editProdVideoFile" type="file" accept="video/*" class="input-box" />
+        </div>
+      </div>
       <div class="grid-2">
         <div>
           <label class="field-label">Replace Front Photo</label>
@@ -1570,11 +1586,13 @@
       const btn = document.getElementById('addProdBtn');
       btn.disabled = true; btn.textContent = 'Publishing Product...';
       try {
-        const [image_url, image_back_url, image_extra_url] = await Promise.all([
+        const [image_url, image_back_url, image_extra_url, uploadedVideoUrl] = await Promise.all([
           uploadFileRest('prodImgFile', 'PROD_F'),
           uploadFileRest('prodBackImgFile', 'PROD_B'),
-          uploadFileRest('prodExtraImgFile', 'PROD_E')
+          uploadFileRest('prodExtraImgFile', 'PROD_E'),
+          uploadFileRest('prodVideoFile', 'PROD_VID')
         ]);
+        const finalVideoUrl = uploadedVideoUrl || document.getElementById('prodVideoUrl').value.trim();
         await sbInsert('products', {
           product_id: 'GM-' + Math.floor(100 + Math.random() * 900),
           name,
@@ -1589,10 +1607,10 @@
           distributor_price: mrp,
           gst_percent: Number(document.getElementById('prodGst').value) || 5,
           image_url, image_back_url, image_extra_url,
-          video_url: document.getElementById('prodVideoUrl').value.trim()
+          video_url: finalVideoUrl
         });
         alert('Product published!');
-        ['prodName', 'prodCat', 'prodSpecs', 'prodMrp', 'prodImgFile', 'prodBackImgFile', 'prodExtraImgFile', 'prodVideoUrl', 'prodPackingCustom'].forEach(id => document.getElementById(id).value = '');
+        ['prodName', 'prodCat', 'prodSpecs', 'prodMrp', 'prodImgFile', 'prodBackImgFile', 'prodExtraImgFile', 'prodVideoUrl', 'prodVideoFile', 'prodPackingCustom'].forEach(id => document.getElementById(id).value = '');
         loadAdminData();
       } catch (err) { alert('Error: ' + err.message); }
       btn.disabled = false; btn.textContent = 'Publish Product';
@@ -1631,7 +1649,7 @@
         cb.checked = activeSizes.includes(formatSizeShort(cb.value));
       });
 
-      ['editProdImgFile', 'editProdBackFile', 'editProdExtraFile'].forEach(id => document.getElementById(id).value = '');
+      ['editProdImgFile', 'editProdBackFile', 'editProdExtraFile', 'editProdVideoFile'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('editProductModal').classList.remove('hidden');
     }
 
@@ -1658,14 +1676,16 @@
           gst_percent: Number(document.getElementById('editProdGst').value) || 5,
           video_url: document.getElementById('editProdVideo').value.trim()
         };
-        const [fUrl, bUrl, eUrl] = await Promise.all([
+        const [fUrl, bUrl, eUrl, vUrl] = await Promise.all([
           uploadFileRest('editProdImgFile', 'PROD_F'),
           uploadFileRest('editProdBackFile', 'PROD_B'),
-          uploadFileRest('editProdExtraFile', 'PROD_E')
+          uploadFileRest('editProdExtraFile', 'PROD_E'),
+          uploadFileRest('editProdVideoFile', 'PROD_VID')
         ]);
         if (fUrl) updates.image_url = fUrl;
         if (bUrl) updates.image_back_url = bUrl;
         if (eUrl) updates.image_extra_url = eUrl;
+        if (vUrl) updates.video_url = vUrl;
 
         await sbPatch('products', `product_id=eq.${encodeURIComponent(pid)}`, updates);
         document.getElementById('editProductModal').classList.add('hidden');
