@@ -38,10 +38,11 @@
     .prod-img { width: 76px; height: 76px; border-radius: 12px; object-fit: cover; background: #EEF3FF; flex-shrink: 0; cursor: zoom-in; border: 1px solid #e2e8f0; }
     .thumb-strip { display: flex; gap: 6px; margin-top: 6px; }
     .thumb-mini { width: 38px; height: 38px; border-radius: 8px; object-fit: cover; border: 1px solid #cbd5e1; cursor: zoom-in; }
-    .size-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 6px; margin-top: 10px; background: #f8fafc; padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; }
-    .size-cell { text-align: center; }
-    .size-cell label { display: block; font-size: 10px; font-weight: 800; color: #1B3686; margin-bottom: 3px; text-transform: uppercase; }
-    .size-input { width: 100%; text-align: center; padding: 6px 2px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; font-weight: 700; background: #fff; }
+    .size-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; background: #f8fafc; padding: 6px 8px; border-radius: 10px; border: 1px solid #e2e8f0; }
+    .size-cell { text-align: center; width: 52px; flex-shrink: 0; }
+    .size-cell.wide-cell { width: 84px; }
+    .size-cell label { display: block; font-size: 10px; font-weight: 800; color: #1B3686; margin-bottom: 2px; text-transform: uppercase; }
+    .size-input { width: 100%; text-align: center; padding: 4px 2px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px; font-weight: 700; background: #fff; }
     .prod-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f1f5f9; }
     .btn-sm { background: #1B3686; color: #fff; border: none; padding: 7px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; }
     .btn-tint { background: #EEF3FF; color: #1B3686; }
@@ -309,9 +310,9 @@
               <div class="size-cb-row">
                 <label><input type="checkbox" class="add-prod-size-cb" value="Free Size" /> Free Size (Masks)</label>
                 <label><input type="checkbox" class="add-prod-size-cb" value="XS" checked /> XS</label>
-                <label><input type="checkbox" class="add-prod-size-cb" value="Small" checked /> Small</label>
-                <label><input type="checkbox" class="add-prod-size-cb" value="Medium" checked /> Medium</label>
-                <label><input type="checkbox" class="add-prod-size-cb" value="Large" checked /> Large</label>
+                <label><input type="checkbox" class="add-prod-size-cb" value="S" checked /> S</label>
+                <label><input type="checkbox" class="add-prod-size-cb" value="M" checked /> M</label>
+                <label><input type="checkbox" class="add-prod-size-cb" value="L" checked /> L</label>
                 <label><input type="checkbox" class="add-prod-size-cb" value="XL" /> XL</label>
               </div>
               <div class="size-cb-title" style="margin-top:8px;">Surgical Gloves Sizes</div>
@@ -637,9 +638,9 @@
         <div class="size-cb-row">
           <label><input type="checkbox" class="edit-prod-size-cb" value="Free Size" /> Free Size (Masks)</label>
           <label><input type="checkbox" class="edit-prod-size-cb" value="XS" /> XS</label>
-          <label><input type="checkbox" class="edit-prod-size-cb" value="Small" /> Small</label>
-          <label><input type="checkbox" class="edit-prod-size-cb" value="Medium" /> Medium</label>
-          <label><input type="checkbox" class="edit-prod-size-cb" value="Large" /> Large</label>
+          <label><input type="checkbox" class="edit-prod-size-cb" value="S" /> S</label>
+          <label><input type="checkbox" class="edit-prod-size-cb" value="M" /> M</label>
+          <label><input type="checkbox" class="edit-prod-size-cb" value="L" /> L</label>
           <label><input type="checkbox" class="edit-prod-size-cb" value="XL" /> XL</label>
         </div>
         <div class="size-cb-title" style="margin-top:8px;">Surgical Gloves Sizes</div>
@@ -861,11 +862,16 @@
     let ADMIN_POLL_TIMER = null;
     let LAST_UNSEEN_COUNT = 0;
 
+    function formatSizeShort(sz) {
+      const map = { 'Small': 'S', 'Medium': 'M', 'Large': 'L', 'Extra Small': 'XS', 'Extra Large': 'XL' };
+      return map[String(sz).trim()] || String(sz).trim();
+    }
+
     function getProductSizes(prod) {
       if (Array.isArray(prod.available_sizes) && prod.available_sizes.length > 0) {
-        return prod.available_sizes;
+        return prod.available_sizes.map(formatSizeShort);
       }
-      return ['XS', 'Small', 'Medium', 'Large'];
+      return ['XS', 'S', 'M', 'L'];
     }
 
     function sizeKey(sz) {
@@ -1115,23 +1121,42 @@
 
     function closeZoomModal() { document.getElementById('zoomModal').classList.add('hidden'); }
 
+    function isMaskProduct(p) {
+      const text = `${p.name || ''} ${p.category || ''} ${p.packing_details || ''}`.toLowerCase();
+      return text.includes('mask');
+    }
+
+    function isCartonBoxMultiplier(p, isBoxRange) {
+      if (!isBoxRange) return false;
+      if (isMaskProduct(p)) return false;
+      const pack = String(p.packing_details || '').toLowerCase();
+      if (pack.includes('gunny') || pack.includes('handle bag')) return false;
+      return true;
+    }
+
+    function getDefaultBelowOrderText(p, isBoxRange) {
+      if (p.packing_details && p.packing_details.trim()) {
+        return p.packing_details.trim();
+      }
+      if (isMaskProduct(p)) {
+        return 'Gunny Bag (100 pc in 1 Handle Bag • 10,000 pc in 1 Master Gunny Bag)';
+      }
+      return isBoxRange ? '1 Carton = 20 Boxes' : 'Master Gunny Bag';
+    }
+
     function buildProductCardHtml(p, isBoxRange) {
       const info = getCustomerRateInfo(p);
       const sizes = getProductSizes(p);
       const gstPct = p.gst_percent || 5;
+      const useCartonCalc = isCartonBoxMultiplier(p, isBoxRange);
+      const belowOrderPacking = getDefaultBelowOrderText(p, isBoxRange);
+
       const priceDisplay = info.hasCustomRate
         ? `<strong style="color:#1B3686; font-size:16px;">₹${info.rate}</strong> <span style="font-size:10px; font-weight:700; color:#475569;">+ ${gstPct}% GST</span> <span style="font-size:11px; color:#94a3b8; text-decoration:line-through;">MRP ₹${info.mrp}</span>`
         : `<strong style="color:#1B3686; font-size:15px;">MRP: ₹${info.mrp}</strong> <span style="font-size:10px; font-weight:700; color:#475569;">+ ${gstPct}% GST</span>`;
 
-      const packingText = p.packing_details
-        ? `<div class="pack-tag">Packing: ${p.packing_details}</div>`
-        : (isBoxRange ? `<div class="pack-tag">Packing: 1 Carton = 20 Boxes</div>` : `<div class="pack-tag">Packing: Loose / Master Gunny Bag</div>`);
-
-      const helperText = isBoxRange
-        ? `<div id="calc_${p.product_id}" style="font-size:11px; color:#1B3686; font-weight:700; margin-top:6px;">Enter Carton Qty (1 Carton = 20 Boxes)</div>`
-        : `<div style="font-size:11px; color:#64748b; margin-top:6px;">Enter Bag / Gunny / Pack Quantity per size</div>`;
-
-      const onInputAttr = isBoxRange ? `oninput="updateBoxCalc('${p.product_id}')"` : '';
+      const helperText = `<div id="calc_${p.product_id}" class="pack-tag" style="display:block; margin-top:7px;">${belowOrderPacking}</div>`;
+      const onInputAttr = `oninput="updateBoxCalc('${p.product_id}', ${useCartonCalc})"`;
 
       const frontUrl = p.image_url || 'https://placehold.co/120x120/EEF3FF/1B3686?text=GloveMeds';
       const extraThumbs = (p.image_back_url || p.image_extra_url) ? `
@@ -1141,12 +1166,14 @@
           ${p.image_extra_url ? `<img src="${p.image_extra_url}" onclick="openZoomGallery('${p.product_id}', 2)" class="thumb-mini" title="Detail" />` : ''}
         </div>` : '';
 
-      const sizeCellsHtml = sizes.map(sz => `
-        <div class="size-cell">
+      const sizeCellsHtml = sizes.map(sz => {
+        const isWide = sz.length > 4 ? 'wide-cell' : '';
+        return `
+        <div class="size-cell ${isWide}">
           <label>${sz}</label>
           <input id="qty_${p.product_id}_${sizeKey(sz)}" type="number" min="0" placeholder="0" ${onInputAttr} class="size-input" />
-        </div>
-      `).join('');
+        </div>`;
+      }).join('');
 
       return `
         <div class="item-card">
@@ -1162,7 +1189,6 @@
               </div>
               <div style="font-size:11px; color:#1B3686; font-weight:700; margin-top:2px;">${p.category}</div>
               <p style="font-size:12px; color:#64748b; margin-top:4px;">${p.specs || ''}</p>
-              ${packingText}
             </div>
           </div>
 
@@ -1175,25 +1201,32 @@
             <div>${priceDisplay}</div>
             <div style="display:flex; gap:6px;">
               ${p.video_url ? `<a href="${p.video_url}" target="_blank" class="btn-sm btn-tint">Video</a>` : ''}
-              <button type="button" onclick="addProductSizes('${p.product_id}', ${isBoxRange})" class="btn-sm">+ Add</button>
+              <button type="button" onclick="addProductSizes('${p.product_id}', ${useCartonCalc})" class="btn-sm">+ Add</button>
             </div>
           </div>
         </div>`;
     }
 
-    function updateBoxCalc(pid) {
+    function updateBoxCalc(pid, useCartonCalc) {
       const prod = PRODUCTS.find(p => p.product_id === pid);
-      const sizes = prod ? getProductSizes(prod) : ['XS', 'Small', 'Medium', 'Large'];
-      let totalCartons = 0;
+      if (!prod) return;
+      const sizes = getProductSizes(prod);
+      let totalUnits = 0;
       sizes.forEach(sz => {
         const elInput = document.getElementById(`qty_${pid}_${sizeKey(sz)}`);
-        if (elInput) totalCartons += parseInt(elInput.value, 10) || 0;
+        if (elInput) totalUnits += parseInt(elInput.value, 10) || 0;
       });
       const el = document.getElementById(`calc_${pid}`);
-      if (el) {
-        el.textContent = totalCartons > 0
-          ? `Selected: ${totalCartons} Carton(s) × 20 = ${totalCartons * 20} Total Boxes`
-          : `Enter Carton Qty (1 Carton = 20 Boxes)`;
+      if (!el) return;
+      const basePacking = getDefaultBelowOrderText(prod, useCartonCalc);
+      if (totalUnits <= 0) {
+        el.textContent = basePacking;
+      } else if (useCartonCalc) {
+        el.textContent = `${basePacking} • Selected: ${totalUnits} Carton(s) × 20 = ${totalUnits * 20} Boxes`;
+      } else if (isMaskProduct(prod)) {
+        el.textContent = `${basePacking} • Selected: ${totalUnits} Gunny Bag(s)`;
+      } else {
+        el.textContent = `${basePacking} • Selected: ${totalUnits} Unit(s)`;
       }
     }
 
@@ -1211,11 +1244,12 @@
         : '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No active products in Loose Gloves / Masks.</p>';
     }
 
-    function addProductSizes(pid, isBoxRange) {
+    function addProductSizes(pid, useCartonCalc) {
       const prod = PRODUCTS.find(p => p.product_id === pid);
       if (!prod) return;
       const info = getCustomerRateInfo(prod);
       const sizes = getProductSizes(prod);
+      const isMask = isMaskProduct(prod);
       let added = false;
       let addedParts = [];
 
@@ -1225,16 +1259,17 @@
         const rawQty = parseInt(input.value, 10) || 0;
         if (rawQty > 0) {
           added = true;
-          const actualBoxes = isBoxRange ? rawQty * 20 : rawQty;
-          addedParts.push(isBoxRange ? `${sz}: ${rawQty} Carton (${actualBoxes} Boxes)` : `${sz}: ${rawQty}`);
-          const existing = CART.find(item => item.pid === pid && item.size === sz && item.isBoxRange === isBoxRange);
+          const actualQty = useCartonCalc ? rawQty * 20 : rawQty;
+          const unitName = useCartonCalc ? `${rawQty} Carton (${actualQty} Boxes)` : (isMask ? `${rawQty} Gunny Bag` : `${rawQty} Bag/Loose`);
+          addedParts.push(`${sz}: ${unitName}`);
+          const existing = CART.find(item => item.pid === pid && item.size === sz && item.isBoxRange === useCartonCalc);
           if (existing) {
             existing.rawQty += rawQty;
-            existing.qty += actualBoxes;
+            existing.qty += actualQty;
           } else {
             CART.push({
-              pid, name: prod.name, size: sz, rawQty, qty: actualBoxes,
-              isBoxRange, price: info.rate, hasCustomRate: info.hasCustomRate
+              pid, name: prod.name, size: sz, rawQty, qty: actualQty,
+              isBoxRange: useCartonCalc, isMask, price: info.rate, hasCustomRate: info.hasCustomRate
             });
           }
           input.value = '';
@@ -1242,7 +1277,7 @@
       });
 
       if (!added) { alert('Enter quantity in an available size first.'); return; }
-      if (isBoxRange) updateBoxCalc(pid);
+      updateBoxCalc(pid, useCartonCalc);
       renderCart();
 
       document.getElementById('cartConfirmDetail').textContent = `${prod.name} (${addedParts.join(', ')})`;
@@ -1268,7 +1303,7 @@
       box.innerHTML = CART.map((item, idx) => {
         const lineTotal = item.price * item.qty;
         total += lineTotal;
-        const qtyLabel = item.isBoxRange ? `${item.rawQty} Carton = ${item.qty} Boxes` : `${item.qty} Bag/Loose`;
+        const qtyLabel = item.isBoxRange ? `${item.rawQty} Carton = ${item.qty} Boxes` : (item.isMask ? `${item.qty} Gunny Bag` : `${item.qty} Bag/Loose`);
         const priceLabel = item.hasCustomRate ? `₹${item.price}` : `MRP ₹${item.price}`;
         return `
           <div class="item-card" style="display:flex; justify-content:space-between; align-items:center;">
@@ -1288,7 +1323,7 @@
       let total = 0;
       const lines = CART.map(item => {
         total += item.price * item.qty;
-        const detail = item.isBoxRange ? `${item.rawQty} Carton (${item.qty} Boxes)` : `${item.qty} Bag/Loose`;
+        const detail = item.isBoxRange ? `${item.rawQty} Carton (${item.qty} Boxes)` : (item.isMask ? `${item.qty} Gunny Bag` : `${item.qty} Bag/Loose`);
         return `${item.name} [${item.size}: ${detail}]`;
       });
       const orderId = 'GM-' + Math.floor(100000 + Math.random() * 900000);
@@ -1552,7 +1587,6 @@
           specs: document.getElementById('prodSpecs').value.trim(),
           retailer_price: mrp,
           distributor_price: mrp,
-          gst_percent: Number(document.getElementById('editProdGst').value) || 5,
           gst_percent: Number(document.getElementById('prodGst').value) || 5,
           image_url, image_back_url, image_extra_url,
           video_url: document.getElementById('prodVideoUrl').value.trim()
@@ -1594,7 +1628,7 @@
 
       const activeSizes = getProductSizes(p);
       document.querySelectorAll('.edit-prod-size-cb').forEach(cb => {
-        cb.checked = activeSizes.includes(cb.value);
+        cb.checked = activeSizes.includes(formatSizeShort(cb.value));
       });
 
       ['editProdImgFile', 'editProdBackFile', 'editProdExtraFile'].forEach(id => document.getElementById(id).value = '');
@@ -1621,6 +1655,7 @@
           specs: document.getElementById('editProdSpecs').value.trim(),
           retailer_price: mrp,
           distributor_price: mrp,
+          gst_percent: Number(document.getElementById('editProdGst').value) || 5,
           video_url: document.getElementById('editProdVideo').value.trim()
         };
         const [fUrl, bUrl, eUrl] = await Promise.all([
