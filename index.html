@@ -103,21 +103,6 @@
         <button type="button" onclick="toggleAuthMode('register')" class="btn-outline">New Customer / Add Another Firm</button>
       </div>
 
-      <!-- 1ST-TIME DEVICE OTP VERIFICATION BOX -->
-      <div id="otpVerifyBox" class="hidden">
-        <strong style="font-size:14px; color:#1B3686; display:block; text-align:center;">1st-Time Device Verification</strong>
-        <p id="otpVerifyDesc" style="font-size:12px; color:#475569; text-align:center; margin-top:6px; line-height:1.5;"></p>
-        <div style="background:#EEF3FF; border:1px solid #c7d2fe; border-radius:10px; padding:10px; text-align:center; margin:10px 0;">
-          <span style="font-size:10px; font-weight:700; color:#475569; text-transform:uppercase; display:block;">One-Time Security Code</span>
-          <strong id="otpDisplayCode" style="font-size:22px; letter-spacing:4px; color:#1B3686;"></strong>
-        </div>
-        <label class="field-label">Enter 6-Digit Verification Code</label>
-        <input id="otpInputCode" type="text" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit code" class="input-box" onkeydown="if(event.key==='Enter') confirmDeviceOtp()" />
-        <div id="otpError" class="err-box hidden"></div>
-        <button type="button" onclick="confirmDeviceOtp()" class="btn-primary">Verify Device &amp; Continue</button>
-        <button type="button" onclick="toggleAuthMode('login')" class="btn-outline">Cancel</button>
-      </div>
-
       <!-- MULTI-COMPANY PICKER (IF SAME MOBILE HAS MULTIPLE FIRMS) -->
       <div id="companyPickerBox" class="hidden">
         <strong style="font-size:14px; color:#1B3686; display:block; text-align:center; margin-bottom:8px;">Select Company Account</strong>
@@ -180,7 +165,7 @@
       </div>
       <div style="display:flex; gap:5px;">
         <button id="switchFirmBtn" type="button" onclick="openSwitchFirmModal()" class="btn-header hidden">Firms</button>
-        <button type="button" onclick="openPinModal()" class="btn-header">PIN</button>
+        <button id="headerPinBtn" type="button" onclick="openPinModal()" class="btn-header hidden">PIN</button>
         <button type="button" onclick="openQrModal()" class="btn-header">QR</button>
         <button type="button" onclick="logout()" class="btn-header">Exit</button>
       </div>
@@ -800,14 +785,27 @@
     </div>
   </div>
 
-  <!-- CHANGE PIN MODAL -->
+  <!-- CHANGE PIN MODAL (ADMIN SELF) -->
   <div id="pinModal" class="modal-bg hidden">
     <div class="modal-card">
-      <strong style="color:#1B3686; font-size:16px;">Change Your 4-Digit PIN</strong>
+      <strong style="color:#1B3686; font-size:16px;">Change Admin 4-Digit PIN</strong>
       <label class="field-label">New PIN</label>
       <input id="newPinInput" type="text" inputmode="numeric" maxlength="6" placeholder="Enter new 4-digit PIN" class="input-box" />
       <button type="button" onclick="saveNewPin()" class="btn-primary">Update PIN</button>
       <button type="button" onclick="document.getElementById('pinModal').classList.add('hidden')" class="btn-outline">Cancel</button>
+    </div>
+  </div>
+
+  <!-- ADMIN RESET CUSTOMER PIN & UNLOCK MODAL -->
+  <div id="adminResetPinModal" class="modal-bg hidden">
+    <div class="modal-card">
+      <strong style="color:#1B3686; font-size:16px;">Reset Customer PIN &amp; Unlock</strong>
+      <p id="resetPinCustTitle" style="font-size:12px; color:#475569; margin-top:4px;"></p>
+      <input type="hidden" id="resetPinCustId" />
+      <label class="field-label">New 4-Digit PIN *</label>
+      <input id="adminNewCustPin" type="text" inputmode="numeric" maxlength="6" placeholder="e.g. 4829" class="input-box" />
+      <button type="button" onclick="saveAdminCustomerPinReset()" class="btn-primary">Save New PIN &amp; Unlock Account</button>
+      <button type="button" onclick="document.getElementById('adminResetPinModal').classList.add('hidden')" class="btn-outline">Cancel</button>
     </div>
   </div>
 
@@ -945,33 +943,10 @@
       return String(sz).replace(/[^a-zA-Z0-9]/g, '_');
     }
 
-    let PENDING_OTP_CODE = '';
-    let PENDING_OTP_MOBILE = '';
-    let PENDING_OTP_MATCHED = [];
-
     function toggleAuthMode(mode) {
       document.getElementById('signInBox').classList.toggle('hidden', mode !== 'login');
       document.getElementById('registerBox').classList.toggle('hidden', mode !== 'register');
       document.getElementById('companyPickerBox').classList.toggle('hidden', mode !== 'picker');
-      document.getElementById('otpVerifyBox').classList.toggle('hidden', mode !== 'otp');
-    }
-
-    function isDeviceVerifiedForMobile(mobile) {
-      try {
-        const verified = JSON.parse(localStorage.getItem('gm_verified_mobiles') || '[]');
-        return verified.includes(String(mobile).trim());
-      } catch (e) { return false; }
-    }
-
-    function markDeviceVerifiedForMobile(mobile) {
-      try {
-        const verified = JSON.parse(localStorage.getItem('gm_verified_mobiles') || '[]');
-        const clean = String(mobile).trim();
-        if (!verified.includes(clean)) {
-          verified.push(clean);
-          localStorage.setItem('gm_verified_mobiles', JSON.stringify(verified));
-        }
-      } catch (e) {}
     }
 
     function proceedAfterAuth(matched) {
@@ -989,20 +964,7 @@
       }
     }
 
-    function confirmDeviceOtp() {
-      const entered = document.getElementById('otpInputCode').value.trim();
-      const err = document.getElementById('otpError');
-      if (entered !== PENDING_OTP_CODE) {
-        err.textContent = 'Incorrect verification code. Please enter the 6-digit code shown above.';
-        err.classList.remove('hidden');
-        return;
-      }
-      err.classList.add('hidden');
-      markDeviceVerifiedForMobile(PENDING_OTP_MOBILE);
-      proceedAfterAuth(PENDING_OTP_MATCHED);
-    }
-
-    /* SUPPORTS PRIMARY OR EXTRA MOBILES + 1ST-TIME OTP + REPEAT PIN-ONLY LOGIN */
+    /* MULTI-STAFF LOGIN WITH MOBILE + PIN & 3-WRONG-ATTEMPT LOCKOUT */
     async function handleLogin() {
       const mobile = document.getElementById('loginMobile').value.trim();
       const pin = document.getElementById('loginPin').value.trim();
@@ -1014,33 +976,65 @@
 
       try {
         const allCustomers = await sbSelect('customers', '');
-        btn.disabled = false; btn.textContent = 'Access Portal';
-
-        const matched = (allCustomers || []).filter(c => {
+        const accountsForMobile = (allCustomers || []).filter(c => {
           const primaryMatch = String(c.mobile || '').trim() === mobile;
           const extras = String(c.extra_mobiles || '').split(',').map(m => m.trim()).filter(Boolean);
           const extraMatch = extras.includes(mobile);
-          return (primaryMatch || extraMatch) && String(c.pin || '').trim() === pin;
+          return primaryMatch || extraMatch;
         });
 
-        if (!matched.length) {
-          err.textContent = 'Invalid Mobile Number or PIN';
+        if (!accountsForMobile.length) {
+          btn.disabled = false; btn.textContent = 'Access Portal';
+          err.textContent = 'Mobile number not registered.';
           err.classList.remove('hidden');
           return;
         }
 
-        if (isDeviceVerifiedForMobile(mobile)) {
-          proceedAfterAuth(matched);
-        } else {
-          PENDING_OTP_MOBILE = mobile;
-          PENDING_OTP_MATCHED = matched;
-          PENDING_OTP_CODE = String(Math.floor(100000 + Math.random() * 900000));
-          document.getElementById('otpVerifyDesc').innerHTML = `First-time login on this device for <b>${mobile}</b>. Enter the 6-digit security code below to bind this device (future logins on this phone will use PIN only):`;
-          document.getElementById('otpDisplayCode').textContent = PENDING_OTP_CODE;
-          document.getElementById('otpInputCode').value = '';
-          document.getElementById('otpError').classList.add('hidden');
-          toggleAuthMode('otp');
+        const lockedAcc = accountsForMobile.find(c => c.category !== 'Admin' && (c.is_locked === true || (Number(c.failed_attempts) || 0) >= 3));
+        if (lockedAcc) {
+          btn.disabled = false; btn.textContent = 'Access Portal';
+          err.textContent = 'Account locked due to 3 wrong PIN attempts. Please contact GloveMeds company for further help.';
+          err.classList.remove('hidden');
+          return;
         }
+
+        const matched = accountsForMobile.filter(c => String(c.pin || '').trim() === pin);
+
+        if (!matched.length) {
+          let maxAttempts = 0;
+          for (const acc of accountsForMobile) {
+            if (acc.category === 'Admin') continue;
+            const nextCount = (Number(acc.failed_attempts) || 0) + 1;
+            const shouldLock = nextCount >= 3;
+            if (nextCount > maxAttempts) maxAttempts = nextCount;
+            await sbPatch('customers', `customer_id=eq.${encodeURIComponent(acc.customer_id)}`, {
+              failed_attempts: nextCount,
+              is_locked: shouldLock
+            });
+          }
+
+          btn.disabled = false; btn.textContent = 'Access Portal';
+          if (maxAttempts >= 3) {
+            err.textContent = 'Account locked due to 3 wrong PIN attempts. Please contact GloveMeds company for further help.';
+          } else {
+            const left = 3 - maxAttempts;
+            err.textContent = `Invalid PIN. ${left} attempt${left === 1 ? '' : 's'} remaining before account lock.`;
+          }
+          err.classList.remove('hidden');
+          return;
+        }
+
+        for (const acc of matched) {
+          if ((Number(acc.failed_attempts) || 0) > 0 || acc.is_locked) {
+            await sbPatch('customers', `customer_id=eq.${encodeURIComponent(acc.customer_id)}`, {
+              failed_attempts: 0,
+              is_locked: false
+            });
+          }
+        }
+
+        btn.disabled = false; btn.textContent = 'Access Portal';
+        proceedAfterAuth(matched);
       } catch (error) {
         btn.disabled = false; btn.textContent = 'Access Portal';
         err.textContent = 'Error: ' + error.message; err.classList.remove('hidden');
@@ -1071,10 +1065,11 @@
           customer_id: 'CUST-' + Math.floor(1000 + Math.random() * 9000),
           company_name: name,
           mobile, pin, extra_mobiles, category, state, city, transport_name,
-          assigned_partner_id: ''
+          assigned_partner_id: '',
+          failed_attempts: 0,
+          is_locked: false
         });
         btn.disabled = false; btn.textContent = 'Register & Enter Portal';
-        markDeviceVerifiedForMobile(mobile);
         LINKED_FIRMS = [created[0]];
         enterPortal(created[0], true);
       } catch (error) {
@@ -1095,6 +1090,9 @@
       document.getElementById('userCompanyHeader').textContent = CURRENT_USER.company_name + (CURRENT_USER.city ? ` (${CURRENT_USER.city})` : '');
       document.getElementById('userStateBadge').textContent = CURRENT_USER.category + ' • ' + CURRENT_USER.state;
       document.getElementById('switchFirmBtn').classList.toggle('hidden', LINKED_FIRMS.length <= 1);
+
+      const headerPinBtn = document.getElementById('headerPinBtn');
+      if (headerPinBtn) headerPinBtn.classList.toggle('hidden', CURRENT_USER.category !== 'Admin');
 
       if (CURRENT_USER.category === 'Admin') {
         document.getElementById('adminView').classList.remove('hidden');
@@ -1829,16 +1827,23 @@
             </select>
           </div>` : '';
 
+        const isLocked = c.is_locked === true || (Number(c.failed_attempts) || 0) >= 3;
+        const lockBadge = isLocked
+          ? `<span style="background:#fee2e2; color:#b91c1c; font-size:9px; font-weight:800; padding:2px 6px; border-radius:99px; margin-left:5px;">LOCKED</span>`
+          : '';
         return `
-        <div class="item-card" style="padding:12px 14px; margin-bottom:8px;">
+        <div class="item-card" style="padding:12px 14px; margin-bottom:8px; border-color:${isLocked ? '#fca5a5' : '#e2e8f0'};">
           <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
             <div>
-              <strong style="font-size:13px;">${c.company_name}</strong>
-              <div style="font-size:11px; color:#64748b;">Mob: ${c.mobile}${c.extra_mobiles ? ' / ' + c.extra_mobiles : ''} • <b>${c.category}</b> • ${c.city ? c.city + ', ' : ''}${c.state}</div>
+              <strong style="font-size:13px;">${c.company_name}${lockBadge}</strong>
+              <div style="font-size:11px; color:#64748b;">Mob: ${c.mobile}${c.extra_mobiles ? ' / ' + c.extra_mobiles : ''} • PIN: <b>${c.pin || '----'}</b> • <b>${c.category}</b> • ${c.city ? c.city + ', ' : ''}${c.state}</div>
               <div style="font-size:11px; color:#475569; margin-top:2px;">Transport: <b>${c.transport_name || 'N/A'}</b></div>
               ${c.dispatch_remark ? `<div style="font-size:11px; color:#92400e; background:#fffbeb; padding:3px 7px; border-radius:6px; margin-top:4px;"><b>Note:</b> ${c.dispatch_remark}</div>` : ''}
             </div>
-            <button type="button" onclick="openEditCustomerModal('${c.customer_id}')" class="btn-sm btn-tint">Edit</button>
+            <div style="display:flex; flex-direction:column; gap:4px;">
+              <button type="button" onclick="openEditCustomerModal('${c.customer_id}')" class="btn-sm btn-tint">Edit</button>
+              <button type="button" onclick="openAdminResetPinModal('${c.customer_id}')" class="btn-sm ${isLocked ? 'btn-red' : 'btn-amber'}">${isLocked ? 'Unlock / PIN' : 'Reset PIN'}</button>
+            </div>
           </div>
           ${assignDropdown}
         </div>`;
@@ -2072,6 +2077,31 @@
         });
         document.getElementById('editCustomerModal').classList.add('hidden');
         alert('Customer updated!');
+        loadAdminData();
+      } catch (err) { alert('Error: ' + err.message); }
+    }
+
+    function openAdminResetPinModal(cid) {
+      const c = ADMIN_CUSTOMERS.find(x => x.customer_id === cid);
+      if (!c) return;
+      document.getElementById('resetPinCustId').value = c.customer_id;
+      document.getElementById('resetPinCustTitle').textContent = `${c.company_name} (Mob: ${c.mobile})`;
+      document.getElementById('adminNewCustPin').value = c.pin || '';
+      document.getElementById('adminResetPinModal').classList.remove('hidden');
+    }
+
+    async function saveAdminCustomerPinReset() {
+      const cid = document.getElementById('resetPinCustId').value;
+      const newPin = document.getElementById('adminNewCustPin').value.trim();
+      if (newPin.length < 4) { alert('Please enter at least a 4-digit PIN.'); return; }
+      try {
+        await sbPatch('customers', `customer_id=eq.${encodeURIComponent(cid)}`, {
+          pin: newPin,
+          failed_attempts: 0,
+          is_locked: false
+        });
+        document.getElementById('adminResetPinModal').classList.add('hidden');
+        alert('Customer PIN updated & account unlocked!');
         loadAdminData();
       } catch (err) { alert('Error: ' + err.message); }
     }
