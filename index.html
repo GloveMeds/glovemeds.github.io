@@ -10,6 +10,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%232563EB'/%3E%3Cstop offset='100%25' stop-color='%231B3686'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='112' fill='%23FFFFFF'/%3E%3Cpath d='M342 132c-13 0-23 10-23 23v82h-9V106c0-14-11-25-25-25s-25 11-25 25v131h-9V94c0-14-11-25-25-25s-25 11-25 25v143h-9V124c0-14-11-25-25-25s-25 11-25 25v164l-24-24c-11-11-28-11-39 0s-11 28 0 39l78 80c19 19 44 30 71 30h66c55 0 99-44 99-99V155c0-13-10-23-23-23z' fill='url(%23g)'/%3E%3Crect x='184' y='388' width='162' height='26' rx='13' fill='%2360A5FA' opacity='0.45'/%3E%3Cpath d='M226 116v92M276 104v104M326 144v68' stroke='%2393C5FD' stroke-width='7' stroke-linecap='round' opacity='0.6'/%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%232563EB'/%3E%3Cstop offset='100%25' stop-color='%231B3686'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='112' fill='%23FFFFFF'/%3E%3Cpath d='M342 132c-13 0-23 10-23 23v82h-9V106c0-14-11-25-25-25s-25 11-25 25v131h-9V94c0-14-11-25-25-25s-25 11-25 25v143h-9V124c0-14-11-25-25-25s-25 11-25 25v164l-24-24c-11-11-28-11-39 0s-11 28 0 39l78 80c19 19 44 30 71 30h66c55 0 99-44 99-99V155c0-13-10-23-23-23z' fill='url(%23g)'/%3E%3Crect x='184' y='388' width='162' height='26' rx='13' fill='%2360A5FA' opacity='0.45'/%3E%3Cpath d='M226 116v92M276 104v104M326 144v68' stroke='%2393C5FD' stroke-width='7' stroke-linecap='round' opacity='0.6'/%3E%3C/svg%3E" />
   <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22GloveMeds%22%2C%22short_name%22%3A%22GloveMeds%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23FFFFFF%22%2C%22theme_color%22%3A%22%231B3686%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 512 512%27%253E%253Cdefs%253E%253ClinearGradient id=%27g%27 x1=%270%27 y1=%270%27 x2=%271%27 y2=%271%27%253E%253Cstop offset=%270%2525%27 stop-color=%27%25232563EB%27/%253E%253Cstop offset=%27100%2525%27 stop-color=%27%25231B3686%27/%253E%253C/linearGradient%253E%253C/defs%253E%253Crect width=%27512%27 height=%27512%27 rx=%27112%27 fill=%27%2523FFFFFF%27/%253E%253Cpath d=%27M342 132c-13 0-23 10-23 23v82h-9V106c0-14-11-25-25-25s-25 11-25 25v131h-9V94c0-14-11-25-25-25s-25 11-25 25v143h-9V124c0-14-11-25-25-25s-25 11-25 25v164l-24-24c-11-11-28-11-39 0s-11 28 0 39l78 80c19 19 44 30 71 30h66c55 0 99-44 99-99V155c0-13-10-23-23-23z%27 fill=%27url(%2523g)%27/%253E%253Crect x=%27184%27 y=%27388%27 width=%27162%27 height=%2726%27 rx=%2713%27 fill=%27%252360A5FA%27 opacity=%270.45%27/%253E%253Cpath d=%27M226 116v92M276 104v104M326 144v68%27 stroke=%27%252393C5FD%27 stroke-width=%277%27 stroke-linecap=%27round%27 opacity=%270.6%27/%253E%253C/svg%253E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D" />
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background: #f1f5f9; color: #1e293b; }
@@ -68,6 +69,9 @@
     .size-cb-title { font-size: 10px; font-weight: 800; color: #1B3686; text-transform: uppercase; margin-bottom: 5px; }
     .size-cb-row { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; font-weight: 600; }
     .size-cb-row label { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+    .media-preview-box { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 5px 8px; margin-top: 5px; font-size: 11px; }
+    .media-preview-box img { width: 38px; height: 38px; border-radius: 6px; object-fit: cover; border: 1px solid #e2e8f0; }
+    .btn-clear-media { background: #fee2e2; color: #b91c1c; border: none; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 800; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -97,6 +101,21 @@
         <div id="loginError" class="err-box hidden"></div>
         <button id="loginBtn" type="button" onclick="handleLogin()" class="btn-primary">Access Portal</button>
         <button type="button" onclick="toggleAuthMode('register')" class="btn-outline">New Customer / Add Another Firm</button>
+      </div>
+
+      <!-- 1ST-TIME DEVICE OTP VERIFICATION BOX -->
+      <div id="otpVerifyBox" class="hidden">
+        <strong style="font-size:14px; color:#1B3686; display:block; text-align:center;">1st-Time Device Verification</strong>
+        <p id="otpVerifyDesc" style="font-size:12px; color:#475569; text-align:center; margin-top:6px; line-height:1.5;"></p>
+        <div style="background:#EEF3FF; border:1px solid #c7d2fe; border-radius:10px; padding:10px; text-align:center; margin:10px 0;">
+          <span style="font-size:10px; font-weight:700; color:#475569; text-transform:uppercase; display:block;">One-Time Security Code</span>
+          <strong id="otpDisplayCode" style="font-size:22px; letter-spacing:4px; color:#1B3686;"></strong>
+        </div>
+        <label class="field-label">Enter 6-Digit Verification Code</label>
+        <input id="otpInputCode" type="text" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit code" class="input-box" onkeydown="if(event.key==='Enter') confirmDeviceOtp()" />
+        <div id="otpError" class="err-box hidden"></div>
+        <button type="button" onclick="confirmDeviceOtp()" class="btn-primary">Verify Device &amp; Continue</button>
+        <button type="button" onclick="toggleAuthMode('login')" class="btn-outline">Cancel</button>
       </div>
 
       <!-- MULTI-COMPANY PICKER (IF SAME MOBILE HAS MULTIPLE FIRMS) -->
@@ -172,6 +191,15 @@
       <div id="assignedPartnerSection"></div>
       <div id="paymentDueSection"></div>
       <div id="alertsSection"></div>
+
+      <!-- CUSTOMER CATALOGUE QUICK SEARCH & CATEGORY FILTER -->
+      <div id="custCatalogueFilterBar" class="item-card" style="padding:10px 12px; margin-bottom:12px; background:#fff;">
+        <div style="display:flex; gap:6px; align-items:center;">
+          <input id="custProdSearch" type="text" oninput="renderProducts()" placeholder="Search Latex, Nitrile, Surgical, Mask..." class="input-box" style="padding:8px 10px; font-size:13px;" />
+          <button type="button" onclick="clearCustomerProductFilter()" class="btn-sm btn-tint" style="padding:8px 10px;">Clear</button>
+        </div>
+        <div id="custCategoryPills" class="filter-pills" style="margin-top:8px; margin-bottom:0;"></div>
+      </div>
 
       <!-- TAB 1: BOX RANGE -->
       <section id="tabBoxRange">
@@ -343,15 +371,18 @@
             <div class="grid-2">
               <div>
                 <label class="field-label">Front Photo</label>
-                <input id="prodImgFile" type="file" accept="image/*" class="input-box" />
+                <input id="prodImgFile" type="file" accept="image/*" onchange="previewSelectedMedia('prodImgFile','prevProdFront','image')" class="input-box" />
+                <div id="prevProdFront"></div>
               </div>
               <div>
                 <label class="field-label">Back Photo</label>
-                <input id="prodBackImgFile" type="file" accept="image/*" class="input-box" />
+                <input id="prodBackImgFile" type="file" accept="image/*" onchange="previewSelectedMedia('prodBackImgFile','prevProdBack','image')" class="input-box" />
+                <div id="prevProdBack"></div>
               </div>
             </div>
             <label class="field-label">Extra / Box Detail Photo (Optional)</label>
-            <input id="prodExtraImgFile" type="file" accept="image/*" class="input-box" />
+            <input id="prodExtraImgFile" type="file" accept="image/*" onchange="previewSelectedMedia('prodExtraImgFile','prevProdExtra','image')" class="input-box" />
+            <div id="prevProdExtra"></div>
             <div class="grid-2">
               <div>
                 <label class="field-label">Product Video Link (YouTube / Drive)</label>
@@ -359,7 +390,8 @@
               </div>
               <div>
                 <label class="field-label">Or Upload Video File (MP4 / MOV)</label>
-                <input id="prodVideoFile" type="file" accept="video/*" class="input-box" />
+                <input id="prodVideoFile" type="file" accept="video/*" onchange="previewSelectedMedia('prodVideoFile','prevProdVideo','video')" class="input-box" />
+                <div id="prevProdVideo"></div>
               </div>
             </div>
             <button id="addProdBtn" type="button" onclick="adminAddProduct()" class="btn-primary">Publish Product</button>
@@ -370,14 +402,18 @@
         <div id="adminProductsList"></div>
       </div>
 
-      <!-- ADMIN 3: UPLOAD INVOICE & LR -->
+      <!-- ADMIN 3: UPLOAD PROFORMA, INVOICE & LR -->
       <div id="admTabUpload" class="hidden">
         <div class="item-card">
-          <strong style="font-size:15px; color:#1B3686;">Upload Invoice &amp; Transport Docket</strong>
-          <p style="font-size:11px; color:#64748b; margin-top:2px;">All fields are optional — upload invoice, LR docket, or both anytime.</p>
+          <strong style="font-size:15px; color:#1B3686;">Upload Proforma, Invoice &amp; Transport Docket</strong>
+          <p style="font-size:11px; color:#64748b; margin-top:2px;">All fields are optional — upload Proforma Invoice, GST Invoice, LR docket photo, or any combination. Customer receives an instant notification alert.</p>
           <div>
             <label class="field-label">Select Customer</label>
             <select id="docCustomerId" onchange="autoFillCustomerTransport()" class="input-box"></select>
+
+            <label class="field-label">Proforma Invoice PDF / Photo (Optional)</label>
+            <input id="docProformaFile" type="file" accept=".pdf,image/*" class="input-box" />
+
             <div class="grid-2">
               <div>
                 <label class="field-label">Invoice Number</label>
@@ -395,21 +431,15 @@
               <option value="15" selected>15 Days</option>
               <option value="30">30 Days</option>
             </select>
-            <label class="field-label">Invoice PDF / Photo</label>
+            <label class="field-label">GST Invoice PDF / Photo</label>
             <input id="docInvoiceFile" type="file" accept=".pdf,image/*" class="input-box" />
-            <div class="grid-2">
-              <div>
-                <label class="field-label">Transport Name</label>
-                <input id="docTransporter" type="text" placeholder="e.g. VRL Logistics" class="input-box" />
-              </div>
-              <div>
-                <label class="field-label">LR / Docket No.</label>
-                <input id="docLrNo" type="text" placeholder="e.g. LR-884920" class="input-box" />
-              </div>
-            </div>
+
+            <label class="field-label">Transport Name</label>
+            <input id="docTransporter" type="text" placeholder="e.g. VRL Logistics" class="input-box" />
+
             <label class="field-label">Transport Docket / LR Photo or PDF</label>
             <input id="docLrFile" type="file" accept=".pdf,image/*" class="input-box" />
-            <button id="uploadDocBtn" type="button" onclick="adminUploadDoc()" class="btn-primary">Upload to Customer Vault</button>
+            <button id="uploadDocBtn" type="button" onclick="adminUploadDoc()" class="btn-primary">Upload to Customer Vault &amp; Notify</button>
           </div>
         </div>
       </div>
@@ -442,9 +472,23 @@
         <strong style="font-size:14px; display:block; margin-bottom:8px;">Registered Customers (<span id="filteredCustCount">0</span>)</strong>
         <div id="adminCustomersList" style="margin-bottom:14px;"></div>
 
-        <!-- BULK CUSTOMER RATE SHEET (UPDATE ALL PRODUCTS AT 1 TIME) -->
+        <!-- EXCEL MASTER RATE SHEET (DOWNLOAD ALL CUSTOMERS & UPLOAD BULK RATES AT ONCE) -->
+        <div class="item-card" style="background:#eff6ff; border-color:#93c5fd;">
+          <strong style="font-size:14px; color:#1B3686;">Master Excel Rate Sheet (All Customers &times; All Products)</strong>
+          <p style="font-size:11px; color:#334155; margin-top:3px;">Download one Excel file containing every customer and product rate. Edit rates in Excel and upload back to update all customers in 1 click.</p>
+          <div class="grid-2" style="margin-top:8px;">
+            <button type="button" onclick="downloadAllCustomerRatesExcel()" class="btn-sm" style="padding:10px; text-align:center;">1. Download Rate Excel (.xlsx)</button>
+            <label class="btn-sm btn-green" style="padding:10px; text-align:center; cursor:pointer;">
+              2. Upload Edited Excel
+              <input id="uploadRatesExcelInput" type="file" accept=".xlsx,.xls,.csv" onchange="uploadAllCustomerRatesExcel(event)" style="display:none;" />
+            </label>
+          </div>
+          <div id="excelRateUploadStatus" style="font-size:11px; color:#166534; font-weight:700; margin-top:6px;"></div>
+        </div>
+
+        <!-- SINGLE CUSTOMER RATE SHEET (QUICK EDIT) -->
         <div class="item-card" style="background:#f0fdf4; border-color:#bbf7d0;">
-          <strong style="font-size:14px; color:#166534;">Customer Rate Sheet (Update All Products at 1 Time)</strong>
+          <strong style="font-size:14px; color:#166534;">Single Customer Rate Sheet (Quick Edit)</strong>
           <p style="font-size:11px; color:#15803d; margin-top:3px;">Select a customer, enter rates for all products together, and click Save All Rates. Leave blank to show only MRP.</p>
           <label class="field-label">Select Customer</label>
           <select id="rateCustomerId" onchange="renderCustomerBulkRateGrid()" class="input-box"></select>
@@ -683,21 +727,28 @@
         </div>
         <div>
           <label class="field-label">Or Upload Video File</label>
-          <input id="editProdVideoFile" type="file" accept="video/*" class="input-box" />
+          <input id="editProdVideoFile" type="file" accept="video/*" onchange="previewSelectedMedia('editProdVideoFile','prevEditVideo','video')" class="input-box" />
+          <div id="prevEditVideo"></div>
         </div>
       </div>
       <div class="grid-2">
         <div>
-          <label class="field-label">Replace Front Photo</label>
-          <input id="editProdImgFile" type="file" accept="image/*" class="input-box" />
+          <label class="field-label">Front Photo</label>
+          <div id="currEditFront"></div>
+          <input id="editProdImgFile" type="file" accept="image/*" onchange="previewSelectedMedia('editProdImgFile','prevEditFront','image')" class="input-box" style="margin-top:4px;" />
+          <div id="prevEditFront"></div>
         </div>
         <div>
-          <label class="field-label">Replace Back Photo</label>
-          <input id="editProdBackFile" type="file" accept="image/*" class="input-box" />
+          <label class="field-label">Back Photo</label>
+          <div id="currEditBack"></div>
+          <input id="editProdBackFile" type="file" accept="image/*" onchange="previewSelectedMedia('editProdBackFile','prevEditBack','image')" class="input-box" style="margin-top:4px;" />
+          <div id="prevEditBack"></div>
         </div>
       </div>
-      <label class="field-label">Replace Extra Photo</label>
-      <input id="editProdExtraFile" type="file" accept="image/*" class="input-box" />
+      <label class="field-label">Extra / Box Detail Photo</label>
+      <div id="currEditExtra"></div>
+      <input id="editProdExtraFile" type="file" accept="image/*" onchange="previewSelectedMedia('editProdExtraFile','prevEditExtra','image')" class="input-box" style="margin-top:4px;" />
+      <div id="prevEditExtra"></div>
       <button id="saveEditProdBtn" type="button" onclick="saveEditedProduct()" class="btn-primary">Save Changes</button>
       <button type="button" onclick="document.getElementById('editProductModal').classList.add('hidden')" class="btn-outline">Cancel</button>
     </div>
@@ -894,13 +945,64 @@
       return String(sz).replace(/[^a-zA-Z0-9]/g, '_');
     }
 
+    let PENDING_OTP_CODE = '';
+    let PENDING_OTP_MOBILE = '';
+    let PENDING_OTP_MATCHED = [];
+
     function toggleAuthMode(mode) {
       document.getElementById('signInBox').classList.toggle('hidden', mode !== 'login');
       document.getElementById('registerBox').classList.toggle('hidden', mode !== 'register');
       document.getElementById('companyPickerBox').classList.toggle('hidden', mode !== 'picker');
+      document.getElementById('otpVerifyBox').classList.toggle('hidden', mode !== 'otp');
     }
 
-    /* SUPPORTS PRIMARY OR EXTRA MOBILES + MULTIPLE COMPANIES */
+    function isDeviceVerifiedForMobile(mobile) {
+      try {
+        const verified = JSON.parse(localStorage.getItem('gm_verified_mobiles') || '[]');
+        return verified.includes(String(mobile).trim());
+      } catch (e) { return false; }
+    }
+
+    function markDeviceVerifiedForMobile(mobile) {
+      try {
+        const verified = JSON.parse(localStorage.getItem('gm_verified_mobiles') || '[]');
+        const clean = String(mobile).trim();
+        if (!verified.includes(clean)) {
+          verified.push(clean);
+          localStorage.setItem('gm_verified_mobiles', JSON.stringify(verified));
+        }
+      } catch (e) {}
+    }
+
+    function proceedAfterAuth(matched) {
+      LINKED_FIRMS = matched;
+      if (matched.length === 1) {
+        enterPortal(matched[0], false);
+      } else {
+        document.getElementById('companyPickerList').innerHTML = matched.map((f, idx) => `
+          <button type="button" onclick="enterPortal(LINKED_FIRMS[${idx}], false)" class="item-card" style="width:100%; text-align:left; cursor:pointer; display:block; margin-bottom:8px;">
+            <strong style="color:#1B3686; font-size:14px;">${f.company_name}</strong>
+            <div style="font-size:11px; color:#64748b; margin-top:2px;">${f.category} • ${f.city || ''}, ${f.state}</div>
+          </button>
+        `).join('');
+        toggleAuthMode('picker');
+      }
+    }
+
+    function confirmDeviceOtp() {
+      const entered = document.getElementById('otpInputCode').value.trim();
+      const err = document.getElementById('otpError');
+      if (entered !== PENDING_OTP_CODE) {
+        err.textContent = 'Incorrect verification code. Please enter the 6-digit code shown above.';
+        err.classList.remove('hidden');
+        return;
+      }
+      err.classList.add('hidden');
+      markDeviceVerifiedForMobile(PENDING_OTP_MOBILE);
+      proceedAfterAuth(PENDING_OTP_MATCHED);
+    }
+
+    /* SUPPORTS PRIMARY OR EXTRA MOBILES + 1ST-TIME OTP + REPEAT PIN-ONLY LOGIN */
     async function handleLogin() {
       const mobile = document.getElementById('loginMobile').value.trim();
       const pin = document.getElementById('loginPin').value.trim();
@@ -927,17 +1029,17 @@
           return;
         }
 
-        LINKED_FIRMS = matched;
-        if (matched.length === 1) {
-          enterPortal(matched[0], false);
+        if (isDeviceVerifiedForMobile(mobile)) {
+          proceedAfterAuth(matched);
         } else {
-          document.getElementById('companyPickerList').innerHTML = matched.map((f, idx) => `
-            <button type="button" onclick="enterPortal(LINKED_FIRMS[${idx}], false)" class="item-card" style="width:100%; text-align:left; cursor:pointer; display:block; margin-bottom:8px;">
-              <strong style="color:#1B3686; font-size:14px;">${f.company_name}</strong>
-              <div style="font-size:11px; color:#64748b; margin-top:2px;">${f.category} • ${f.city || ''}, ${f.state}</div>
-            </button>
-          `).join('');
-          toggleAuthMode('picker');
+          PENDING_OTP_MOBILE = mobile;
+          PENDING_OTP_MATCHED = matched;
+          PENDING_OTP_CODE = String(Math.floor(100000 + Math.random() * 900000));
+          document.getElementById('otpVerifyDesc').innerHTML = `First-time login on this device for <b>${mobile}</b>. Enter the 6-digit security code below to bind this device (future logins on this phone will use PIN only):`;
+          document.getElementById('otpDisplayCode').textContent = PENDING_OTP_CODE;
+          document.getElementById('otpInputCode').value = '';
+          document.getElementById('otpError').classList.add('hidden');
+          toggleAuthMode('otp');
         }
       } catch (error) {
         btn.disabled = false; btn.textContent = 'Access Portal';
@@ -972,6 +1074,7 @@
           assigned_partner_id: ''
         });
         btn.disabled = false; btn.textContent = 'Register & Enter Portal';
+        markDeviceVerifiedForMobile(mobile);
         LINKED_FIRMS = [created[0]];
         enterPortal(created[0], true);
       } catch (error) {
@@ -1061,12 +1164,18 @@
       const unpaid = myInvoices.filter(i => i.payment_status === 'Unpaid' && Number(i.amount) > 0);
       renderPaymentDueBanner(unpaid);
 
-      const myAlerts = (alts || []).filter(a =>
-        (a.target_state === 'All' || a.target_state.toLowerCase() === CURRENT_USER.state.toLowerCase()) &&
-        (a.target_category === 'All' || a.target_category === CURRENT_USER.category)
-      );
+      const myAlerts = (alts || []).filter(a => {
+        if (a.target_customer_id) {
+          return String(a.target_customer_id) === String(CURRENT_USER.customer_id);
+        }
+        return (a.target_state === 'All' || a.target_state.toLowerCase() === CURRENT_USER.state.toLowerCase()) &&
+               (a.target_category === 'All' || a.target_category === CURRENT_USER.category);
+      });
 
       renderAlerts(myAlerts);
+      if ("Notification" in window && Notification.permission === "default") {
+        Notification.requestPermission();
+      }
       renderProducts();
       renderInvoices(myInvoices);
       renderOrders(ords || []);
@@ -1246,18 +1355,63 @@
       }
     }
 
+    let CUST_SELECTED_CAT = 'All';
+
+    function setCustomerCatFilter(cat) {
+      CUST_SELECTED_CAT = cat;
+      renderProducts();
+    }
+
+    function clearCustomerProductFilter() {
+      CUST_SELECTED_CAT = 'All';
+      const searchEl = document.getElementById('custProdSearch');
+      if (searchEl) searchEl.value = '';
+      renderProducts();
+    }
+
+    function renderCustomerCategoryPills() {
+      const pillBox = document.getElementById('custCategoryPills');
+      if (!pillBox) return;
+      const uniqueCats = Array.from(new Set(PRODUCTS.map(p => String(p.category || '').trim()).filter(Boolean)));
+      const allCats = ['All', ...uniqueCats];
+      pillBox.innerHTML = allCats.map(cat => {
+        const active = CUST_SELECTED_CAT === cat ? 'active' : '';
+        const safeCat = cat.replace(/'/g, "\\'");
+        return `<button type="button" onclick="setCustomerCatFilter('${safeCat}')" class="pill-btn ${active}" style="padding:4px 10px; font-size:10px;">${cat}</button>`;
+      }).join('');
+    }
+
+    function matchesCustomerSearchAndCat(p) {
+      const q = (document.getElementById('custProdSearch')?.value || '').toLowerCase().trim();
+      const catMatch = CUST_SELECTED_CAT === 'All' || String(p.category || '').trim() === CUST_SELECTED_CAT;
+      if (!catMatch) return false;
+      if (!q) return true;
+      const hay = `${p.name || ''} ${p.category || ''} ${p.specs || ''} ${p.packing_details || ''}`.toLowerCase();
+      return hay.includes(q);
+    }
+
     function renderProducts() {
+      renderCustomerCategoryPills();
+
       const newBoxOnly = document.getElementById('newOnlyBoxFilter').checked;
-      const boxProducts = PRODUCTS.filter(p => (p.range_type || 'Box Range') === 'Box Range' && (!newBoxOnly || p.is_new_arrival));
+      const boxProducts = PRODUCTS.filter(p =>
+        (p.range_type || 'Box Range') === 'Box Range' &&
+        (!newBoxOnly || p.is_new_arrival) &&
+        matchesCustomerSearchAndCat(p)
+      );
       document.getElementById('boxProductList').innerHTML = boxProducts.length
         ? boxProducts.map(p => buildProductCardHtml(p, true)).join('')
-        : '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No active products in Box Range.</p>';
+        : '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No matching products in Box Range.</p>';
 
       const newLooseOnly = document.getElementById('newOnlyLooseFilter').checked;
-      const looseProducts = PRODUCTS.filter(p => p.range_type === 'Loose Gloves' && (!newLooseOnly || p.is_new_arrival));
+      const looseProducts = PRODUCTS.filter(p =>
+        p.range_type === 'Loose Gloves' &&
+        (!newLooseOnly || p.is_new_arrival) &&
+        matchesCustomerSearchAndCat(p)
+      );
       document.getElementById('looseProductList').innerHTML = looseProducts.length
         ? looseProducts.map(p => buildProductCardHtml(p, false)).join('')
-        : '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No active products in Loose Gloves / Masks.</p>';
+        : '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No matching products in Loose Gloves / Masks.</p>';
     }
 
     function addProductSizes(pid, useCartonCalc) {
@@ -1369,35 +1523,110 @@
     function renderInvoices(list) {
       const box = document.getElementById('invoiceList');
       if (!list.length) { box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No invoices or LR dockets uploaded yet.</p>'; return; }
-      box.innerHTML = list.map(inv => `
+      box.innerHTML = list.map(inv => {
+        const titleText = inv.invoice_no
+          ? 'Invoice #' + inv.invoice_no
+          : (inv.proforma_pdf_url && !inv.invoice_pdf_url && !inv.lr_copy_url ? 'Proforma Invoice' : 'Transport / Dispatch Document');
+        return `
         <div class="item-card">
           <div style="display:flex; justify-content:space-between;">
-            <strong style="color:#1B3686; font-size:14px;">${inv.invoice_no ? 'Invoice #' + inv.invoice_no : 'Transport / Dispatch Document'}</strong>
+            <strong style="color:#1B3686; font-size:14px;">${titleText}</strong>
             <span class="${inv.payment_status === 'Paid' ? 'btn-green' : 'btn-amber'}" style="font-size:10px; font-weight:800; padding:2px 8px; border-radius:99px;">${inv.payment_status || 'Unpaid'}</span>
           </div>
-          <p style="font-size:12px; color:#475569; margin:6px 0;">Amount: <b>₹${inv.amount || 0}</b> (${inv.credit_days === 'Advance' ? 'Advance' : (inv.credit_days || 15) + ' Days'}) • Transport: <b>${inv.transporter || 'N/A'}</b> • LR: <b>${inv.lr_no || 'N/A'}</b></p>
-          <div style="display:flex; gap:8px; margin-top:8px;">
+          <p style="font-size:12px; color:#475569; margin:6px 0;">Amount: <b>₹${inv.amount || 0}</b> (${inv.credit_days === 'Advance' ? 'Advance' : (inv.credit_days || 15) + ' Days'}) • Transport: <b>${inv.transporter || 'N/A'}</b></p>
+          <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;">
+            ${inv.proforma_pdf_url ? `<a href="${inv.proforma_pdf_url}" target="_blank" class="btn-sm btn-amber" style="flex:1; text-align:center;">View Proforma</a>` : ''}
             ${inv.invoice_pdf_url ? `<a href="${inv.invoice_pdf_url}" target="_blank" class="btn-sm" style="flex:1; text-align:center;">View GST Invoice</a>` : ''}
             ${inv.lr_copy_url ? `<a href="${inv.lr_copy_url}" target="_blank" class="btn-sm btn-tint" style="flex:1; text-align:center;">View LR / Docket</a>` : ''}
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    let MY_ORDERS_CACHE = [];
+
+    function getOrderStatusBadgeStyle(status) {
+      const s = String(status || '').toLowerCase();
+      if (s.includes('delivered')) return 'background:#dcfce7; color:#166534;';
+      if (s.includes('dispatched') && !s.includes('partial')) return 'background:#dbeafe; color:#1e40af;';
+      if (s.includes('partial')) return 'background:#ffedd5; color:#9a3412;';
+      if (s.includes('proforma')) return 'background:#f3e8ff; color:#6b21a8;';
+      return 'background:#fef3c7; color:#92400e;';
+    }
+
+    function renderOrders(list) {
+      MY_ORDERS_CACHE = list || [];
+      const box = document.getElementById('orderList');
+      if (!MY_ORDERS_CACHE.length) { box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No orders placed yet.</p>'; return; }
+      box.innerHTML = MY_ORDERS_CACHE.map((o, idx) => `
+        <div class="item-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
+            <strong style="font-size:13px;">${o.order_id}</strong>
+            <span style="${getOrderStatusBadgeStyle(o.status)} font-size:11px; font-weight:700; padding:2px 8px; border-radius:99px;">${o.status}</span>
+          </div>
+          <p style="font-size:12px; color:#475569; margin:6px 0;">${o.items_summary}</p>
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; padding-top:8px; border-top:1px solid #f1f5f9;">
+            <div>
+              <span style="color:#94a3b8;">${new Date(o.created_at).toLocaleDateString('en-IN')}</span>
+              <strong style="color:#1B3686; margin-left:8px;">₹${o.total_amount}</strong>
+            </div>
+            <button type="button" onclick="repeatPreviousOrder(${idx})" class="btn-sm btn-tint">Repeat Order</button>
           </div>
         </div>`).join('');
     }
 
-    function renderOrders(list) {
-      const box = document.getElementById('orderList');
-      if (!list.length) { box.innerHTML = '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:30px 0;">No orders placed yet.</p>'; return; }
-      box.innerHTML = list.map(o => `
-        <div class="item-card">
-          <div style="display:flex; justify-content:space-between;">
-            <strong style="font-size:13px;">${o.order_id}</strong>
-            <span style="background:#fef3c7; color:#92400e; font-size:11px; font-weight:700; padding:2px 8px; border-radius:99px;">${o.status}</span>
-          </div>
-          <p style="font-size:12px; color:#475569; margin:6px 0;">${o.items_summary}</p>
-          <div style="display:flex; justify-content:space-between; font-size:12px; padding-top:6px; border-top:1px solid #f1f5f9;">
-            <span style="color:#94a3b8;">${new Date(o.created_at).toLocaleDateString('en-IN')}</span>
-            <strong style="color:#1B3686;">₹${o.total_amount}</strong>
-          </div>
-        </div>`).join('');
+    function repeatPreviousOrder(orderIdx) {
+      const ord = MY_ORDERS_CACHE[orderIdx];
+      if (!ord || !ord.items_summary) return;
+
+      const regex = /([^,\[\]]+?)\s*\[([^:\]]+):\s*(\d+)\s*([^\]]+)\]/g;
+      let match;
+      let addedCount = 0;
+
+      while ((match = regex.exec(ord.items_summary)) !== null) {
+        const prodName = match[1].trim();
+        const sizeLabel = formatSizeShort(match[2].trim());
+        const rawQty = parseInt(match[3], 10) || 0;
+        const unitStr = match[4].toLowerCase();
+
+        if (rawQty <= 0) continue;
+        const prod = PRODUCTS.find(p => String(p.name || '').trim().toLowerCase() === prodName.toLowerCase());
+        if (!prod) continue;
+
+        const info = getCustomerRateInfo(prod);
+        const isBoxRange = unitStr.includes('carton') || isCartonBoxMultiplier(prod, (prod.range_type || 'Box Range') === 'Box Range');
+        const isMask = isMaskProduct(prod);
+        const actualQty = isBoxRange ? rawQty * 20 : rawQty;
+
+        const existing = CART.find(item => item.pid === prod.product_id && item.size === sizeLabel && item.isBoxRange === isBoxRange);
+        if (existing) {
+          existing.rawQty += rawQty;
+          existing.qty += actualQty;
+          existing.price = info.rate;
+          existing.hasCustomRate = info.hasCustomRate;
+        } else {
+          CART.push({
+            pid: prod.product_id,
+            name: prod.name,
+            size: sizeLabel,
+            rawQty,
+            qty: actualQty,
+            isBoxRange,
+            isMask,
+            price: info.rate,
+            hasCustomRate: info.hasCustomRate
+          });
+        }
+        addedCount++;
+      }
+
+      if (!addedCount) {
+        alert('Could not match previous items to currently active products.');
+        return;
+      }
+
+      renderCart();
+      switchTab('Cart');
     }
 
     /* ADMIN PANEL + REAL-TIME NEW ORDER NOTIFICATIONS */
@@ -1447,6 +1676,15 @@
       }
       LAST_UNSEEN_COUNT = unseen.length;
 
+      const ORDER_STATUS_OPTIONS = [
+        'Pending Dispatch',
+        'Route to Area Distributor',
+        'Proforma Sent',
+        'Partially Dispatched',
+        'Dispatched',
+        'Delivered'
+      ];
+
       const ordBox = document.getElementById('adminOrdersList');
       ordBox.innerHTML = ADMIN_ORDERS.length ? ADMIN_ORDERS.map(o => {
         const custObj = ADMIN_CUSTOMERS.find(c => c.customer_id === o.customer_id);
@@ -1460,18 +1698,28 @@
         const newOrderBadge = o.admin_seen === false
           ? `<span style="background:#dc2626; color:#fff; font-size:9px; font-weight:800; padding:2px 6px; border-radius:99px; margin-left:5px;">NEW</span>`
           : '';
+        const statusList = ORDER_STATUS_OPTIONS.includes(o.status) ? ORDER_STATUS_OPTIONS : [o.status, ...ORDER_STATUS_OPTIONS];
+        const statusOpts = statusList.map(st => `<option value="${st}" ${o.status === st ? 'selected' : ''}>${st}</option>`).join('');
+
         return `
         <div class="item-card" style="border-color:${o.admin_seen === false ? '#fca5a5' : '#e2e8f0'};">
-          <div style="display:flex; justify-content:space-between;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
             <strong style="font-size:13px; color:#1B3686;">${o.company_name} [${o.customer_type}]${newOrderBadge}</strong>
             <span style="font-size:11px; font-weight:700;">${o.order_id}</span>
           </div>
           <p style="font-size:12px; color:#334155; margin:6px 0;">${o.items_summary}</p>
           ${routeNote}
           ${remarkNote}
-          <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; padding-top:6px; margin-top:6px; border-top:1px solid #f1f5f9;">
-            <strong style="color:#1B3686;">Total: ₹${o.total_amount}</strong>
-            <span style="background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:99px; font-weight:700;">${o.status}</span>
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:12px; padding-top:8px; margin-top:6px; border-top:1px solid #f1f5f9;">
+            <div>
+              <strong style="color:#1B3686;">Total: ₹${o.total_amount}</strong>
+              <span style="display:block; font-size:10px; color:#94a3b8;">${new Date(o.created_at).toLocaleDateString('en-IN')}</span>
+            </div>
+            <div>
+              <select onchange="updateAdminOrderStatus('${o.order_id}', '${o.customer_id}', this.value)" class="input-box" style="padding:5px 8px; font-size:11px; font-weight:700; width:auto; ${getOrderStatusBadgeStyle(o.status)}">
+                ${statusOpts}
+              </select>
+            </div>
           </div>
         </div>`;
       }).join('') : '<p style="font-size:12px; color:#94a3b8;">No orders yet.</p>';
@@ -1531,6 +1779,30 @@
       } catch (err) { alert('Error: ' + err.message); }
     }
 
+    async function updateAdminOrderStatus(orderId, customerId, newStatus) {
+      let dispatchNote = '';
+      if (newStatus === 'Partially Dispatched') {
+        const note = prompt('Optional partial dispatch note for customer (e.g. M & L dispatched, S balance):');
+        if (note === null) { loadAdminData(); return; }
+        dispatchNote = note.trim();
+      }
+      const finalStatus = dispatchNote ? `Partially Dispatched (${dispatchNote})` : newStatus;
+      try {
+        await sbPatch('orders', `order_id=eq.${encodeURIComponent(orderId)}`, { status: finalStatus, admin_seen: true });
+        if (customerId) {
+          await sbInsert('alerts', {
+            title: `Order ${orderId} Status: ${finalStatus}`,
+            message: `Your GloveMeds order ${orderId} has been updated to "${finalStatus}".`,
+            target_state: 'All',
+            target_category: 'All',
+            target_customer_id: customerId,
+            offer_code: 'ORDER'
+          });
+        }
+        loadAdminData();
+      } catch (err) { alert('Status update error: ' + err.message); }
+    }
+
     function renderAdminCustomersList() {
       const q = (document.getElementById('custSearchInput').value || '').toLowerCase().trim();
       const fState = document.getElementById('custFilterState').value;
@@ -1573,6 +1845,72 @@
       }).join('') : '<p style="font-size:12px; color:#94a3b8; text-align:center; padding:16px 0;">No matching customers found.</p>';
     }
 
+    function previewSelectedMedia(inputId, previewBoxId, type) {
+      const inp = document.getElementById(inputId);
+      const box = document.getElementById(previewBoxId);
+      if (!inp || !box) return;
+      const file = inp.files && inp.files[0];
+      if (!file) { box.innerHTML = ''; return; }
+      if (type === 'image') {
+        const url = URL.createObjectURL(file);
+        box.innerHTML = `
+          <div class="media-preview-box">
+            <div style="display:flex; align-items:center; gap:6px; overflow:hidden;">
+              <img src="${url}" />
+              <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:95px;">${file.name}</span>
+            </div>
+            <button type="button" onclick="clearSelectedMedia('${inputId}', '${previewBoxId}')" class="btn-clear-media">Cancel</button>
+          </div>`;
+      } else {
+        box.innerHTML = `
+          <div class="media-preview-box">
+            <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:110px;">🎬 ${file.name}</span>
+            <button type="button" onclick="clearSelectedMedia('${inputId}', '${previewBoxId}')" class="btn-clear-media">Cancel</button>
+          </div>`;
+      }
+    }
+
+    function clearSelectedMedia(inputId, previewBoxId) {
+      const inp = document.getElementById(inputId);
+      const box = document.getElementById(previewBoxId);
+      if (inp) inp.value = '';
+      if (box) box.innerHTML = '';
+    }
+
+    let EDIT_REMOVED_MEDIA = { front: false, back: false, extra: false };
+
+    function renderExistingMediaBox(containerId, url, label, key) {
+      const box = document.getElementById(containerId);
+      if (!box) return;
+      if (!url) {
+        box.innerHTML = `<div style="font-size:10px; color:#94a3b8; margin-top:2px;">No ${label} uploaded</div>`;
+        return;
+      }
+      box.innerHTML = `
+        <div class="media-preview-box">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <img src="${url}" />
+            <span style="color:#166534; font-weight:700;">Saved ${label}</span>
+          </div>
+          <button type="button" onclick="removeExistingProductImage('${key}', '${containerId}', '${label}')" class="btn-clear-media">Remove</button>
+        </div>`;
+    }
+
+    function removeExistingProductImage(key, containerId, label) {
+      EDIT_REMOVED_MEDIA[key] = true;
+      const box = document.getElementById(containerId);
+      if (box) box.innerHTML = `<div style="font-size:10px; color:#dc2626; font-weight:700; margin-top:2px;">${label} marked for removal (Save to confirm)</div>`;
+    }
+
+    function generateUniqueProductId() {
+      const existingIds = new Set((PRODUCTS || []).map(p => String(p.product_id)));
+      let candidate = '';
+      do {
+        candidate = 'GM-' + String(Date.now()).slice(-4) + Math.floor(10 + Math.random() * 89);
+      } while (existingIds.has(candidate));
+      return candidate;
+    }
+
     async function adminAddProduct() {
       const name = document.getElementById('prodName').value.trim();
       const category = document.getElementById('prodCat').value.trim();
@@ -1594,7 +1932,7 @@
         ]);
         const finalVideoUrl = uploadedVideoUrl || document.getElementById('prodVideoUrl').value.trim();
         await sbInsert('products', {
-          product_id: 'GM-' + Math.floor(100 + Math.random() * 900),
+          product_id: generateUniqueProductId(),
           name,
           range_type: document.getElementById('prodRangeType').value,
           category,
@@ -1611,6 +1949,7 @@
         });
         alert('Product published!');
         ['prodName', 'prodCat', 'prodSpecs', 'prodMrp', 'prodImgFile', 'prodBackImgFile', 'prodExtraImgFile', 'prodVideoUrl', 'prodVideoFile', 'prodPackingCustom'].forEach(id => document.getElementById(id).value = '');
+        ['prevProdFront', 'prevProdBack', 'prevProdExtra', 'prevProdVideo'].forEach(id => document.getElementById(id).innerHTML = '');
         loadAdminData();
       } catch (err) { alert('Error: ' + err.message); }
       btn.disabled = false; btn.textContent = 'Publish Product';
@@ -1619,6 +1958,7 @@
     function openEditProductModal(pid) {
       const p = PRODUCTS.find(x => x.product_id === pid);
       if (!p) return;
+      EDIT_REMOVED_MEDIA = { front: false, back: false, extra: false };
       document.getElementById('editProdId').value = p.product_id;
       document.getElementById('editProdName').value = p.name;
       document.getElementById('editProdRangeType').value = p.range_type || 'Box Range';
@@ -1629,6 +1969,10 @@
       document.getElementById('editProdMrp').value = p.retailer_price || 0;
       document.getElementById('editProdGst').value = String(p.gst_percent || 5);
       document.getElementById('editProdVideo').value = p.video_url || '';
+
+      renderExistingMediaBox('currEditFront', p.image_url, 'Front Photo', 'front');
+      renderExistingMediaBox('currEditBack', p.image_back_url, 'Back Photo', 'back');
+      renderExistingMediaBox('currEditExtra', p.image_extra_url, 'Extra Photo', 'extra');
 
       const packSel = document.getElementById('editProdPackingPreset');
       const packCustom = document.getElementById('editProdPackingCustom');
@@ -1650,6 +1994,7 @@
       });
 
       ['editProdImgFile', 'editProdBackFile', 'editProdExtraFile', 'editProdVideoFile'].forEach(id => document.getElementById(id).value = '');
+      ['prevEditFront', 'prevEditBack', 'prevEditExtra', 'prevEditVideo'].forEach(id => document.getElementById(id).innerHTML = '');
       document.getElementById('editProductModal').classList.remove('hidden');
     }
 
@@ -1676,6 +2021,10 @@
           gst_percent: Number(document.getElementById('editProdGst').value) || 5,
           video_url: document.getElementById('editProdVideo').value.trim()
         };
+        if (EDIT_REMOVED_MEDIA.front) updates.image_url = '';
+        if (EDIT_REMOVED_MEDIA.back) updates.image_back_url = '';
+        if (EDIT_REMOVED_MEDIA.extra) updates.image_extra_url = '';
+
         const [fUrl, bUrl, eUrl, vUrl] = await Promise.all([
           uploadFileRest('editProdImgFile', 'PROD_F'),
           uploadFileRest('editProdBackFile', 'PROD_B'),
@@ -1801,6 +2150,90 @@
         alert('Error: ' + err.message);
       }
       btn.disabled = false; btn.textContent = 'Save All Rates for Customer';
+    }
+
+    function downloadAllCustomerRatesExcel() {
+      if (typeof XLSX === 'undefined') { alert('Excel library still loading, please try again in 2 seconds.'); return; }
+      if (!ADMIN_CUSTOMERS.length || !PRODUCTS.length) { alert('No customers or products found.'); return; }
+
+      const headers = ['Customer ID', 'Company Name', 'Category', 'City', 'State'];
+      PRODUCTS.forEach(p => {
+        headers.push(`${p.name} [${p.product_id}] (MRP ${p.retailer_price || 0})`);
+      });
+
+      const rows = [headers];
+      ADMIN_CUSTOMERS.forEach(c => {
+        const row = [c.customer_id, c.company_name, c.category, c.city || '', c.state];
+        PRODUCTS.forEach(p => {
+          const r = ADMIN_RATES.find(x => x.customer_id === c.customer_id && x.product_id === p.product_id);
+          row.push(r ? Number(r.custom_price) : '');
+        });
+        rows.push(row);
+      });
+
+      const ws = XLSX.utils.aoa_to_sheet(rows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Customer_Rates');
+      XLSX.writeFile(wb, `GloveMeds_Customer_Rates_${new Date().toISOString().slice(0,10)}.xlsx`);
+    }
+
+    async function uploadAllCustomerRatesExcel(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const statusBox = document.getElementById('excelRateUploadStatus');
+      statusBox.textContent = 'Reading Excel file & updating rates...';
+
+      try {
+        const data = await file.arrayBuffer();
+        const wb = XLSX.read(data, { type: 'array' });
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
+        if (rows.length < 2) throw new Error('Excel sheet has no customer rows.');
+
+        const headers = rows[0];
+        const colProdMap = [];
+        for (let col = 5; col < headers.length; col++) {
+          const h = String(headers[col] || '');
+          const match = h.match(/\[(GM-[^\]]+)\]/);
+          if (match) colProdMap.push({ col, pid: match[1] });
+        }
+        if (!colProdMap.length) throw new Error('Could not find product IDs in column headers. Please use the downloaded GloveMeds template.');
+
+        const toUpsert = [];
+        const toDeletePairs = [];
+
+        for (let r = 1; r < rows.length; r++) {
+          const row = rows[r] || [];
+          const cid = String(row[0] || '').trim();
+          if (!cid) continue;
+
+          colProdMap.forEach(({ col, pid }) => {
+            const rawVal = row[col];
+            const numVal = Number(rawVal);
+            if (rawVal !== undefined && rawVal !== null && String(rawVal).trim() !== '' && numVal > 0) {
+              toUpsert.push({ customer_id: cid, product_id: pid, custom_price: numVal });
+            } else {
+              const hadOld = ADMIN_RATES.some(x => x.customer_id === cid && x.product_id === pid);
+              if (hadOld) toDeletePairs.push({ cid, pid });
+            }
+          });
+        }
+
+        if (toUpsert.length > 0) {
+          await sbInsert('customer_rates', toUpsert, true, 'customer_id,product_id');
+        }
+        for (const pair of toDeletePairs) {
+          await sbDelete('customer_rates', `customer_id=eq.${encodeURIComponent(pair.cid)}&product_id=eq.${encodeURIComponent(pair.pid)}`);
+        }
+
+        statusBox.textContent = `Updated ${toUpsert.length} customer rate(s) successfully!`;
+        alert(`Excel Rate Sheet Imported! ${toUpsert.length} rate(s) saved.`);
+        loadAdminData();
+      } catch (err) {
+        statusBox.textContent = '';
+        alert('Excel Import Error: ' + err.message);
+      }
+      event.target.value = '';
     }
 
     function autoFillCustomerTransport() {
@@ -1929,26 +2362,50 @@
       const customer_id = document.getElementById('docCustomerId').value;
       if (!customer_id) { alert('Please select a customer.'); return; }
       const btn = document.getElementById('uploadDocBtn');
-      btn.disabled = true; btn.textContent = 'Uploading...';
+      btn.disabled = true; btn.textContent = 'Uploading & Notifying...';
       try {
-        const invUrl = await uploadFileRest('docInvoiceFile', 'INV');
-        const lrUrl = await uploadFileRest('docLrFile', 'LR');
+        const [proformaUrl, invUrl, lrUrl] = await Promise.all([
+          uploadFileRest('docProformaFile', 'PI'),
+          uploadFileRest('docInvoiceFile', 'INV'),
+          uploadFileRest('docLrFile', 'LR')
+        ]);
+        const invoice_no = document.getElementById('docInvoiceNo').value.trim();
+        const amount = Number(document.getElementById('docAmount').value) || 0;
+        const transporter = document.getElementById('docTransporter').value.trim();
+
         await sbInsert('invoices_lr', {
           customer_id,
-          invoice_no: document.getElementById('docInvoiceNo').value.trim(),
-          amount: Number(document.getElementById('docAmount').value) || 0,
+          invoice_no,
+          amount,
           credit_days: document.getElementById('docCreditDays').value,
           payment_status: 'Unpaid',
+          proforma_pdf_url: proformaUrl,
           invoice_pdf_url: invUrl,
-          transporter: document.getElementById('docTransporter').value.trim(),
-          lr_no: document.getElementById('docLrNo').value.trim(),
+          transporter,
           lr_copy_url: lrUrl
         });
-        alert('Document uploaded to customer vault!');
-        ['docInvoiceNo', 'docAmount', 'docInvoiceFile', 'docTransporter', 'docLrNo', 'docLrFile'].forEach(id => document.getElementById(id).value = '');
+
+        const docTypes = [
+          proformaUrl ? 'Proforma Invoice' : '',
+          invUrl ? `GST Invoice${invoice_no ? ' #' + invoice_no : ''}` : '',
+          lrUrl ? `Transport Docket${transporter ? ' (' + transporter + ')' : ''}` : ''
+        ].filter(Boolean);
+        const docSummary = docTypes.length ? docTypes.join(' + ') : 'New Billing / Dispatch Document';
+
+        await sbInsert('alerts', {
+          title: `New Document Uploaded: ${docSummary}`,
+          message: `GloveMeds has uploaded ${docSummary}${amount > 0 ? ' for ₹' + amount : ''} in your Invoices/LR tab.`,
+          target_state: 'All',
+          target_category: 'All',
+          target_customer_id: customer_id,
+          offer_code: 'DOC'
+        });
+
+        alert('Document uploaded & notification sent to customer!');
+        ['docProformaFile', 'docInvoiceNo', 'docAmount', 'docInvoiceFile', 'docTransporter', 'docLrFile'].forEach(id => document.getElementById(id).value = '');
         loadAdminData();
       } catch (err) { alert('Upload error: ' + err.message); }
-      btn.disabled = false; btn.textContent = 'Upload to Customer Vault';
+      btn.disabled = false; btn.textContent = 'Upload to Customer Vault & Notify';
     }
 
     async function adminAddCustomer() {
@@ -1996,6 +2453,10 @@
         document.getElementById('tab' + t).classList.toggle('hidden', t !== name);
         document.getElementById('nav' + t).classList.toggle('active', t === name);
       });
+      const filterBar = document.getElementById('custCatalogueFilterBar');
+      if (filterBar) {
+        filterBar.classList.toggle('hidden', name !== 'BoxRange' && name !== 'LooseGloves');
+      }
     }
 
     function switchAdminTab(name) {
